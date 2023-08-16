@@ -32,5 +32,6 @@ var path="/c/aaaa/bbbb/abc.tga";
 alert("path関係のテスト\r\n\r\n" + path);
 var ext = fsU.pathGetExt(path);
 var name =fsU.pathGetName(path);
+var nameE =fsU.pathGetNameWithoutExt(path);
 var par =fsU.pathGetParent(path);
-alert("Parent: " + par +"\r\nName: "+name+"\r\nExt: "+ext);
+alert("Parent: " + par +"\r\nName: "+name+"\r\nNameWithoutExt: "+nameE + "\r\nExt: "+ext);

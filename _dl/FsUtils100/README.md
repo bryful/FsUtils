@@ -57,6 +57,7 @@ initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
 * clipboardGetText()<br>クリップボードから文字列を獲得します。
 * pathGetParent(path)<br>パス文字列から親ディレクトリを返します。
 * pathGetName(path)<br>パス文字列からファイル名のみ抜き出します。
+* pathGetNameWithoutExt(path)<br>パス文字列から拡張子なしのファイル名を抜き出します。
 * pathGetExt(path)<br>パス文字列から拡張子を返します。
 
 

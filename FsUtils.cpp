@@ -14,9 +14,10 @@ namespace {
     char EXTENSION_FUNCTIONS[] = {
         "clipboardGetText," 
         "clipboardSetText_s," 
-        "pathGetExt_s,"
-        "pathGetName_s,"
         "pathGetParent_s,"
+        "pathGetName_s,"
+        "pathGetNameWithoutExt_s,"
+        "pathGetExt_s,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -58,7 +59,8 @@ extern "C" {
 ////////////////////////
 // この拡張機能固有のエクスポート関数
 extern "C" {
-    EXPORT long clipboardSetText(TaggedData* inputData, long inputDataCount, TaggedData* outputData) 
+    // *******************************************************************************
+    EXPORT long clipboardSetText(TaggedData* inputData, long inputDataCount, TaggedData* outputData)
     {
         
         if (inputDataCount != 1)
@@ -84,6 +86,7 @@ extern "C" {
 
     }
 
+    // *******************************************************************************
     EXPORT long clipboardGetText(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
         LPCTSTR ls = GetTextClipboard();
         outputData->data.string = (char *)ls;
@@ -92,6 +95,7 @@ extern "C" {
         return kESErrOK;
     }
 
+    // *******************************************************************************
     EXPORT long pathGetExt(TaggedData* inputData, long inputDataCount, TaggedData* outputData)
     {
 
@@ -126,6 +130,7 @@ extern "C" {
         return kESErrOK;
 
     }
+    // *******************************************************************************
     EXPORT long pathGetName(TaggedData* inputData, long inputDataCount, TaggedData* outputData)
     {
 
@@ -164,6 +169,7 @@ extern "C" {
         return kESErrOK;
 
     }
+    // *******************************************************************************
     EXPORT long pathGetParent(TaggedData* inputData, long inputDataCount, TaggedData* outputData)
     {
 
@@ -197,6 +203,66 @@ extern "C" {
             str = "\0";
         }
 
+
+        outputData->data.string = str;
+        outputData->type = kTypeString;
+        return kESErrOK;
+
+    }
+    // *******************************************************************************
+    EXPORT long pathGetNameWithoutExt(TaggedData* inputData, long inputDataCount, TaggedData* outputData)
+    {
+
+        if (inputDataCount != 1)
+        {
+            return kESErrBadArgumentList;
+        }
+        if (inputData[0].type != kTypeString)
+        {
+            return kESErrBadArgumentList;
+        }
+        if (strlen(inputData[0].data.string) <= 0) {
+            return kESErrBadArgumentList;
+        }
+
+        char* str = nullptr;
+
+        // 元文字列のポインター
+        char* moto = inputData[0].data.string;
+        
+        // ファイル名のスタート
+        const char* par = strrchr(moto, '\\');
+        if (par == NULL)
+        {
+            par = strrchr(inputData[0].data.string, '/');
+        }
+        if (par != NULL)
+        {
+            // 先頭の/の位置なので補正する
+            par++;
+
+        }
+        else {
+            //NULLならば親ディレクトリ文字列は無い
+            par = moto;
+            // この段階でparはNULLじゃなくなる
+        }
+        // 拡張子ののスタート
+        const char* ext = strrchr(par, '.');
+        //ab/aaa.tga
+        //0123456789
+        if (ext != NULL)
+        {
+            const auto len = ext - par;
+            str = (char*)malloc(len + 1);
+            memcpy(str, par, len);
+            str[len] = '\0';
+        }
+        else {
+            const auto len2 = strlen(par);
+            str = (char*)malloc(len2+1);
+            memcpy(str, par, len2);
+        }
 
         outputData->data.string = str;
         outputData->type = kTypeString;
