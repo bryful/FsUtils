@@ -7,7 +7,15 @@
 #pragma warning(disable : 4996) // Security warning about strcpy on win
 #define strdup _strdup
 #endif
+char* getNewBuffer(std::string s)
+{
+    char* buff = new char[1 + s.size()];
 
+    memset(buff, 0, s.size() + 1);
+    strcpy(buff, s.c_str());
+
+    return buff;
+}
 
 namespace {
     /// この拡張機能固有のエクスポート関数名定義
@@ -18,6 +26,11 @@ namespace {
         "pathGetName_s,"
         "pathGetNameWithoutExt_s,"
         "pathGetExt_s,"
+        "processAEList,"
+        "showWindow,"
+        "windowMax,"
+        "windowMin,"
+        "windowNormal,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -89,6 +102,7 @@ extern "C" {
     // *******************************************************************************
     EXPORT long clipboardGetText(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
         LPCTSTR ls = GetTextClipboard();
+
         outputData->data.string = (char *)ls;
         outputData->type = kTypeString;
  
@@ -112,18 +126,7 @@ extern "C" {
         }
 
         char* str = nullptr;
-        /*
-        const char* ext = strrchr(inputData[0].data.string, '.');
-        if (ext != NULL)
-        {
-            const auto length = strlen(ext) + 1;
-            str = (char*)malloc(length);
-            lstrcpy(str, ext);
 
-        }
-        else {
-            str = "\0";
-        }*/
         str = GetExt(inputData[0].data.string);
 
 
@@ -272,6 +275,50 @@ extern "C" {
         outputData->type = kTypeString;
         return kESErrOK;
 
+    }
+    // *******************************************************************************
+    EXPORT long processAEList(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        
+        
+        char* s = getNewBuffer(listupAEProcess(true));
+
+        outputData->type = kTypeScript;
+        outputData->data.string = s;
+
+        return kESErrOK;
+    }
+    // *******************************************************************************
+    EXPORT long showWindow(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount >= 2)
+        {
+            if ((inputData[0].type == kTypeInteger) && (inputData[1].type == kTypeInteger))
+            {
+                HWND hwnd = (HWND)(inputData[1].data.intval);
+                int idx = inputData[1].data.intval;
+                AEShowWindow(hwnd, idx);
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
+    }
+    // *******************************************************************************
+    EXPORT long windowMax(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        
+        AEShowWindow(3);
+        return kESErrOK;
+    }
+    // *******************************************************************************
+    EXPORT long windowMin(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        AEShowWindow(2);
+        return kESErrOK;
+    }
+    // *******************************************************************************
+    EXPORT long windowNormal(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        AEShowWindow(1);
+        return kESErrOK;
     }
 } // この拡張機能固有のエクスポート関数
 

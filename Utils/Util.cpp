@@ -12,7 +12,7 @@ BOOL SetTextClipboard(LPCTSTR lpString)
     lstrcpy(strMem, c);
     GlobalUnlock(hg);
 
-    if (SetClipboardData(CF_TEXT, hg) == false)
+    if (SetClipboardData(CF_TEXT, hg) != 0)
     {
 
     }
@@ -39,7 +39,92 @@ LPCTSTR GetTextClipboard()
 	}
     return strText;
 }
+
+std::wstring multi_to_wide_winapi(std::string const& src)
+{
+	auto const dest_size = ::MultiByteToWideChar(CP_ACP, 0U, src.data(), -1, nullptr, 0U);
+	std::vector<wchar_t> dest(dest_size, L'\0');
+	if (::MultiByteToWideChar(CP_ACP, 0U, src.data(), -1, dest.data(), dest.size()) == 0) {
+		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
+	}
+	dest.resize(std::char_traits<wchar_t>::length(dest.data()));
+	dest.shrink_to_fit();
+	return std::wstring(dest.begin(), dest.end());
+}
+std::string wide_to_multi_winapi(std::wstring const& src)
+{
+	auto const dest_size = ::WideCharToMultiByte(CP_ACP, 0U, src.data(), -1, nullptr, 0, nullptr, nullptr);
+	std::vector<char> dest(dest_size, '\0');
+	if (::WideCharToMultiByte(CP_ACP, 0U, src.data(), -1, dest.data(), dest.size(), nullptr, nullptr) == 0) {
+		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
+	}
+	dest.resize(std::char_traits<char>::length(dest.data()));
+	dest.shrink_to_fit();
+	return std::string(dest.begin(), dest.end());
+}
+std::wstring utf8_to_wide_winapi(std::string const& src)
+{
+	auto const dest_size = ::MultiByteToWideChar(CP_UTF8, 0U, src.data(), -1, nullptr, 0U);
+	std::vector<wchar_t> dest(dest_size, L'\0');
+	if (::MultiByteToWideChar(CP_UTF8, 0U, src.data(), -1, dest.data(), dest.size()) == 0) {
+		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
+	}
+	dest.resize(std::char_traits<wchar_t>::length(dest.data()));
+	dest.shrink_to_fit();
+	return std::wstring(dest.begin(), dest.end());
+}
+std::string wide_to_utf8_winapi(std::wstring const& src)
+{
+	auto const dest_size = ::WideCharToMultiByte(CP_UTF8, 0U, src.data(), -1, nullptr, 0, nullptr, nullptr);
+	std::vector<char> dest(dest_size, '\0');
+	if (::WideCharToMultiByte(CP_UTF8, 0U, src.data(), -1, dest.data(), dest.size(), nullptr, nullptr) == 0) {
+		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
+	}
+	dest.resize(std::char_traits<char>::length(dest.data()));
+	dest.shrink_to_fit();
+	return std::string(dest.begin(), dest.end());
+}
+std::string multi_to_utf8_winapi(std::string const& src)
+{
+	auto const wide = multi_to_wide_winapi(src);
+	return wide_to_utf8_winapi(wide);
+}
+std::string utf8_to_multi_winapi(std::string const& src)
+{
+	auto const wide = utf8_to_wide_winapi(src);
+	return wide_to_multi_winapi(wide);
+}
 // ******************************************************************
+BOOL ConvUtf8toSJis( BYTE* pSource, BYTE* pDist, int* pSize )
+{
+   *pSize = 0;
+ 
+   //UTF-8‚©‚çUTF-16‚Ö•ÏŠ·
+   const int nSize = ::MultiByteToWideChar( CP_UTF8, 0, (LPCSTR)pSource, -1, NULL, 0 );
+ 
+   BYTE* buffUtf16 = new BYTE[ nSize * 2 + 2 ];
+   ::MultiByteToWideChar( CP_UTF8, 0, (LPCSTR)pSource, -1, (LPWSTR)buffUtf16, nSize );
+ 
+   //UTF-16‚©‚çShift-JIS‚Ö•ÏŠ·
+   const int nSizeSJis = ::WideCharToMultiByte( CP_ACP, 0, (LPCWSTR)buffUtf16, -1, NULL, 0, NULL, NULL );
+   if( !pDist ){
+       *pSize = nSizeSJis;
+       delete buffUtf16;
+       return TRUE;
+   }
+ 
+   BYTE* buffSJis = new BYTE[ nSizeSJis * 2 ];
+   ZeroMemory( buffSJis, nSizeSJis * 2 );
+   ::WideCharToMultiByte( CP_ACP, 0, (LPCWSTR)buffUtf16, -1, (LPSTR)buffSJis, nSizeSJis, NULL, NULL );
+ 
+   *pSize = lstrlen( (char*)buffSJis );
+   memcpy( pDist, buffSJis, *pSize );
+ 
+   delete buffUtf16;
+   delete buffSJis;
+ 
+   return TRUE;
+}
 LPTSTR SjisToUTF8(LPTSTR srcSjis)
 {
 	//Unicode‚Ö•ÏŠ·Œã‚Ì•¶Žš—ñ’·‚ð“¾‚é
@@ -112,9 +197,9 @@ char* GetExt(char* str)
 	}
 	return ret;
 }
-char* GetName(char* str)
+LPTSTR  GetName(LPTSTR  str)
 {
-	char* ret = "\0";
+	LPTSTR  ret = "\0";
 	if (lstrlen(str) <= 0)
 	{
 		return ret;
