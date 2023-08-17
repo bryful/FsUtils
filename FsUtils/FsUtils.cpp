@@ -112,6 +112,7 @@ extern "C" {
         }
 
         char* str = nullptr;
+        /*
         const char* ext = strrchr(inputData[0].data.string, '.');
         if (ext != NULL)
         {
@@ -122,7 +123,8 @@ extern "C" {
         }
         else {
             str = "\0";
-        }
+        }*/
+        str = GetExt(inputData[0].data.string);
 
 
         outputData->data.string = str;
@@ -145,7 +147,7 @@ extern "C" {
         if (strlen(inputData[0].data.string) <= 0) {
             return kESErrBadArgumentList;
         }
-
+        /*
         char* str = nullptr;
         const char* par = strrchr(inputData[0].data.string, '\\');
         if (par == NULL)
@@ -162,8 +164,8 @@ extern "C" {
         else {
             str = "\0";
         }
-
-
+        */
+        char* str = GetName(inputData[0].data.string);
         outputData->data.string = str;
         outputData->type = kTypeString;
         return kESErrOK;
@@ -184,6 +186,7 @@ extern "C" {
         if (strlen(inputData[0].data.string) <= 0) {
             return kESErrBadArgumentList;
         }
+        /*
         char* moto = inputData[0].data.string;
         char* str = nullptr;
         const char* par = strrchr(moto, '\\');
@@ -202,8 +205,8 @@ extern "C" {
         else {
             str = "\0";
         }
-
-
+        */
+        char* str = GetParent(inputData[0].data.string);
         outputData->data.string = str;
         outputData->type = kTypeString;
         return kESErrOK;
@@ -224,7 +227,7 @@ extern "C" {
         if (strlen(inputData[0].data.string) <= 0) {
             return kESErrBadArgumentList;
         }
-
+        /*
         char* str = nullptr;
 
         // 元文字列のポインター
@@ -263,7 +266,8 @@ extern "C" {
             str = (char*)malloc(len2+1);
             memcpy(str, par, len2);
         }
-
+        */
+        char* str = GetNameWithoutExt(inputData[0].data.string);
         outputData->data.string = str;
         outputData->type = kTypeString;
         return kESErrOK;

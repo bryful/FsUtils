@@ -1,11 +1,13 @@
 #pragma once
-#include "./include/SoSharedLibDefs.h"
-#include "./Utils/Util.h"
+#include "../include/SoSharedLibDefs.h"
+#include "../Utils/Util.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
 #include <atlstr.h>
 
+#ifndef UNICODE
+#endif
 
 /*
 Create definitions to auto-export the functions in this DLL.

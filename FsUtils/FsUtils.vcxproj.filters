@@ -11,21 +11,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include=".\FsUtils.cpp">
+    <ClCompile Include="FsUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Util.cpp">
+    <ClCompile Include="..\Utils\Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include=".\include\SoSharedLibDefs.h">
+    <ClInclude Include="..\include\SoSharedLibDefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FsUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Util.h">
+    <ClInclude Include="..\Utils\Util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

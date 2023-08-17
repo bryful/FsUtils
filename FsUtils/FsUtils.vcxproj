@@ -19,15 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include=".\include\SoSharedLibDefs.h" />
+    <ClInclude Include="..\include\SoSharedLibDefs.h" />
     <ClInclude Include="FsUtils.h" />
-    <ClInclude Include="Utils\Util.h">
+    <ClInclude Include="..\Utils\Util.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include=".\FsUtils.cpp" />
-    <ClCompile Include="Utils\Util.cpp">
+    <ClCompile Include="FsUtils.cpp" />
+    <ClCompile Include="..\Utils\Util.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
@@ -101,10 +101,13 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\dll\</OutDir>
+    <OutDir>$(Platform)\$(Configuration)\dll\</OutDir>
+    <ManagedAssembly>false</ManagedAssembly>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\dll\</OutDir>
+    <OutDir>$(Platform)\$(Configuration)\dll\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
