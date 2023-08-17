@@ -1,10 +1,31 @@
 ﻿
-# FsUtils.dll "ExternalObject" 
- 
+# FsUtils.dll "ExternalObject"
+
 ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するものになります。<br>
 <br>
 今回プロセス関係が増えました。<br>
 すみません、c1.0.1はバグで動かなバージョンでした。
+
+## 忘れるな！自分に対しての覚え書き
+
+ESInitializeに渡す関数リストの各関数の引数指定の文字はSDKのSampleLib.cppを参照のこと<br>
+
+### 整数はuじゃなくてd
+
+```
+static char* signatures =
+	"setVersion_d,"			// setVersion (int)
+	"createObject_ss,"	    // createObject (string, string)
+	"createArray,"			// createArray()
+	"paramAny_a,"			// paramAny (any)
+	"paramString_s,"		// paramString (string)
+	"paramBool_b,"			// paramBool (bool)
+	"paramUInt32_u,"		// paramUInt (unsigned int)
+	"paramInt32_d,"			// paramInt (signed int)
+	"paramFloat64_f"		// paramFloat64 (double)
+	"built"					// built() -> string
+;
+```
 
 ## 使い方
 
