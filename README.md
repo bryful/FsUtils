@@ -4,6 +4,7 @@
 ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するものになります。<br>
 <br>
 今回プロセス関係が増えました。<br>
+すみません、c1.0.1はバグで動かなバージョンでした。
 
 ## 使い方
 
@@ -79,6 +80,9 @@ initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
 * windowMax()<br>起動しているAE全てを最大化します。
 * windowMin()<br>起動しているAE全てを最小化します。
 * windowNormal()<br>起動しているAE全てを通常化します。
+* getMousePos()<br>マウスの位置をオブジェクトで返します。
+* setMousePos(x,y)<br>マウスの位置を設定します。
+* beep()<br>ビープ音を鳴らします。
 
 processAEList()の返り値は配列です。toSource()すると以下の感じです。<br>
 

@@ -27,10 +27,13 @@ namespace {
         "pathGetNameWithoutExt_s,"
         "pathGetExt_s,"
         "processAEList,"
-        "showWindow,"
+        "showWindow_dd,"
         "windowMax,"
         "windowMin,"
         "windowNormal,"
+        "getMousePos,"
+        "setMousePos_dd,"
+        "beep_d,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -230,46 +233,7 @@ extern "C" {
         if (strlen(inputData[0].data.string) <= 0) {
             return kESErrBadArgumentList;
         }
-        /*
-        char* str = nullptr;
-
-        // 元文字列のポインター
-        char* moto = inputData[0].data.string;
-        
-        // ファイル名のスタート
-        const char* par = strrchr(moto, '\\');
-        if (par == NULL)
-        {
-            par = strrchr(inputData[0].data.string, '/');
-        }
-        if (par != NULL)
-        {
-            // 先頭の/の位置なので補正する
-            par++;
-
-        }
-        else {
-            //NULLならば親ディレクトリ文字列は無い
-            par = moto;
-            // この段階でparはNULLじゃなくなる
-        }
-        // 拡張子ののスタート
-        const char* ext = strrchr(par, '.');
-        //ab/aaa.tga
-        //0123456789
-        if (ext != NULL)
-        {
-            const auto len = ext - par;
-            str = (char*)malloc(len + 1);
-            memcpy(str, par, len);
-            str[len] = '\0';
-        }
-        else {
-            const auto len2 = strlen(par);
-            str = (char*)malloc(len2+1);
-            memcpy(str, par, len2);
-        }
-        */
+    
         char* str = GetNameWithoutExt(inputData[0].data.string);
         outputData->data.string = str;
         outputData->type = kTypeString;
@@ -294,7 +258,7 @@ extern "C" {
         {
             if ((inputData[0].type == kTypeInteger) && (inputData[1].type == kTypeInteger))
             {
-                HWND hwnd = (HWND)(inputData[1].data.intval);
+                HWND hwnd = (HWND)(inputData[0].data.intval);
                 int idx = inputData[1].data.intval;
                 AEShowWindow(hwnd, idx);
                 return kESErrOK;
@@ -318,6 +282,53 @@ extern "C" {
     EXPORT long windowNormal(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
         AEShowWindow(1);
+        return kESErrOK;
+    }
+    // *******************************************************************************
+    EXPORT long getMousePos(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        POINT pt = GetMousePos();
+        std::string ret = { 0 };
+
+        ret = "({x:" + std::to_string(pt.x);
+        ret += ",y:" + std::to_string(pt.y);
+        ret += "})";
+
+        outputData->type = kTypeScript;
+        outputData->data.string = getNewBuffer(ret);
+        return kESErrOK;
+    }
+    // *******************************************************************************
+    EXPORT long setMousePos(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount >= 2)
+        {
+            if ((inputData[0].type == kTypeInteger) && (inputData[1].type == kTypeInteger))
+            {
+                const int x = inputData[0].data.intval;
+                const int y = inputData[1].data.intval;
+                SetMousePos(x, y);
+                outputData->type = kTypeBool;
+                outputData->data.intval = true;
+                return kESErrOK;
+            }
+        }
+        outputData->type = kTypeBool;
+        outputData->data.intval = false;
+        return kESErrBadArgumentList;
+    }
+    // *******************************************************************************
+    EXPORT long beep(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        int v = 0;
+        if (inputDataCount >0)
+        {
+            if (inputData[0].type == kTypeInteger) 
+            {
+                v = inputData[0].data.intval;
+            }
+        }
+        BeepPlay(v);
         return kESErrOK;
     }
 } // この拡張機能固有のエクスポート関数

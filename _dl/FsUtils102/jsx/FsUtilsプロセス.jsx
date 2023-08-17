@@ -20,7 +20,10 @@ initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
 // スクリプトの実行場所ならこれ
 //initExtension("FsUtils.dll");
 
+fsU.beep(5);
+
 var list = fsU.processAEList();
+
 
 alert(File.decode(list[0].path) +"\r\n" + File.decode(list[0].title));
 fsU.windowMax();

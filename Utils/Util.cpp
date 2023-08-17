@@ -289,53 +289,37 @@ char* GetParent(char* str)
 	}
 	return ret;
 }
-/*
-char* AEProcessList()
+POINT GetMousePos()
 {
-	char* ret = "\0";
-	DWORD allProc[1024];
-	DWORD cbNeeded;
-	int nProc;
-	int i;
-	
-	// PID一覧を取得
-	if (!EnumProcesses(allProc, sizeof(allProc), &cbNeeded)) {
-		return "([])";
+	POINT ret;
+	ret.x = 0;
+	ret.y = 0;
+	if ((GetCursorPos(&ret) == 0))
+	{
+		ret.x = 0;
+		ret.y = 0;
 	}
-
-	nProc = cbNeeded / sizeof(DWORD);
-
-	for (i = 0; i < nProc; i++) {
-		TCHAR procName[MAX_PATH] = TEXT("<unknown>");
-
-		HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION |
-			PROCESS_VM_READ,
-			FALSE, allProc[i]);
-
-		// プロセス名を取得
-		if (NULL != hProcess) {
-			HMODULE hMod;
-			DWORD cbNeeded;
-
-			if (EnumProcessModules(hProcess, &hMod, sizeof(hMod),
-				&cbNeeded)) {
-				GetModuleBaseName(hProcess, hMod, procName,
-					sizeof(procName) / sizeof(TCHAR));
-			}
-		}
-		if (strcmp(procName, "AfterFX") == 0)
-		{
-			if (strlen(ret) == 0) ret = strcat(ret, ",");
-			char* line = "({";
-			char sss[20];
-			sprintf(sss, "({pid:%d,hdl:%d", allProc[i]);
-			line = strcat(line, sss);
-		}
-
-		// プロセス名とPIDを表示
-		_tprintf(TEXT("%s  (PID: %u)\n"), procName, allProc[i]);
-
-		CloseHandle(hProcess);
-	}
+	return ret;
 }
-*/
+void SetMousePos(int x, int y)
+{
+	SetCursorPos(x, y);
+}
+void  BeepPlay(int v)
+{
+	UINT ch = MB_OK;
+	switch (v)
+	{
+	case 1:ch = MB_OKCANCEL; break;
+	case 2:ch = MB_ABORTRETRYIGNORE; break;
+	case 3:ch = MB_YESNOCANCEL; break;
+	case 4:ch = MB_YESNO; break;
+	case 5:ch = MB_RETRYCANCEL; break;
+	case 6:ch = MB_CANCELTRYCONTINUE; break;
+	case 0:
+	default:
+		ch = MB_OK;
+		break;
+	}
+	MessageBeep(ch);
+}

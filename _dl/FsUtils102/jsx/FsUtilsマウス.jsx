@@ -17,13 +17,9 @@ function initExtension(extensionDir) {
 }
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
 initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
-// スクリプトの実行場所ならこれ
-//initExtension("FsUtils.dll");
 
-fsU.beep(5);
+var pt = fsU.getMousePos();
+alert(pt.toSource());
 
-var list = fsU.processAEList();
-
-
-alert(File.decode(list[0].path) +"\r\n" + File.decode(list[0].title));
-fsU.windowMax();
+alert("マウスを左上に移動します");
+alert(fsU.setMousePos(20,20));

@@ -29,6 +29,7 @@ LPCTSTR GetTextClipboard();
 // *********************************************************************************************
 LPTSTR SjisToUTF8(LPTSTR srcSjis);
 LPTSTR UTF8ToSjis(LPTSTR srcUTF8);
+
 std::string multi_to_utf8_winapi(std::string const& src);
 std::string utf8_to_multi_winapi(std::string const& src);
 
@@ -42,3 +43,6 @@ char* GetNameWithoutExt(char* str);
 char* GetExt(char* str);
 char* GetParent(char* str);
 
+POINT GetMousePos();
+void SetMousePos(int x, int y);
+void  BeepPlay(int v);

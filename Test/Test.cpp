@@ -13,8 +13,12 @@ int main(int argc, char* argv[])
     }
 
 
-    std::cout << listupAEProcess(isu);
+    //std::cout << listupAEProcess(isu);
     //std::cout << "Hello World!\n";
 
+    //POINT p = GetMousePos();
+    //std::cout << std::to_string(p.x)+"\n";
+    //std::cout << std::to_string(p.y) + "\n";
+    BeepPlay(argc-1);
 
 }
