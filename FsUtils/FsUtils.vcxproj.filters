@@ -14,10 +14,13 @@
     <ClCompile Include="FsUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\Util.cpp">
+    <ClCompile Include="..\Utils\FsUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\AEProcess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\FsFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -28,10 +31,13 @@
     <ClInclude Include="FsUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\Util.h">
+    <ClInclude Include="..\Utils\AEProcess.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\AEProcess.h">
+    <ClInclude Include="..\Utils\FsFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\FsUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,15 +21,15 @@
   <ItemGroup>
     <ClInclude Include="..\include\SoSharedLibDefs.h" />
     <ClInclude Include="..\Utils\AEProcess.h" />
+    <ClInclude Include="..\Utils\FsFile.h" />
+    <ClInclude Include="..\Utils\FsUtil.h" />
     <ClInclude Include="FsUtils.h" />
-    <ClInclude Include="..\Utils\Util.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utils\AEProcess.cpp" />
+    <ClCompile Include="..\Utils\FsFile.cpp" />
     <ClCompile Include="FsUtils.cpp" />
-    <ClCompile Include="..\Utils\Util.cpp">
+    <ClCompile Include="..\Utils\FsUtil.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
@@ -185,7 +185,7 @@
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

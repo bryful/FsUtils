@@ -7,15 +7,6 @@
 #pragma warning(disable : 4996) // Security warning about strcpy on win
 #define strdup _strdup
 #endif
-char* getNewBuffer(std::string s)
-{
-    char* buff = new char[1 + s.size()];
-
-    memset(buff, 0, s.size() + 1);
-    strcpy(buff, s.c_str());
-
-    return buff;
-}
 
 namespace {
     /// この拡張機能固有のエクスポート関数名定義
@@ -34,6 +25,8 @@ namespace {
         "getMousePos,"
         "setMousePos_dd,"
         "beep_d,"
+        "installedAE,"
+        "isInstalledESTK,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -287,12 +280,7 @@ extern "C" {
     // *******************************************************************************
     EXPORT long getMousePos(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
-        POINT pt = GetMousePos();
-        std::string ret = { 0 };
-
-        ret = "({x:" + std::to_string(pt.x);
-        ret += ",y:" + std::to_string(pt.y);
-        ret += "})";
+        std::string ret = GetMousePosString();
 
         outputData->type = kTypeScript;
         outputData->data.string = getNewBuffer(ret);
@@ -329,6 +317,26 @@ extern "C" {
             }
         }
         BeepPlay(v);
+        return kESErrOK;
+    }
+    // *******************************************************************************
+    EXPORT long installedAE(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+
+        char* ret = InstalledAFXAS();
+
+        outputData->type = kTypeScript;
+        outputData->data.string = ret;
+        return kESErrOK;
+    }
+    // *******************************************************************************
+    EXPORT long isInstalledESTK(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+
+       ;
+
+        outputData->type = kTypeBool;
+        outputData->data.intval = IsInstalledESTK();
         return kESErrOK;
     }
 } // この拡張機能固有のエクスポート関数

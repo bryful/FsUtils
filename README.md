@@ -4,28 +4,6 @@
 ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するものになります。<br>
 <br>
 今回プロセス関係が増えました。<br>
-すみません、c1.0.1はバグで動かなバージョンでした。
-
-## 忘れるな！自分に対しての覚え書き
-
-ESInitializeに渡す関数リストの各関数の引数指定の文字はSDKのSampleLib.cppを参照のこと<br>
-
-### 整数はuじゃなくてd
-
-```
-static char* signatures =
-	"setVersion_d,"			// setVersion (int)
-	"createObject_ss,"	    // createObject (string, string)
-	"createArray,"			// createArray()
-	"paramAny_a,"			// paramAny (any)
-	"paramString_s,"		// paramString (string)
-	"paramBool_b,"			// paramBool (bool)
-	"paramUInt32_u,"		// paramUInt (unsigned int)
-	"paramInt32_d,"			// paramInt (signed int)
-	"paramFloat64_f"		// paramFloat64 (double)
-	"built"					// built() -> string
-;
-```
 
 ## 使い方
 
@@ -104,6 +82,9 @@ initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
 * getMousePos()<br>マウスの位置をオブジェクトで返します。
 * setMousePos(x,y)<br>マウスの位置を設定します。
 * beep()<br>ビープ音を鳴らします。
+* installedAE()<br>インストールされているAfterFX.exeの実行ファイルパスの配列が変える。
+* isInstalledESTK()<br>Extend Script Tool Kit cc がインストールされているか(bool)
+
 
 processAEList()の返り値は配列です。toSource()すると以下の感じです。<br>
 
@@ -137,6 +118,29 @@ showWindow()はwin31apiを呼び出してるだけです。
 <b>nCmdShow</b>は1で通常、2で最小化、3で最大化です。その他もあります。
 [ShowWindow 関数](https://learn.microsoft.com/ja-jp/windows/win32/api/winuser/nf-winuser-showwindow)
 を参照してください。<br>
+
+## 忘れるな！自分に対しての覚え書き
+
+ESInitializeに渡す関数リストの各関数の引数指定の文字はSDKのSampleLib.cppを参照のこと<br>
+
+### 整数はuじゃなくてd
+
+```
+static char* signatures =
+	"setVersion_d,"			// setVersion (int)
+	"createObject_ss,"	    // createObject (string, string)
+	"createArray,"			// createArray()
+	"paramAny_a,"			// paramAny (any)
+	"paramString_s,"		// paramString (string)
+	"paramBool_b,"			// paramBool (bool)
+	"paramUInt32_u,"		// paramUInt (unsigned int)
+	"paramInt32_d,"			// paramInt (signed int)
+	"paramFloat64_f"		// paramFloat64 (double)
+	"built"					// built() -> string
+;
+```
+
+
 
 ## License
 

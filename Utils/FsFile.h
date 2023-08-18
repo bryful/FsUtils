@@ -2,6 +2,10 @@
 
 #define WINDOWS_IGNORE_PACKING_MISMATCH
 
+#pragma comment(lib, "Shlwapi.lib")
+
+#include "FsUtil.h"
+
 #include <vector>
 #include <windows.h>
 #include <winbase.h>
@@ -13,25 +17,22 @@
 #include <psapi.h>
 #include <tchar.h>
 #include <system_error>
+#include <Shlwapi.h>
+#include <iostream>
+
+
+// *********************************************************************************************
+std::vector< std::string> InstalledAFX();
+char* InstalledAFXAS();
+bool IsInstalledESTK();
 
 // *********************************************************************************************
 /*
-	クリップボード
+	ファイルパス文字の処理
 */
 // *********************************************************************************************
-BOOL SetTextClipboard(LPCTSTR lpString);
-LPCTSTR GetTextClipboard();
-
-// *********************************************************************************************
-/*
-	文字コードの変換
-*/
-// *********************************************************************************************
-LPTSTR SjisToUTF8(LPTSTR srcSjis);
-LPTSTR UTF8ToSjis(LPTSTR srcUTF8);
-
-std::string multi_to_utf8_winapi(std::string const& src);
-std::string utf8_to_multi_winapi(std::string const& src);
+bool ExistFile(const char* path);
+bool ExistDirectory(const char* path);
 
 // *********************************************************************************************
 /*
@@ -42,7 +43,4 @@ LPTSTR  GetName(LPTSTR  str);
 char* GetNameWithoutExt(char* str);
 char* GetExt(char* str);
 char* GetParent(char* str);
-
-POINT GetMousePos();
-void SetMousePos(int x, int y);
-void  BeepPlay(int v);
+char* CombinePath(char* s0, char* s1);

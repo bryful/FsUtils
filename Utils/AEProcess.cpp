@@ -67,7 +67,7 @@ BOOL CALLBACK EnumWindowsAEProc(HWND hWnd, LPARAM lParam)
 
 	*lpCount += 1;                                      // カウントの加算
 	GetWindowText(hWnd, szTitle, sizeof(szTitle));    // キャプションの取得
-	int idx = -1;
+	size_t idx = -1;
 	std::string s = std::string(szTitle);
 	if (s.empty() == false) {
 		idx = s.find("Adobe After Effects");
@@ -265,17 +265,7 @@ ERR:
 }
 
 
-void ReplaceAll(std::string& stringreplace, const std::string& origin, const std::string& dest)
-{
-	size_t pos = 0;
-	size_t offset = 0;
-	size_t len = origin.length();
-	// 指定文字列が見つからなくなるまでループする
-	while ((pos = stringreplace.find(origin, offset)) != std::string::npos) {
-		stringreplace.replace(pos, len, dest);
-		offset = pos + dest.length();
-	}
-}
+
 std::string BoolToString(BOOL b)
 {
 	if (b) {
@@ -307,7 +297,7 @@ std::string PCellToString(PCell p)
 {
 	std::string str;
 
-	str = "hWND:" + std::to_string((WORD)p.hWnd);
+	str = "hWND:" + std::to_string((long)p.hWnd);
 	str += ",";
 	str += "processID:" + std::to_string(p.Pid);
 	str += ",";
@@ -327,7 +317,7 @@ std::string PCellToString(PCell p)
 	return str;
 }
 
-
+/*
 int listup(void)
 {
 	pCell.clear();
@@ -344,22 +334,8 @@ int listup(void)
 	}
 	return 0;
 }
+*/
 
-int listupAE(BOOL IsUTF8)
-{
-	std::vector<PCell> list = AEProcessList(IsUTF8);
-	if (list.size() > 0)
-	{
-		for (int i = 0; i < list.size(); i++)
-		{
-			std::cout << PCellToString(list[i]);
-			std::cout << "\n";
-		}
-
-	}
-
-	return 0;
-}
 
 std::vector<PCell> AEProcessList(BOOL IsUTF8)
 {

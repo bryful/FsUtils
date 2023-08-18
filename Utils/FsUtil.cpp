@@ -1,5 +1,28 @@
-#include "Util.h"
+#include "FsUtil.h"
 
+// ******************************************************************
+char* getNewBuffer(std::string s)
+{
+	char* buff = new char[1 + s.size()];
+
+	memset(buff, 0, s.size() + 1);
+	strcpy(buff, s.c_str());
+
+	return buff;
+}
+
+// ******************************************************************
+void ReplaceAll(std::string& stringreplace, const std::string& origin, const std::string& dest)
+{
+	size_t pos = 0;
+	size_t offset = 0;
+	size_t len = origin.length();
+	// 指定文字列が見つからなくなるまでループする
+	while ((pos = stringreplace.find(origin, offset)) != std::string::npos) {
+		stringreplace.replace(pos, len, dest);
+		offset = pos + dest.length();
+	}
+}
 // ******************************************************************
 BOOL SetTextClipboard(LPCTSTR lpString)
 {
@@ -44,7 +67,7 @@ std::wstring multi_to_wide_winapi(std::string const& src)
 {
 	auto const dest_size = ::MultiByteToWideChar(CP_ACP, 0U, src.data(), -1, nullptr, 0U);
 	std::vector<wchar_t> dest(dest_size, L'\0');
-	if (::MultiByteToWideChar(CP_ACP, 0U, src.data(), -1, dest.data(), dest.size()) == 0) {
+	if (::MultiByteToWideChar(CP_ACP, 0U, src.data(), -1, dest.data(), (int)dest.size()) == 0) {
 		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
 	}
 	dest.resize(std::char_traits<wchar_t>::length(dest.data()));
@@ -55,7 +78,7 @@ std::string wide_to_multi_winapi(std::wstring const& src)
 {
 	auto const dest_size = ::WideCharToMultiByte(CP_ACP, 0U, src.data(), -1, nullptr, 0, nullptr, nullptr);
 	std::vector<char> dest(dest_size, '\0');
-	if (::WideCharToMultiByte(CP_ACP, 0U, src.data(), -1, dest.data(), dest.size(), nullptr, nullptr) == 0) {
+	if (::WideCharToMultiByte(CP_ACP, 0U, src.data(), -1, dest.data(), (int)dest.size(), nullptr, nullptr) == 0) {
 		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
 	}
 	dest.resize(std::char_traits<char>::length(dest.data()));
@@ -66,7 +89,7 @@ std::wstring utf8_to_wide_winapi(std::string const& src)
 {
 	auto const dest_size = ::MultiByteToWideChar(CP_UTF8, 0U, src.data(), -1, nullptr, 0U);
 	std::vector<wchar_t> dest(dest_size, L'\0');
-	if (::MultiByteToWideChar(CP_UTF8, 0U, src.data(), -1, dest.data(), dest.size()) == 0) {
+	if (::MultiByteToWideChar(CP_UTF8, 0U, src.data(), -1, dest.data(), (int)dest.size()) == 0) {
 		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
 	}
 	dest.resize(std::char_traits<wchar_t>::length(dest.data()));
@@ -77,7 +100,7 @@ std::string wide_to_utf8_winapi(std::wstring const& src)
 {
 	auto const dest_size = ::WideCharToMultiByte(CP_UTF8, 0U, src.data(), -1, nullptr, 0, nullptr, nullptr);
 	std::vector<char> dest(dest_size, '\0');
-	if (::WideCharToMultiByte(CP_UTF8, 0U, src.data(), -1, dest.data(), dest.size(), nullptr, nullptr) == 0) {
+	if (::WideCharToMultiByte(CP_UTF8, 0U, src.data(), -1, dest.data(), (int)dest.size(), nullptr, nullptr) == 0) {
 		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
 	}
 	dest.resize(std::char_traits<char>::length(dest.data()));
@@ -179,95 +202,6 @@ LPTSTR UTF8ToSjis(LPTSTR srcUTF8)
 	return (LPTSTR)bufShiftJis;
 }
 // ******************************************************************
-char* GetExt(char* str)
-{
-	char* ret = "\0";
-	if (lstrlen(str) <= 0)
-	{
-		return ret;
-	}
-
-	const char* ext = strrchr(str, '.');
-	if (ext != NULL)
-	{
-		const auto length = strlen(ext) + 1;
-		ret = (char*)malloc(length);
-		//ret = dynamic_cast<char*>(malloc(length));
-		lstrcpy(ret, ext);
-	}
-	return ret;
-}
-LPTSTR  GetName(LPTSTR  str)
-{
-	LPTSTR  ret = "\0";
-	if (lstrlen(str) <= 0)
-	{
-		return ret;
-	}
-	const char* par = strrchr(str, '\\');
-	if (par == NULL)
-	{
-		par = strrchr(str, '/');
-	}
-	if (par != NULL)
-	{
-		par++;
-	}
-	else {
-		par = str;
-	}
-	const auto length = strlen(str) + 1;
-	ret = (char*)malloc(length);
-	lstrcpy(ret, par);
-	return ret;
-}
-char* GetNameWithoutExt(char* str)
-{
-	char* ret = "\0";
-	if (lstrlen(str) <= 0)
-	{
-		return ret;
-	}
-	// 元文字列のポインター
-	char* moto = str;
-
-	// ファイル名のスタート
-	const char* par = strrchr(moto, '\\');
-	if (par == NULL)
-	{
-		par = strrchr(moto, '/');
-	}
-	if (par != NULL)
-	{
-		// 先頭の/の位置なので補正する
-		par++;
-
-	}
-	else {
-		//NULLならば親ディレクトリ文字列は無い
-		par = moto;
-		// この段階でparはNULLじゃなくなる
-	}
-	// 拡張子ののスタート
-	const char* ext = strrchr(par, '.');
-	//ab/aaa.tga
-	//0123456789
-	if (ext != NULL)
-	{
-		const auto len = ext - par;
-		ret = (char*)malloc(len + 1);
-		memcpy(ret, par, len);
-		ret[len] = '\0';
-	}
-	else {
-		const auto len2 = strlen(par);
-		ret = (char*)malloc(len2 + 1);
-		memcpy(ret, par, len2);
-	}
-
-	return ret;
-}
-
 
 char* GetParent(char* str)
 {
@@ -299,6 +233,17 @@ POINT GetMousePos()
 		ret.x = 0;
 		ret.y = 0;
 	}
+	return ret;
+}
+std::string GetMousePosString()
+{
+	std::string ret;
+	POINT  p = GetMousePos();
+	ret = "({x:";
+	ret += std::to_string(p.x);
+	ret += ",y:";
+	ret += std::to_string(p.y);
+	ret += "})";
 	return ret;
 }
 void SetMousePos(int x, int y)

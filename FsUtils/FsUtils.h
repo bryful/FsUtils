@@ -1,6 +1,7 @@
 #pragma once
 #include "../include/SoSharedLibDefs.h"
-#include "../Utils/Util.h"
+#include "../Utils/FsUtil.h"
+#include "../Utils/FsFile.h"
 #include "../Utils/AEProcess.h"
 #include <stdlib.h>
 #include <stdio.h>

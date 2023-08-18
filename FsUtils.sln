@@ -6,7 +6,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FsUtils", "FsUtils\FsUtils.
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "FsUtils_Setup", "FsUtils_Setup\FsUtils_Setup.vdproj", "{74F6A7E9-1336-4C6D-BE6E-A687423CA6D3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcxproj", "{CCE44642-8E5C-43F1-BD07-DF83CEF90556}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FsUtilsCmd", "FsUtilsCmd\FsUtilsCmd.vcxproj", "{CCE44642-8E5C-43F1-BD07-DF83CEF90556}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

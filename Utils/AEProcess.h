@@ -17,7 +17,7 @@
 #include <system_error>
 #include <winuser.h>
 
-#include "Util.h"
+#include "FsUtil.h"
 
 #ifndef AEFX_CLR_STRUCT
 #define AEFX_CLR_STRUCT(STRUCT) memset(&(STRUCT), 0, sizeof(STRUCT));
@@ -40,7 +40,6 @@ int encode_uri(char* const src, char** dest);
 int decode_uri(char* const src, char** dest);
 
 int listup(void);
-int listupAE(BOOL IsUTF8);
 std::vector<PCell> AEProcessList(BOOL IsUTF8);
 std::string listupAEProcess(BOOL IsUTF8);
 void AEShowWindow(int idx);
