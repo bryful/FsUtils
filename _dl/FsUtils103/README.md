@@ -67,6 +67,8 @@ initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
 
 ```
 
+jsxフォルダ内にあるスクリプトを参考にしてください。
+
 
 ## コマンド
 
@@ -94,7 +96,7 @@ initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
 * isInstalledESTK()<br>Extend Script Tool Kit cc がインストールされているか(bool)
 * aeplaysound(num)<br>AEのリソースにあるWavファイルを再生します。
 * playSound(path)<br>wavファイルを再生します。パスはWindows形式で
-*
+
 
 
 processAEList()の返り値は配列です。toSource()すると以下の感じです。<br>
@@ -156,6 +158,9 @@ static char* signatures =
 ## License
 
 This software is released under the MIT License, see LICENSE<br>
+
+このプログラムの効果音は [効果音ラボ](https://soundeffect-lab.info/)
+ のさんのデータを使わせてもらっています。
 
 ## Authors
 
