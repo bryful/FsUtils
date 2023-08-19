@@ -1,6 +1,7 @@
 ﻿#include "..\Utils\FsUtil.h"
 #include "..\Utils\FsFile.h"
 #include "..\Utils\AEProcess.h"
+#include "..\Utils\FsProcess.h"
 
 #include <vector>
 #include <windows.h>
@@ -42,6 +43,9 @@ static void Usage(char *ex)
 	ret += "\t" + exe + " installedAE\r\n";
 	ret += "\t" + exe + " isInstalledESTK\r\n";
 	ret += "\t" + exe + " aePlaySound num\r\n";
+	ret += "\t" + exe + " PlaySound num\r\n";
+	ret += "\t" + exe + " callCommand args\r\n";
+	ret += "\t" + exe + " callCommandWait args\r\n";
 
 	//
 
@@ -239,6 +243,20 @@ static int Command(int argc, char* argv[])
 				ret = 1;
 			}
 		}
+		else if ((key == "callcommand") || (key == "callc"))
+		{
+			if (argc >= 3)
+			{
+				ret = CallCommand(argv[2]);
+			}
+		}
+		else if ((key == "callcommandwait") || (key == "callcw"))
+		{
+			if (argc >= 3)
+			{
+				ret = CallCommandWait(argv[2]);
+			}
+		}
 	}
 	return ret;
 }
@@ -251,9 +269,12 @@ int main(int argc, char* argv[])
 	{
 		Usage(argv[0]);
 	}
-	HINSTANCE hInst = GetModuleHandle("FsUtils.exe");
+	//HINSTANCE hInst = GetModuleHandle("FsUtils.exe");
 	//PlayResource(hInst, 52);
 	//PlayAESound(0);
-	SoundPlay("C:\\Windows\\Media\\Windows Logon.wav");
+	//SoundPlay("C:\\Windows\\Media\\Windows Logon.wav");
+	//CallCommand("C:\\Users\\bryfu\\Source\\Repos\\FsUtils\\ChkForm\\bin\\Release\\net6.0-windows\\publish\\ChkForm.exe");
+	//CallCommandWait("ChkForm.exe");
+
 	return ret;
 }

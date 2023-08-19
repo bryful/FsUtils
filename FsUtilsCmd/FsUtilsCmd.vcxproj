@@ -74,11 +74,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
-    <TargetName>FsUtils</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
-    <TargetName>FsUtils</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -153,12 +153,14 @@
   <ItemGroup>
     <ClCompile Include="..\Utils\AEProcess.cpp" />
     <ClCompile Include="..\Utils\FsFile.cpp" />
+    <ClCompile Include="..\Utils\FsProcess.cpp" />
     <ClCompile Include="..\Utils\FsUtil.cpp" />
     <ClCompile Include="FsUtilsCmd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Utils\AEProcess.h" />
     <ClInclude Include="..\Utils\FsFile.h" />
+    <ClInclude Include="..\Utils\FsProcess.h" />
     <ClInclude Include="..\Utils\FsUtil.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

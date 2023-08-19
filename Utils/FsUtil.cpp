@@ -10,6 +10,13 @@ char* getNewBuffer(std::string s)
 
 	return buff;
 }
+char* getNewBuffer(char* s)
+{
+	const auto length = strlen(s) + 1;
+	char* str = (char*)malloc(length);
+	lstrcpy(str, s);
+	return str;
+}
 
 // ******************************************************************
 void ReplaceAll(std::string& stringreplace, const std::string& origin, const std::string& dest)

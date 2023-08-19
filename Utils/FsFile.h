@@ -5,6 +5,7 @@
 #pragma comment(lib, "Shlwapi.lib")
 
 #include "FsUtil.h"
+#include "FsProcess.h"
 
 #include <vector>
 #include <windows.h>

@@ -22,6 +22,7 @@
     <ClInclude Include="..\include\SoSharedLibDefs.h" />
     <ClInclude Include="..\Utils\AEProcess.h" />
     <ClInclude Include="..\Utils\FsFile.h" />
+    <ClInclude Include="..\Utils\FsProcess.h" />
     <ClInclude Include="..\Utils\FsUtil.h" />
     <ClInclude Include="FsUtils.h" />
     <ClInclude Include="resource.h" />
@@ -29,6 +30,7 @@
   <ItemGroup>
     <ClCompile Include="..\Utils\AEProcess.cpp" />
     <ClCompile Include="..\Utils\FsFile.cpp" />
+    <ClCompile Include="..\Utils\FsProcess.cpp" />
     <ClCompile Include="FsUtils.cpp" />
     <ClCompile Include="..\Utils\FsUtil.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>

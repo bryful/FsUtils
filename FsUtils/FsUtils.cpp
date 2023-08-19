@@ -30,6 +30,8 @@ namespace {
         "isInstalledESTK,"
         "playAESound_d,"
         "playSound_s,"
+        "callCommand_s,"
+        "callCommandWait_s,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -381,6 +383,34 @@ extern "C" {
                 str = (char*)malloc(length);
                 lstrcpy(str, message);
                 SoundPlay(str);
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long callCommand(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                char* str = getNewBuffer(inputData[0].data.string);
+                outputData->type = kTypeInteger;
+                outputData->data.intval = CallCommand(str);
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long callCommandWait(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                char* str = getNewBuffer(inputData[0].data.string);
+                outputData->type = kTypeInteger;
+                outputData->data.intval = CallCommandWait(str);
                 return kESErrOK;
             }
         }

@@ -13,6 +13,12 @@
 "SccProvider" = "8:"
     "Hierarchy"
     {
+        "Entry"
+        {
+        "MsmKey" = "8:_C52AFC7296AC407E9C8ADF0152C6EABE"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -671,9 +677,37 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C52AFC7296AC407E9C8ADF0152C6EABE"
+            {
+            "SourcePath" = "8:..\\ChkForm\\obj\\Release\\net6.0-windows\\apphost.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_7FCF70061CEB4EA6A409F9FB7FC9687E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:Release|Any CPU"
+            "OutputGroupCanonicalName" = "8:PublishItemsOutputGroup"
+            "OutputProjectGuid" = "8:{7D8559C6-F42D-4415-9E02-0B05B6F5DA16}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CA74418CE9A242F0BFD7F8CE810FFC54"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\FsUtils\\x64\\Release\\dll\\FsUtils.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7FCF70061CEB4EA6A409F9FB7FC9687E"
@@ -701,7 +735,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D6B483FC4992433DAEF4FDD821E3B55E"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\FsUtilsCmd\\x64\\Release\\FsUtils.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7FCF70061CEB4EA6A409F9FB7FC9687E"

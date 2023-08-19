@@ -3,6 +3,7 @@
 #include "../Utils/FsUtil.h"
 #include "../Utils/FsFile.h"
 #include "../Utils/AEProcess.h"
+#include "../Utils/FsProcess.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>

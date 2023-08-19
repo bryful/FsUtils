@@ -4,6 +4,7 @@
 
 
 #include "FsFile.h"
+#include "FsProcess.h"
 #include <vector>
 #include <windows.h>
 #include <winbase.h>
@@ -20,6 +21,7 @@
 #pragma comment(lib, "winmm.lib")
 
 // *********************************************************************************************
+char* getNewBuffer(char * s);
 char* getNewBuffer(std::string s);
 
 // *********************************************************************************************
