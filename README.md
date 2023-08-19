@@ -159,6 +159,9 @@ static char* signatures =
 
 This software is released under the MIT License, see LICENSE<br>
 
+このプログラムの効果音は [効果音ラボ](https://soundeffect-lab.info/)
+ のさんのデータを使わせてもらっています。
+
 ## Authors
 
 bry-ful(Hiroshi Furuhashi)<br>
