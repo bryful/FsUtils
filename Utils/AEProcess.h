@@ -41,6 +41,8 @@ int decode_uri(char* const src, char** dest);
 
 int listup(void);
 std::vector<PCell> AEProcessList(BOOL IsUTF8);
+std::string ProcessList(bool IsUTF8,bool isLn);
+
 std::string listupAEProcess(BOOL IsUTF8);
 void AEShowWindow(int idx);
 void AEShowWindow(HWND hWnd, int idx);

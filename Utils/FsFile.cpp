@@ -41,6 +41,47 @@ std::string AEPath2[] = {
 };
 std::string AEPath3 = "\\Support Files\\AfterFX.exe";
 
+std::string snd0 = "\\Support Files\\sounds\\rnd_fail.wav";
+std::string snd1 = "\\Support Files\\sounds\\rnd_okay.wav";
+std::string snd2 = "\\Support Files\\sounds\\snap.wav";
+
+
+std::string ae_sound_fail()
+{
+	for (int i = 0; i < AEPath2->size(); i++)
+	{
+		std::string p = AEPath1 + AEPath2[i] + snd0;
+		if (ExistFile(p.c_str()) == true)
+		{
+			return p;
+		}
+	}
+	return { 0 };
+}
+std::string ae_sound_okay()
+{
+	for (int i = 0; i < AEPath2->size(); i++)
+	{
+		std::string p = AEPath1 + AEPath2[i] + snd1;
+		if (ExistFile(p.c_str()) == true)
+		{
+			return p;
+		}
+	}
+	return { 0 };
+}
+std::string ae_sound_snap()
+{
+	for (int i = 0; i < AEPath2->size(); i++)
+	{
+		std::string p = AEPath1 + AEPath2[i] + snd2;
+		if (ExistFile(p.c_str()) == true)
+		{
+			return p;
+		}
+	}
+	return { 0 };
+}
 
 std::vector< std::string> InstalledAFX()
 {

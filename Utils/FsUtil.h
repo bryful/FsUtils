@@ -2,6 +2,8 @@
 
 #define WINDOWS_IGNORE_PACKING_MISMATCH
 
+
+#include "FsFile.h"
 #include <vector>
 #include <windows.h>
 #include <winbase.h>
@@ -13,6 +15,9 @@
 #include <psapi.h>
 #include <tchar.h>
 #include <system_error>
+#include <mmsystem.h>
+
+#pragma comment(lib, "winmm.lib")
 
 // *********************************************************************************************
 char* getNewBuffer(std::string s);
@@ -43,3 +48,7 @@ POINT GetMousePos();
 std::string GetMousePosString();
 void SetMousePos(int x, int y);
 void  BeepPlay(int v);
+BOOL PlayResource(HANDLE hInst, int id);
+BOOL PlayWave(LPSTR lpName);
+void PlayAESound(int v);
+void SoundPlay(char* s);

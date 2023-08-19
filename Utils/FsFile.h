@@ -25,6 +25,9 @@
 std::vector< std::string> InstalledAFX();
 char* InstalledAFXAS();
 bool IsInstalledESTK();
+std::string ae_sound_fail();
+std::string ae_sound_okay();
+std::string ae_sound_snap();
 
 // *********************************************************************************************
 /*

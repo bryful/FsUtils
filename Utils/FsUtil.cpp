@@ -6,7 +6,7 @@ char* getNewBuffer(std::string s)
 	char* buff = new char[1 + s.size()];
 
 	memset(buff, 0, s.size() + 1);
-	strcpy(buff, s.c_str());
+	lstrcpy(buff, s.c_str());
 
 	return buff;
 }
@@ -267,4 +267,77 @@ void  BeepPlay(int v)
 		break;
 	}
 	MessageBeep(ch);
+}
+
+BOOL PlayResource(HANDLE hInst, int id)
+{
+
+	BOOL bRtn;
+	LPSTR lpRes;
+	HANDLE hResInfo, hRes;
+
+	// Find the WAVE resource. 
+
+	char NUM[20];
+	memset(NUM, '\0', 20);
+	 sprintf_s(NUM,20,"#%d", 100 + id);
+
+	hResInfo = FindResource((HMODULE)hInst, NUM, "WAVE");
+
+	if (hResInfo == NULL)
+		return FALSE;
+
+	// Load the WAVE resource. 
+
+	hRes = LoadResource((HMODULE)hInst, (HRSRC)hResInfo);
+	if (hRes == NULL)
+		return FALSE;
+
+	// Lock the WAVE resource and play it. 
+
+	lpRes = (LPSTR)LockResource(hRes);// 
+	if (lpRes != NULL) {
+		bRtn = sndPlaySound(lpRes, SND_MEMORY | SND_SYNC | SND_NODEFAULT);
+		//bRtn = PlaySound(lpRes, (HMODULE)hInst, SND_MEMORY | SND_ASYNC);
+
+		UnlockResource(hRes);
+	}
+	else
+		bRtn = 0;
+
+	// Free the WAVE resource and return success or failure. 
+
+	FreeResource(hRes);
+	return bRtn;
+}
+BOOL PlayWave(LPSTR lpName)
+{
+	BOOL bRtn;
+
+
+	bRtn = PlaySound(TEXT(lpName),  NULL, (SND_SYNC | SND_FILENAME| SND_NODEFAULT));
+	return bRtn;
+}
+
+void PlayAESound(int v)
+{
+
+	switch (v)
+	{
+	case 1:
+		PlayWave((LPSTR)(getNewBuffer( ae_sound_okay())));
+		break;
+	case 2:
+		PlayWave((LPSTR)(getNewBuffer(ae_sound_snap())));
+		break;
+	case 0:
+	default:
+		PlayWave((LPSTR)(getNewBuffer(ae_sound_fail())));
+		break;
+	}
+
+}
+void SoundPlay(char * s)
+{
+	PlayWave((LPSTR)s);
 }

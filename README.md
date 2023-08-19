@@ -3,7 +3,9 @@
 
 ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するものになります。<br>
 <br>
-今回プロセス関係が増えました。<br>
+音関係のコマンドが増えました。<br>
+<br>
+動作確認用のコマンドライン版(FsUtils.exe)も入れてあります。<br>
 
 ## 使い方
 
@@ -16,11 +18,17 @@ C:\Program Files\bry-ful\FsUtils\FsUtils.dll
 
 ```
 
+へコピーされます。<br>
+
 機能を増やしたら、必至dllが増えてしまいました。<br>
 今のところ以下のDLLが必要ですが、大体既にインストールされているはずですが。
 
+* api-ms-win-crt-convert-l1-1-0.dll
 * api-ms-win-crt-heap-l1-1-0.dll
+* api-ms-win-crt-locale-l1-1-0.dll
+* api-ms-win-crt-math-l1-1-0.dll
 * api-ms-win-crt-runtime-l1-1-0.dll
+* api-ms-win-crt-stdio-l1-1-0.dll
 * api-ms-win-crt-string-l1-1-0.dll
 * MSVCP140.dll
 * VCRUNTIME140.dll
@@ -29,7 +37,6 @@ C:\Program Files\bry-ful\FsUtils\FsUtils.dll
 DLL単独で違う場所・スクリプトと同じ場所等に移動させるときは上記のDLLも一緒に入れておくと安心です。
 
 
-へコピーされます。<br>
 
 実際のコーディングでは、ExternalObjectを作成してその引数にその場所を指定します。
 具体的には以下のコードを見てください。
@@ -60,6 +67,8 @@ initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
 
 ```
 
+jsxフォルダ内にあるスクリプトを参考にしてください。
+
 
 ## コマンド
 
@@ -75,15 +84,19 @@ initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
 * pathGetNameWithoutExt(path)<br>パス文字列から拡張子なしのファイル名を抜き出します。
 * pathGetExt(path)<br>パス文字列から拡張子を返します。
 * processAEList()<br>起動しているAEの情報が配列で返ります。
+* processList()<br>起動しているプロセスの情報が配列で返ります。
 * showWindow(hWnd,nCmdShow)<br>指定したウィンドウハンドルで。ウィンドウの表示方法を制御します。
 * windowMax()<br>起動しているAE全てを最大化します。
 * windowMin()<br>起動しているAE全てを最小化します。
 * windowNormal()<br>起動しているAE全てを通常化します。
 * getMousePos()<br>マウスの位置をオブジェクトで返します。
 * setMousePos(x,y)<br>マウスの位置を設定します。
-* beep()<br>ビープ音を鳴らします。
+* beep()<br>ビープ音を鳴らします。 1-52の値が指定できます。
 * installedAE()<br>インストールされているAfterFX.exeの実行ファイルパスの配列が変える。
 * isInstalledESTK()<br>Extend Script Tool Kit cc がインストールされているか(bool)
+* aeplaysound(num)<br>AEのリソースにあるWavファイルを再生します。
+* playSound(path)<br>wavファイルを再生します。パスはWindows形式で
+
 
 
 processAEList()の返り値は配列です。toSource()すると以下の感じです。<br>

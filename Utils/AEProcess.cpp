@@ -14,15 +14,20 @@ BOOL m_IsUtf8 = true;
 BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam)
 {
 	TCHAR   szTitle[1024];
+	memset(szTitle, '\0', 1024);
 	INT* lpCount = (INT*)lParam;
 	DWORD	processId;
 	TCHAR	processName[MAX_PATH];
+	memset(processName, '\0', MAX_PATH);
 	TCHAR   szFile[1024] = { 0 };
+	memset(szFile, '\0', 1024);
 	HMODULE Module[1024] = { 0 };
 	DWORD	dwSize;
 
 	*lpCount += 1;                                      // カウントの加算
 	GetWindowText(hWnd, szTitle, sizeof(szTitle));    // キャプションの取得
+	//タイトル無かったら辞める
+	if (strlen(szTitle)<=0) return TRUE;
 	GetWindowThreadProcessId(hWnd, &processId);
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
 	if (NULL != hProcess) {
@@ -33,6 +38,8 @@ BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam)
 		}
 		// プロセスハンドルのクローズ
 		CloseHandle(hProcess);
+		//プロセス名がなかったらおわる
+		if (strlen(processName) <= 0) return TRUE;
 	}
 
 
@@ -317,24 +324,30 @@ std::string PCellToString(PCell p)
 	return str;
 }
 
-/*
-int listup(void)
+std::string ProcessList(bool IsUTF8, bool isLn)
 {
+	m_IsUtf8 = IsUTF8;
 	pCell.clear();
 	INT nCount = 0;
+	std::string ret;
 	// 全ウインドウの列挙
 	EnumWindows(EnumWindowsProc, (LPARAM)&nCount);
 	if (pCell.size() > 0)
 	{
 		for (int i = 0; i < pCell.size(); i++)
 		{
-			std::cout << PCellToString(pCell[i]);
-			std::cout << "\n";
+			std::string s = PCellToString(pCell[i]);
+			if (ret.empty() == false) 
+			{
+				ret += ",";
+				if (isLn) ret += "\n";
+			}
+			ret += s;
 		}
+		ret = "[" + ret + "]";
 	}
-	return 0;
+	return ret;
 }
-*/
 
 
 std::vector<PCell> AEProcessList(BOOL IsUTF8)

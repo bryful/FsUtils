@@ -1,12 +1,21 @@
 ﻿#include "..\Utils\FsUtil.h"
 #include "..\Utils\FsFile.h"
 #include "..\Utils\AEProcess.h"
+
+#include <vector>
+#include <windows.h>
+#include <winbase.h>
+#include <winuser.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string>
+#include <atlstr.h>
+#include <psapi.h>
+#include <tchar.h>
+#include <system_error>
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
-#include <string>
-
-
 
 // *****************************************************************************************
 static void Usage(char *ex)
@@ -16,12 +25,13 @@ static void Usage(char *ex)
 	ret = "[" + exe + "] FsUtils.dll動作確認用コマンド\r\n";
 	ret += "\n";
 	ret += "\t" + exe + " getClip\r\n";
-	ret += "\t" + exe + " setClip '文字列'\r\n";
+	ret += "\t" + exe + " setClip string\r\n";
 	ret += "\t" + exe + " GetParent '文字列'\r\n";
 	ret += "\t" + exe + " GetName '文字列'\r\n";
 	ret += "\t" + exe + " GetNameWithoutExt '文字列'\r\n";
 	ret += "\t" + exe + " GetExt '文字列'\r\n";
 	ret += "\t" + exe + " processAEList\r\n";
+	ret += "\t" + exe + " processList\r\n";
 	ret += "\t" + exe + " showWindow  ウィンドウハンドル sw\r\n";
 	ret += "\t" + exe + " windowMax\r\n";
 	ret += "\t" + exe + " windowMin\r\n";
@@ -31,6 +41,9 @@ static void Usage(char *ex)
 	ret += "\t" + exe + " beep num\r\n";
 	ret += "\t" + exe + " installedAE\r\n";
 	ret += "\t" + exe + " isInstalledESTK\r\n";
+	ret += "\t" + exe + " aePlaySound num\r\n";
+
+	//
 
 
 
@@ -96,7 +109,7 @@ static int Command(int argc, char* argv[])
 				ret = 1;
 			}
 		}
-		else if ((key == "processaelist") || (key == "plist"))
+		else if ((key == "processaelist") || (key == "plist") || (key == "aps"))
 		{
 			if (argc >= 3) {
 				std::cout << listupAEProcess(false);
@@ -165,15 +178,19 @@ static int Command(int argc, char* argv[])
 		}
 		else if ((key == "beep") || (key == "bp"))
 		{
-			if (argc >= 2)
-			{
-				BeepPlay(0);
-				ret = 1;
-			}
-			else if (argc >= 3)
+			HINSTANCE hInst= NULL;
+			if (argc >= 2)hInst = GetModuleHandle("FsUtils.exe");
+			if (argc >= 3)
 			{
 				int v = atoi(argv[2]);
-				BeepPlay(v);
+				if (v < 1) v = 1;
+				else if (v > 52) v = 1;
+				PlayResource(hInst, v);
+				ret = 1;
+			}
+			else if (argc >= 2)
+			{
+				PlayResource(hInst, 1);
 				ret = 1;
 			}
 		}
@@ -191,6 +208,37 @@ static int Command(int argc, char* argv[])
 			std::cout << "\n";
 			ret = 1;
 		}
+		else if ((key == "processlist") || (key == "ps"))
+		{
+			std::string ss = ProcessList(false,true);
+			std::cout << ss;
+			std::cout << "\n";
+			ret = 1;
+		}
+		else if ((key == "aeplaysound") || (key == "apsnd"))
+		{
+			if (argc >= 3)
+			{
+				int v = atoi(argv[2]);
+				if (v < 0) v = 0;
+				else if (v > 2) v = 2;
+				PlayAESound(v);
+				ret = 1;
+			}
+			else if (argc >= 2)
+			{
+				PlayAESound(0);
+				ret = 1;
+			}
+		}
+		else if ((key == "playsound") || (key == "psnd"))
+		{
+			if (argc >= 3)
+			{
+				SoundPlay(argv[2]);
+				ret = 1;
+			}
+		}
 	}
 	return ret;
 }
@@ -203,6 +251,9 @@ int main(int argc, char* argv[])
 	{
 		Usage(argv[0]);
 	}
-
+	HINSTANCE hInst = GetModuleHandle("FsUtils.exe");
+	//PlayResource(hInst, 52);
+	//PlayAESound(0);
+	SoundPlay("C:\\Windows\\Media\\Windows Logon.wav");
 	return ret;
 }

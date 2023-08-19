@@ -17,6 +17,7 @@ namespace {
         "pathGetName_s,"
         "pathGetNameWithoutExt_s,"
         "pathGetExt_s,"
+        "processList,"
         "processAEList,"
         "showWindow_dd,"
         "windowMax,"
@@ -27,6 +28,8 @@ namespace {
         "beep_d,"
         "installedAE,"
         "isInstalledESTK,"
+        "playAESound_d,"
+        "playSound_s,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -245,6 +248,17 @@ extern "C" {
         return kESErrOK;
     }
     // *******************************************************************************
+    EXPORT long processList(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+
+        char* s = getNewBuffer(ProcessList(true,false));
+
+        outputData->type = kTypeScript;
+        outputData->data.string = s;
+
+        return kESErrOK;
+    }
+    // *******************************************************************************
     EXPORT long showWindow(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
         if (inputDataCount >= 2)
@@ -308,15 +322,18 @@ extern "C" {
     // *******************************************************************************
     EXPORT long beep(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
-        int v = 0;
+        int v = 1;
         if (inputDataCount >0)
         {
             if (inputData[0].type == kTypeInteger) 
             {
                 v = inputData[0].data.intval;
+                if (v < 1) v = 1;
+                else if (v > 52)v = 52;
             }
         }
-        BeepPlay(v);
+        HINSTANCE hInst = GetModuleHandle("FsUtils.dll");
+        PlayResource(hInst,v);
         return kESErrOK;
     }
     // *******************************************************************************
@@ -331,13 +348,43 @@ extern "C" {
     }
     // *******************************************************************************
     EXPORT long isInstalledESTK(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
-
-
-       ;
-
         outputData->type = kTypeBool;
         outputData->data.intval = IsInstalledESTK();
         return kESErrOK;
+    }
+    // *******************************************************************************
+    EXPORT long playAESound(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        int v = 0;
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeInteger)
+            {
+                v = inputData[0].data.intval;
+                if (v < 0) v = 0;
+                else if (v > 2)v = 2;
+            }
+        }
+        PlayAESound(v);
+        return kESErrOK;
+    }
+    // *******************************************************************************
+    EXPORT long playSound(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                char* str = nullptr;
+                const char* message = inputData[0].data.string;
+                const auto length = strlen(message) + 1;
+                str = (char*)malloc(length);
+                lstrcpy(str, message);
+                SoundPlay(str);
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
     }
 } // この拡張機能固有のエクスポート関数
 
