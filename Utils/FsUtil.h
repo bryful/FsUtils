@@ -18,6 +18,11 @@
 #include <system_error>
 #include <mmsystem.h>
 
+#include <iostream>
+#include <cstdlib>
+
+#include <algorithm>
+
 #pragma comment(lib, "winmm.lib")
 
 // *********************************************************************************************
@@ -54,3 +59,10 @@ BOOL PlayResource(HANDLE hInst, int id);
 BOOL PlayWave(LPSTR lpName);
 void PlayAESound(int v);
 void SoundPlay(char* s);
+
+bool IsModifierkey(char* key);
+bool IsModifierkey(int v);
+bool IsShiftKey();
+bool IsControlKey();
+bool IsAltKey();
+

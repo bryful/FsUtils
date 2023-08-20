@@ -17,6 +17,13 @@ char* getNewBuffer(char* s)
 	lstrcpy(str, s);
 	return str;
 }
+std::string getNewString(char* s)
+{
+	const auto length = strlen(s) + 1;
+	char* str = (char*)malloc(length);
+	lstrcpy(str, s);
+	return std::string(str);
+}
 
 // ******************************************************************
 void ReplaceAll(std::string& stringreplace, const std::string& origin, const std::string& dest)
@@ -347,4 +354,106 @@ void PlayAESound(int v)
 void SoundPlay(char * s)
 {
 	PlayWave((LPSTR)s);
+}
+
+// **********************************************************************************
+bool IsModifierkey(int v)
+{
+	if ((GetKeyState(v) & 0x8000) == 0x8000)
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+bool IsModifierkey(char * key)
+{
+	std::string k = getNewString(key);
+	if (k.empty() == true) return false;
+	transform(k.begin(), k.end(), k.begin(), tolower);
+
+	if (k.compare(std::string("lbutton")) == 0)
+	{
+		return IsModifierkey(VK_LBUTTON);
+	}
+	else if (k.compare(std::string("rbutton")) == 0)
+	{
+		return IsModifierkey(VK_RBUTTON);
+	}
+	else if (k.compare(std::string("mbutton")) == 0)
+	{
+		return IsModifierkey(VK_MBUTTON);
+	}
+	else if (k.compare(std::string("back")) == 0)
+	{
+		return IsModifierkey(VK_BACK);
+	}
+	else if (k.compare(std::string("tab")) == 0)
+	{
+		return IsModifierkey(VK_TAB);
+	}
+	else if (k.compare(std::string("help")) == 0)
+	{
+		return IsModifierkey(VK_HELP);
+	}
+	else if (k.compare(std::string("shift")) == 0)
+	{
+		return IsModifierkey(VK_SHIFT);
+	}
+	else if (k.compare(std::string("control")) == 0)
+	{
+		return IsModifierkey(VK_CONTROL);
+	}
+	else if (k.compare(std::string("alt")) == 0)
+	{
+		return IsModifierkey(VK_MENU);
+	}
+	else if (k.compare(std::string("escape")) == 0)
+	{
+		return IsModifierkey(VK_ESCAPE);
+	}
+	else if (k.compare(std::string("space")) == 0)
+	{
+		return IsModifierkey(VK_SPACE);
+	}
+	else if (k.compare(std::string("left")) == 0)
+	{
+		return IsModifierkey(VK_LEFT);
+	}
+	else if (k.compare(std::string("right")) == 0)
+	{
+		return IsModifierkey(VK_RIGHT);
+	}
+	else if (k.compare(std::string("up")) == 0)
+	{
+		return IsModifierkey(VK_UP);
+	}
+	else if (k.compare(std::string("down")) == 0)
+	{
+		return IsModifierkey(VK_DOWN);
+	}
+	else {
+		char c = k[0];
+		if (((c >= '0') && (c <= '9')) || ((c >= 'a') && (c <= 'z')))
+		{
+			return IsModifierkey((int)c);
+		}
+	}
+
+
+	return false;
+}
+
+bool IsShiftKey()
+{
+	return IsModifierkey(VK_SHIFT);
+}
+bool IsControlKey()
+{
+	return IsModifierkey(VK_CONTROL);
+}
+bool IsAltKey()
+{
+	return IsModifierkey(VK_MENU);
 }

@@ -21,7 +21,7 @@ C:\Program Files\bry-ful\FsUtils\FsUtils.dll
 へコピーされます。<br>
 
 機能を増やしたら、必至dllが増えてしまいました。<br>
-今のところ以下のDLLが必要ですが、大体既にインストールされているはずですが。
+今のところ以下のDLLが必要ですが、大体既にインストールされているはずなのでインストールは不要のはずです。
 
 * api-ms-win-crt-convert-l1-1-0.dll
 * api-ms-win-crt-heap-l1-1-0.dll
@@ -96,6 +96,10 @@ jsxフォルダ内にあるスクリプトを参考にしてください。
 * isInstalledESTK()<br>Extend Script Tool Kit cc がインストールされているか(bool)
 * aeplaysound(num)<br>AEのリソースにあるWavファイルを再生します。
 * playSound(path)<br>wavファイルを再生します。パスはWindows形式で
+* isModifierkey(str)<br>指定したキーが押されてたらtrueが返ります。
+* isShiftkey()<br>Shiftキーが押されていたらtrue
+* isControlkey()<br>Controlキーが押されていたらtrue
+* isAltkey()<br>Altキーが押されていたらtrue
 
 
 
@@ -131,6 +135,26 @@ showWindow()はwin31apiを呼び出してるだけです。
 <b>nCmdShow</b>は1で通常、2で最小化、3で最大化です。その他もあります。
 [ShowWindow 関数](https://learn.microsoft.com/ja-jp/windows/win32/api/winuser/nf-winuser-showwindow)
 を参照してください。<br>
+<br>
+
+isModifierkey(str)の引数には、
+
+* lbutton
+* rbutton
+* mbutton
+* back (Backspase)
+* tab
+* help
+* shift
+* control
+* alt
+* escape
+* space
+* left
+* right
+* up
+* down
+* 0-9 a-z
 
 ## 忘れるな！自分に対しての覚え書き
 

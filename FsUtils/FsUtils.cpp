@@ -32,6 +32,10 @@ namespace {
         "playSound_s,"
         "callCommand_s,"
         "callCommandWait_s,"
+        "isModifierKey_s,"
+        "isShiftKey,"
+        "isControlKey,"
+        "isAltlKey,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -416,6 +420,40 @@ extern "C" {
         }
         return kESErrBadArgumentList;
     }
+    EXPORT long isModifierKey(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                char* str = getNewBuffer(inputData[0].data.string);
+
+                outputData->type = kTypeBool;
+                outputData->data.intval = IsModifierkey(str);
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long isShiftKey(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        outputData->type = kTypeBool;
+        outputData->data.intval = IsShiftKey();
+        return kESErrOK;
+    }
+    EXPORT long isControlKey(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        outputData->type = kTypeBool;
+        outputData->data.intval = IsControlKey();
+        return kESErrOK;
+    }
+    EXPORT long isAltKey(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        outputData->type = kTypeBool;
+        outputData->data.intval = IsAltKey();
+        return kESErrOK;
+    }
+    //
 } // この拡張機能固有のエクスポート関数
 
 #if defined (_WINDOWS)
