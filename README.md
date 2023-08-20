@@ -3,7 +3,7 @@
 
 ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するものになります。<br>
 <br>
-音関係のコマンドが増えました。<br>
+キー検出のコマンドが増えました<br>
 <br>
 動作確認用のコマンドライン版(FsUtils.exe)も入れてあります。<br>
 
