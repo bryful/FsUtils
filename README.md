@@ -94,7 +94,7 @@ jsxフォルダ内にあるスクリプトを参考にしてください。
 * beep()<br>ビープ音を鳴らします。 1-52の値が指定できます。
 * installedAE()<br>インストールされているAfterFX.exeの実行ファイルパスの配列が変える。
 * isInstalledESTK()<br>Extend Script Tool Kit cc がインストールされているか(bool)
-* aeplaysound(num)<br>AEのリソースにあるWavファイルを再生します。
+* aePlaySound(num)<br>AEのリソースにあるWavファイルを再生します。
 * playSound(path)<br>wavファイルを再生します。パスはWindows形式で
 * isModifierkey(str)<br>指定したキーが押されてたらtrueが返ります。
 * isShiftkey()<br>Shiftキーが押されていたらtrue
