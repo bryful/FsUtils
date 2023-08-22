@@ -1,5 +1,6 @@
 #include "FsUtils.h"
-
+#include <stdlib.h>
+#include <stdio.h>
 //#define EXPORT __declspec(dllexport)
 
 #if defined (_WINDOWS)
@@ -32,10 +33,15 @@ namespace {
         "playSound_s,"
         "callCommand_s,"
         "callCommandWait_s,"
+        "callCommandGetResult_s,"
         "isModifierKey_s,"
         "isShiftKey,"
         "isControlKey,"
         "isAltlKey,"
+        "write_s,"
+        "writeLn_s,"
+        "writeCls,"
+        "testObj,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -420,6 +426,60 @@ extern "C" {
         }
         return kESErrBadArgumentList;
     }
+    EXPORT long callCommandGetResult(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        long err = kESErrBadArgumentList;
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                std::string cmd = std::string(inputData[0].data.string);
+                std::string ret;
+                outputData->type = kTypeString;
+                if (CallCommandGetResult(cmd, ret) == true)
+                {
+                    outputData->data.string = getNewBuffer(ret);
+                }
+                else {
+                    outputData->data.string = getNewBuffer("error");
+                }
+                err = kESErrOK;
+            }
+        }
+        return err;
+    }
+    /*
+    EXPORT long callCommandGetResult(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        long err = kESErrBadArgumentList;
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                char* str = getNewBuffer(inputData[0].data.string);
+                char* buf = new char(5120);
+                memset(buf, '\0', 5120);
+
+                if (CallCommandGetResult(str, buf, 5120) == 1)
+                {
+                    std::string stdOut = std::string(buf);
+                    outputData->type = kTypeString;
+                    ReplaceAll(stdOut, "\\", "\\\\");
+                    char* ret = ShiftJistoUtf8((char *)stdOut.c_str());
+                    outputData->data.string = getNewBuffer("ABAAA");
+                }
+                else {
+                    outputData->type = kTypeString;
+                    char* ret = "erroer";
+                    outputData->data.string = ret;
+                }
+                //delete buf;
+                err = kESErrOK;
+            }
+        }
+        return err;
+    }
+    */
     EXPORT long isModifierKey(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
         if (inputDataCount > 0)
@@ -452,6 +512,73 @@ extern "C" {
         outputData->type = kTypeBool;
         outputData->data.intval = IsAltKey();
         return kESErrOK;
+    }
+    EXPORT long write(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                std::string argv = inputData[0].data.string;
+                ReplaceAll(argv, "\\", "\\\\");
+                ReplaceAll(argv, "\r", "\\r");
+                ReplaceAll(argv, "\n", "\\n");
+                ReplaceAll(argv, "\t", "\\t");
+                
+                argv = std::string(Utf8toShiftJis((char*)argv.c_str()));
+
+                std::string parent = DllPath();
+
+                std::string cmd = "\"" + parent + "\\MsgBox.exe\"" +  " \"" + argv + "\"";
+
+                char* str = getNewBuffer(cmd.c_str());
+                CallCommand(str);
+                //outputData->type = kTypeString;
+                //outputData->data.string = str;
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long writeLn(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                std::string argv = inputData[0].data.string;
+                ReplaceAll(argv, "\\", "\\\\");
+                ReplaceAll(argv, "\r", "\\r");
+                ReplaceAll(argv, "\n", "\\n");
+                ReplaceAll(argv, "\t", "\\t");
+
+                argv = std::string(Utf8toShiftJis((char*)argv.c_str()));
+
+                std::string parent = DllPath();
+
+                std::string cmd = "\"" + parent + "\\MsgBox.exe\"" + " \"" + argv + "\\r\\n\"";
+
+                char* str = getNewBuffer(cmd.c_str());
+                CallCommand(str);
+                //outputData->type = kTypeString;
+                //outputData->data.string = str;
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long writeCls(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+                std::string parent = DllPath();
+
+                std::string cmd = "\"" + parent + "\\MsgBox.exe\" -cls";
+
+                char* str = getNewBuffer(cmd.c_str());
+                CallCommand(str);
+                //outputData->type = kTypeString;
+                //outputData->data.string = str;
+                return kESErrOK;
+        return kESErrBadArgumentList;
     }
     //
 } // この拡張機能固有のエクスポート関数

@@ -254,3 +254,17 @@ char* CombinePath(char* s0, char* s1)
 
 	return ret;
 }
+std::string DllPath()
+{
+	const size_t sz = 2048;
+	char szModulePath[sz];
+	HMODULE  hModule = GetModuleHandle("FsUtils.dll");
+	char  szModuleFileName[sz] = { 0 };
+	ZeroMemory(szModuleFileName, sz);
+	GetModuleFileName(hModule, szModuleFileName, sz);
+	std::string ret = std::string(szModuleFileName);
+	int path_i = ret.find_last_of("\\") + 1;
+	std::string pathname = ret.substr(0, path_i);
+
+	return pathname;
+}

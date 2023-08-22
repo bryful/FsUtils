@@ -30,6 +30,8 @@
 		{
 			listBox1 = new ListBox();
 			button1 = new Button();
+			button2 = new Button();
+			textBox1 = new TextBox();
 			SuspendLayout();
 			// 
 			// listBox1
@@ -50,22 +52,46 @@
 			button1.Text = "Close";
 			button1.UseVisualStyleBackColor = true;
 			// 
+			// button2
+			// 
+			button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+			button2.Location = new Point(345, 264);
+			button2.Name = "button2";
+			button2.Size = new Size(109, 23);
+			button2.TabIndex = 2;
+			button2.Text = "ConsoleWrite";
+			button2.UseVisualStyleBackColor = true;
+			button2.Click += button2_Click;
+			// 
+			// textBox1
+			// 
+			textBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			textBox1.Location = new Point(10, 264);
+			textBox1.Name = "textBox1";
+			textBox1.Size = new Size(328, 23);
+			textBox1.TabIndex = 3;
+			// 
 			// Form1
 			// 
 			AllowDrop = true;
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(578, 299);
+			Controls.Add(textBox1);
+			Controls.Add(button2);
 			Controls.Add(button1);
 			Controls.Add(listBox1);
 			Name = "Form1";
 			Text = "Form1";
 			ResumeLayout(false);
+			PerformLayout();
 		}
 
 		#endregion
 
 		private ListBox listBox1;
 		private Button button1;
+		private Button button2;
+		private TextBox textBox1;
 	}
 }

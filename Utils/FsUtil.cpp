@@ -4,7 +4,6 @@
 char* getNewBuffer(std::string s)
 {
 	char* buff = new char[1 + s.size()];
-
 	memset(buff, 0, s.size() + 1);
 	lstrcpy(buff, s.c_str());
 
@@ -13,17 +12,19 @@ char* getNewBuffer(std::string s)
 char* getNewBuffer(char* s)
 {
 	const auto length = strlen(s) + 1;
-	char* str = (char*)malloc(length);
+	char* str = new char[1 + strlen(s)];
 	lstrcpy(str, s);
 	return str;
 }
+/*
 std::string getNewString(char* s)
 {
 	const auto length = strlen(s) + 1;
-	char* str = (char*)malloc(length);
+	char* str = new char[1 + strlen(s)];
 	lstrcpy(str, s);
 	return std::string(str);
 }
+*/
 
 // ******************************************************************
 void ReplaceAll(std::string& stringreplace, const std::string& origin, const std::string& dest)
@@ -41,7 +42,7 @@ void ReplaceAll(std::string& stringreplace, const std::string& origin, const std
 BOOL SetTextClipboard(LPCTSTR lpString)
 {
     if (!OpenClipboard(NULL)) return false;
-	LPTSTR c = UTF8ToSjis((LPTSTR)lpString);
+	LPTSTR c = Utf8toShiftJis((LPTSTR)lpString);
 
     EmptyClipboard();
     HGLOBAL hg = GlobalAlloc(GHND | GMEM_SHARE, lstrlen(lpString)+1);
@@ -70,40 +71,33 @@ LPCTSTR GetTextClipboard()
         GlobalUnlock(hg);
         CloseClipboard();
 
-		strText = SjisToUTF8(strText);
-		//std::string cc = SjistoUTF8((std::string)strText);
-		//strText = (PTSTR)(cc.c_str());
+		strText = ShiftJistoUtf8(strText);
 	}
     return strText;
 }
 
-std::wstring multi_to_wide_winapi(std::string const& src)
+// ******************************************************************
+// ******************************************************************
+/*
+https://nekko1119.hatenablog.com/entry/2017/01/02/054629
+Visual C++における文字コード変換
+*/
+std::wstring utf8_to_wide_winapi(std::string const& src)
 {
-	auto const dest_size = ::MultiByteToWideChar(CP_ACP, 0U, src.data(), -1, nullptr, 0U);
+	auto const dest_size = ::MultiByteToWideChar(CP_UTF8, 0U, src.data(), -1, nullptr, 0U);
 	std::vector<wchar_t> dest(dest_size, L'\0');
-	if (::MultiByteToWideChar(CP_ACP, 0U, src.data(), -1, dest.data(), (int)dest.size()) == 0) {
+	if (::MultiByteToWideChar(CP_UTF8, 0U, src.data(), -1, dest.data(), dest.size()) == 0) {
 		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
 	}
 	dest.resize(std::char_traits<wchar_t>::length(dest.data()));
 	dest.shrink_to_fit();
 	return std::wstring(dest.begin(), dest.end());
 }
-std::string wide_to_multi_winapi(std::wstring const& src)
+std::wstring multi_to_wide_winapi(std::string const& src)
 {
-	auto const dest_size = ::WideCharToMultiByte(CP_ACP, 0U, src.data(), -1, nullptr, 0, nullptr, nullptr);
-	std::vector<char> dest(dest_size, '\0');
-	if (::WideCharToMultiByte(CP_ACP, 0U, src.data(), -1, dest.data(), (int)dest.size(), nullptr, nullptr) == 0) {
-		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
-	}
-	dest.resize(std::char_traits<char>::length(dest.data()));
-	dest.shrink_to_fit();
-	return std::string(dest.begin(), dest.end());
-}
-std::wstring utf8_to_wide_winapi(std::string const& src)
-{
-	auto const dest_size = ::MultiByteToWideChar(CP_UTF8, 0U, src.data(), -1, nullptr, 0U);
+	auto const dest_size = ::MultiByteToWideChar(CP_ACP, 0U, src.data(), -1, nullptr, 0U);
 	std::vector<wchar_t> dest(dest_size, L'\0');
-	if (::MultiByteToWideChar(CP_UTF8, 0U, src.data(), -1, dest.data(), (int)dest.size()) == 0) {
+	if (::MultiByteToWideChar(CP_ACP, 0U, src.data(), -1, dest.data(), dest.size()) == 0) {
 		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
 	}
 	dest.resize(std::char_traits<wchar_t>::length(dest.data()));
@@ -114,109 +108,135 @@ std::string wide_to_utf8_winapi(std::wstring const& src)
 {
 	auto const dest_size = ::WideCharToMultiByte(CP_UTF8, 0U, src.data(), -1, nullptr, 0, nullptr, nullptr);
 	std::vector<char> dest(dest_size, '\0');
-	if (::WideCharToMultiByte(CP_UTF8, 0U, src.data(), -1, dest.data(), (int)dest.size(), nullptr, nullptr) == 0) {
+	if (::WideCharToMultiByte(CP_UTF8, 0U, src.data(), -1, dest.data(), dest.size(), nullptr, nullptr) == 0) {
 		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
 	}
 	dest.resize(std::char_traits<char>::length(dest.data()));
 	dest.shrink_to_fit();
 	return std::string(dest.begin(), dest.end());
 }
+std::string wide_to_multi_winapi(std::wstring const& src)
+{
+	auto const dest_size = ::WideCharToMultiByte(CP_ACP, 0U, src.data(), -1, nullptr, 0, nullptr, nullptr);
+	std::vector<char> dest(dest_size, '\0');
+	if (::WideCharToMultiByte(CP_ACP, 0U, src.data(), -1, dest.data(), dest.size(), nullptr, nullptr) == 0) {
+		throw std::system_error{static_cast<int>(::GetLastError()), std::system_category()};
+	}
+	dest.resize(std::char_traits<char>::length(dest.data()));
+	dest.shrink_to_fit();
+	return std::string(dest.begin(), dest.end());
+}
+// ******************************************************************
 std::string multi_to_utf8_winapi(std::string const& src)
 {
 	auto const wide = multi_to_wide_winapi(src);
 	return wide_to_utf8_winapi(wide);
 }
+// ******************************************************************
 std::string utf8_to_multi_winapi(std::string const& src)
 {
 	auto const wide = utf8_to_wide_winapi(src);
 	return wide_to_multi_winapi(wide);
 }
 // ******************************************************************
-BOOL ConvUtf8toSJis( BYTE* pSource, BYTE* pDist, int* pSize )
+// ******************************************************************
+/*
+http://www.lab.its55.com/?p=32
+C++でShift-JISをUTF-8に変換する
+*/
+BOOL ConvSJistoUtf8(char* pSource, char* pDist, int* pSize)
 {
-   *pSize = 0;
- 
-   //UTF-8からUTF-16へ変換
-   const int nSize = ::MultiByteToWideChar( CP_UTF8, 0, (LPCSTR)pSource, -1, NULL, 0 );
- 
-   BYTE* buffUtf16 = new BYTE[ nSize * 2 + 2 ];
-   ::MultiByteToWideChar( CP_UTF8, 0, (LPCSTR)pSource, -1, (LPWSTR)buffUtf16, nSize );
- 
-   //UTF-16からShift-JISへ変換
-   const int nSizeSJis = ::WideCharToMultiByte( CP_ACP, 0, (LPCWSTR)buffUtf16, -1, NULL, 0, NULL, NULL );
-   if( !pDist ){
-       *pSize = nSizeSJis;
-       delete buffUtf16;
-       return TRUE;
-   }
- 
-   BYTE* buffSJis = new BYTE[ nSizeSJis * 2 ];
-   ZeroMemory( buffSJis, nSizeSJis * 2 );
-   ::WideCharToMultiByte( CP_ACP, 0, (LPCWSTR)buffUtf16, -1, (LPSTR)buffSJis, nSizeSJis, NULL, NULL );
- 
-   *pSize = lstrlen( (char*)buffSJis );
-   memcpy( pDist, buffSJis, *pSize );
- 
-   delete buffUtf16;
-   delete buffSJis;
- 
-   return TRUE;
+	*pSize = 0;
+
+	//ShiftJISからUTF-16へ変換
+	const int nSize = ::MultiByteToWideChar(CP_ACP, 0, (LPCSTR)
+		pSource, -1, NULL, 0);
+
+	char* buffUtf16 = new char[nSize * 2 + 2];
+	::MultiByteToWideChar(CP_ACP, 0, (LPCSTR)pSource, -1, (LPWSTR)
+		buffUtf16, nSize);
+
+	//UTF-16からShift-JISへ変換
+	const int nSizeUtf8 = ::WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)
+		buffUtf16, -1, NULL, 0, NULL, NULL);
+	if (!pDist) {
+		*pSize = nSizeUtf8;
+		delete buffUtf16;
+		return TRUE;
+	}
+
+	char* buffUtf8 = new char[nSizeUtf8 * 2];
+	ZeroMemory(buffUtf8, nSizeUtf8 * 2);
+	::WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)buffUtf16, -1, (LPSTR)
+		buffUtf8, nSizeUtf8, NULL, NULL);
+
+	*pSize = lstrlen((char*)buffUtf8);
+	memcpy(pDist, buffUtf8, *pSize);
+
+	delete buffUtf16;
+	delete buffUtf8;
+
+	return TRUE;
 }
-LPTSTR SjisToUTF8(LPTSTR srcSjis)
+char* ShiftJistoUtf8(char* src)
 {
-	//Unicodeへ変換後の文字列長を得る
-	int lenghtUnicode = MultiByteToWideChar(CP_THREAD_ACP, 0, srcSjis, lstrlen(srcSjis) + 1, NULL, 0);
-
-	//必要な分だけUnicode文字列のバッファを確保
-	wchar_t* bufUnicode = new wchar_t[lenghtUnicode];
-
-	//ShiftJISからUnicodeへ変換
-	MultiByteToWideChar(CP_THREAD_ACP, 0, srcSjis, lstrlen(srcSjis) + 1, bufUnicode, lenghtUnicode);
-
-
-	//UTF8へ変換後の文字列長を得る
-	int lengthUTF8 = WideCharToMultiByte(CP_UTF8, 0, bufUnicode, -1, NULL, 0, NULL, NULL);
-
-	//必要な分だけUTF8文字列のバッファを確保
-	char* bufUTF8 = new char[lengthUTF8];
-
-	//UnicodeからUTF8へ変換
-	WideCharToMultiByte(CP_UTF8, 0, bufUnicode, lenghtUnicode - 1, bufUTF8, lengthUTF8, NULL, NULL);
-
-	LPTSTR s = bufUTF8;
-
-	delete bufUnicode;
-
-	return s;
+	int nSize = 0;
+	ConvSJistoUtf8(src, NULL, &nSize);
+	char* dst = new char[nSize + 1];
+	ZeroMemory(dst, nSize + 1);
+	ConvSJistoUtf8(src, dst, &nSize);
+	return dst;
 }
-LPTSTR UTF8ToSjis(LPTSTR srcUTF8)
+// ******************************************************************
+/*
+http://www.lab.its55.com/?p=33
+C++でUTF-8をShift-JISに変換する
+*/
+
+BOOL ConvUtf8toSJis(char* pSource, char* pDist, int* pSize)
 {
-	//Unicodeへ変換後の文字列長を得る
-	int lenghtUnicode = MultiByteToWideChar(CP_UTF8, 0, srcUTF8, lstrlen(srcUTF8) + 1, NULL, 0);
+	*pSize = 0;
 
-	//必要な分だけUnicode文字列のバッファを確保
-	wchar_t* bufUnicode = new wchar_t[lenghtUnicode];
+	//UTF-8からUTF-16へ変換
+	const int nSize = ::MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)pSource, -1, NULL, 0);
 
-	//UTF8からUnicodeへ変換
-	MultiByteToWideChar(CP_UTF8, 0, srcUTF8, lstrlen(srcUTF8) + 1, bufUnicode, lenghtUnicode);
+	char* buffUtf16 = new char[nSize * 2 + 2];
+	::MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)pSource, -1, (LPWSTR)buffUtf16, nSize);
 
-	//ShiftJISへ変換後の文字列長を得る
-	int lengthSJis = WideCharToMultiByte(CP_THREAD_ACP, 0, bufUnicode, -1, NULL, 0, NULL, NULL);
+	//UTF-16からShift-JISへ変換
+	const int nSizeSJis = ::WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)buffUtf16, -1, NULL, 0, NULL, NULL);
+	if (!pDist) {
+		*pSize = nSizeSJis;
+		delete buffUtf16;
+		return TRUE;
+	}
 
-	//必要な分だけShiftJIS文字列のバッファを確保
-	char* bufShiftJis = new char[lengthSJis];
+	char* buffSJis = new char[nSizeSJis * 2];
+	ZeroMemory(buffSJis, nSizeSJis * 2);
+	::WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)buffUtf16, -1, (LPSTR)buffSJis, nSizeSJis, NULL, NULL);
 
-	//UnicodeからShiftJISへ変換
-	WideCharToMultiByte(CP_THREAD_ACP, 0, bufUnicode, lenghtUnicode + 1, bufShiftJis, lengthSJis, NULL, NULL);
+	*pSize = lstrlen((char*)buffSJis);
+	memcpy(pDist, buffSJis, *pSize);
 
-	std::string strSJis(bufShiftJis);
+	delete buffUtf16;
+	delete buffSJis;
 
-	delete bufUnicode;
-
-	return (LPTSTR)bufShiftJis;
+	return TRUE;
 }
 // ******************************************************************
 
+char* Utf8toShiftJis(char* src)
+{
+	int nSize = 0;
+	ConvUtf8toSJis(src, NULL, &nSize);
+	char* dst = new char[nSize + 1];
+	ZeroMemory(dst, nSize + 1);
+
+	ConvUtf8toSJis(src, dst, &nSize);
+	return dst;
+
+}
+// ******************************************************************
 char* GetParent(char* str)
 {
 	char* moto = str;
@@ -369,7 +389,7 @@ bool IsModifierkey(int v)
 }
 bool IsModifierkey(char * key)
 {
-	std::string k = getNewString(key);
+	std::string k = std::string(getNewBuffer(key));
 	if (k.empty() == true) return false;
 	transform(k.begin(), k.end(), k.begin(), tolower);
 

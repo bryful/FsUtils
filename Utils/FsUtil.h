@@ -44,12 +44,10 @@ LPCTSTR GetTextClipboard();
 	ï∂éöÉRÅ[ÉhÇÃïœä∑
 */
 // *********************************************************************************************
-LPTSTR SjisToUTF8(LPTSTR srcSjis);
-LPTSTR UTF8ToSjis(LPTSTR srcUTF8);
-
+char* ShiftJistoUtf8(char* src);
+char* Utf8toShiftJis(char* src);
 std::string multi_to_utf8_winapi(std::string const& src);
 std::string utf8_to_multi_winapi(std::string const& src);
-
 
 POINT GetMousePos();
 std::string GetMousePosString();

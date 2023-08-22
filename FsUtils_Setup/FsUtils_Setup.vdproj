@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_60F65E3E37394395B0F9FEF40278C871"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C52AFC7296AC407E9C8ADF0152C6EABE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -97,6 +103,16 @@
         {
             "LaunchCondition"
             {
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_A2CB9DB6D6DA419892CAEDF3B9239F77"
+                {
+                "Name" = "8:.NET Core"
+                "Message" = "8:[VSDNETCOREMSG]"
+                "AllowLaterVersions" = "11:FALSE"
+                "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
+                "IsNETCore" = "11:TRUE"
+                "Architecture" = "2:0"
+                "Runtime" = "2:0"
+                }
             }
         }
         "File"
@@ -158,7 +174,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:FsUtils"
         "ProductCode" = "8:{F734452A-76A9-41EA-905C-EB84D47927A1}"
-        "PackageCode" = "8:{1D129145-4AD2-4638-B34F-D8E7101B7356}"
+        "PackageCode" = "8:{EB1D7DC4-10D8-4F27-831D-67CDC3A607EE}"
         "UpgradeCode" = "8:{EEF85D23-3E17-4499-B9B9-CAB5C6BA1C49}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -677,6 +693,34 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_60F65E3E37394395B0F9FEF40278C871"
+            {
+            "SourcePath" = "8:..\\MsgBox\\obj\\Release\\net6.0-windows\\apphost.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_7FCF70061CEB4EA6A409F9FB7FC9687E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:Release|Any CPU"
+            "OutputGroupCanonicalName" = "8:PublishItemsOutputGroup"
+            "OutputProjectGuid" = "8:{3532EAC1-BABA-49FD-A966-F9368AFEEF7A}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C52AFC7296AC407E9C8ADF0152C6EABE"
             {
             "SourcePath" = "8:..\\ChkForm\\obj\\Release\\net6.0-windows\\apphost.exe"
@@ -735,7 +779,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D6B483FC4992433DAEF4FDD821E3B55E"
             {
-            "SourcePath" = "8:..\\FsUtilsCmd\\x64\\Release\\FsUtils.exe"
+            "SourcePath" = "8:..\\FsUtilsCmd\\x64\\Release\\FsUtilsCmd.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7FCF70061CEB4EA6A409F9FB7FC9687E"

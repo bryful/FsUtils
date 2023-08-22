@@ -48,3 +48,6 @@ char* GetNameWithoutExt(char* str);
 char* GetExt(char* str);
 char* GetParent(char* str);
 char* CombinePath(char* s0, char* s1);
+
+std::string DllPath();
+

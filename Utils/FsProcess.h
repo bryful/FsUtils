@@ -16,6 +16,11 @@
 #include <sstream>
 #include <system_error>
 #include <winuser.h>
+#include <array>  // array
+#include <cstdio>    // _popen
+#include <iostream>  // cout
+#include <memory>    // shared_ptr
+#include <fstream>
 
 #include "FsUtil.h"
 #include "FsFile.h"
@@ -26,3 +31,6 @@
 
 int CallCommand(char* cmd);
 int CallCommandWait(char* cmd);
+//int CallCommandGetResult(const char* cmd, char* buf, DWORD size);
+int CallCommandGetResult(std::string cmd, std::string& result);
+

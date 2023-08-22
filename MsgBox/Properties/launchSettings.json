@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MsgBox": {
+      "commandName": "Project",
+      "commandLineArgs": "\"aaaa ffd\\\\r\\\\n\\\\tbbbb\""
+    }
+  }
+}

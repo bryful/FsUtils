@@ -2,6 +2,7 @@
 #include "..\Utils\FsFile.h"
 #include "..\Utils\AEProcess.h"
 #include "..\Utils\FsProcess.h"
+#include "..\Utils\FsJson.h"
 
 #include <vector>
 #include <windows.h>
@@ -46,6 +47,7 @@ static void Usage(char *ex)
 	ret += "\t" + exe + " PlaySound num\r\n";
 	ret += "\t" + exe + " callCommand args\r\n";
 	ret += "\t" + exe + " callCommandWait args\r\n";
+	ret += "\t" + exe + " callCommandResult args\r\n";
 
 	//
 
@@ -275,6 +277,25 @@ int main(int argc, char* argv[])
 	//SoundPlay("C:\\Windows\\Media\\Windows Logon.wav");
 	//CallCommand("C:\\Users\\bryfu\\Source\\Repos\\FsUtils\\ChkForm\\bin\\Release\\net6.0-windows\\publish\\ChkForm.exe");
 	//CallCommandWait("ChkForm.exe");
+	//ret = CallCommand("ChkForm.exe");
+
+	/*
+	char js[] = "({aaa:12,bbb:\"aaa\\bbb\\\"\",cc:[12,23,({ddd:12,eee:\"eee\"})]})";
+	
+	std::string jss = std::string(js);
+	std::string jss2 = FromAEJson(jss);
+	std::string jss3 = ToAEJson(jss2);
+
+	std::cout << jss;
+	std::cout << "\n";
+	std::cout << jss2;
+	std::cout << "\n";
+	std::cout << jss3;
+	std::cout << "\n";
+	*/
+
+	
+
 
 	return ret;
 }

@@ -1,7 +1,9 @@
+using BRY;
 namespace ChkForrm
 {
 	public partial class Form1 : Form
 	{
+		private string TempPath = string.Empty;
 		public Form1()
 		{
 			InitializeComponent();
@@ -42,13 +44,36 @@ namespace ChkForrm
 			listBox1.Items.Clear();
 			if (cmds.Length > 0)
 			{
+				int idx = 0;
 				foreach (string cmd in cmds)
 				{
 					listBox1.Items.Add(cmd);
+					if (idx==1)
+					{
+						TempPath = cmd;
+					}
+					idx++;
 				}
 			}
 
 		}
 
+		private void button2_Click(object sender, EventArgs e)
+		{
+			string s = textBox1.Text;
+			if (s=="")
+			{
+				s = "No Text";
+			}
+			if (TempPath!="")
+			{
+				if (File.Exists(TempPath))
+				{
+					File.Delete(TempPath);
+				}
+				File.WriteAllText(TempPath, s);	
+			}
+			Application.Exit();	
+		}
 	}
 }
