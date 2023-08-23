@@ -1,40 +1,37 @@
 
-var fsU = null;
+var fu = null;
 
 function initExtension(extensionDir) {
     var ret = false;
     try {
-        fsU = new ExternalObject("lib:" + extensionDir);
+        fu = new ExternalObject("lib:" + extensionDir);
         ret = true;
     } catch (e) {
         ret = false;
         alert("exception: " + e);
     }
-    if (fsU==null)
+    if (fu==null)
     {
         alert("init error!");
     }
     return ret;
 }
-
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
-initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
-// スクリプトの実行場所ならこれ
-//initExtension("FsUtils.dll");
+initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
 alert("shift/control/altキーのどれかを押しながらOKを押してください。");
 
 var str = "";
 
-if (fsU.isShiftKey())
+if (fu.isShiftKey())
 {
 	str += "シフトキーが押されています\r\n";
 }
-if (fsU.isControlKey())
+if (fu.isControlKey())
 {
 	str += "コントロールキーが押されています\r\n";
 }
-if (fsU.isAltKey())
+if (fu.isAltKey())
 {
 	str += "Altキーが押されています\r\n";
 }

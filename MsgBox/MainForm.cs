@@ -57,11 +57,12 @@ namespace MsgBox
 			bool isClear = false;
 			bool? istopmost = null;
 			string isText = "";
+			string env = "";
 			if (args.Length > 0)
 			{
+				int idx = 0;
 				foreach (string arg in args)
 				{
-
 					if ((arg[0] == '-') || (arg[0] == '/'))
 					{
 						string opt = arg.Substring(1).ToLower().Trim();
@@ -77,26 +78,40 @@ namespace MsgBox
 						{
 							istopmost = false;
 						}
-					}
-					if (File.Exists(arg))
-					{
-						isText += arg + "\r\n";
-						string e = Path.GetExtension(arg).ToLower();
-						if ((e == ".txt") || (e == ".json") || (e == ".ardj") || (e == ".xml"))
+						else if ((opt == "getenv") || (opt == "env"))
 						{
-							string s = File.ReadAllText(arg);
-							if (s != "")
+							if (idx< args.Length-1)
 							{
-								isText += s + "\r\n";
+								env = args[idx + 1];
 							}
 						}
 					}
-					else if (isClear == false)
+					idx++;
+				}
+				if (env == "")
+				{
+					foreach (string arg in args)
 					{
-						string s2 = arg.Replace("\\\\", "\\");
-						s2 = s2.Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\t", "\t");
-						isText += s2;
+						if (File.Exists(arg))
+						{
+							isText += arg + "\r\n";
+							string e = Path.GetExtension(arg).ToLower();
+							if ((e == ".txt") || (e == ".json") || (e == ".ardj") || (e == ".xml"))
+							{
+								string s = File.ReadAllText(arg);
+								if (s != "")
+								{
+									isText += s + "\r\n";
+								}
+							}
+						}
+						else if (isClear == false)
+						{
+							string s2 = arg;
+							s2 = s2.Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\\\", "\\");
+							isText += s2;
 
+						}
 					}
 				}
 			}
@@ -107,6 +122,22 @@ namespace MsgBox
 			if (istopmost != null)
 			{
 				this.TopMost = (bool)istopmost;
+			}
+			if (env!="")
+			{
+				string? envs = Environment.GetEnvironmentVariable(env);
+				if ((envs!=null)&&(envs!=""))
+				{
+					/*
+					ReplaceAll(argv, "\\", "\\\\");
+					ReplaceAll(argv, "\r", "\\r");
+					ReplaceAll(argv, "\n", "\\n");
+					ReplaceAll(argv, "\t", "\\t");
+					*/
+
+					isText = envs.Replace("\\r", "\r").Replace("\\n", "\n")
+						.Replace("\\t", "\t").Replace("\\%3D", "=").Replace("\\\\", "\\");
+				}
 			}
 			if (isText != "")
 				tbConsole.AppendText(isText);

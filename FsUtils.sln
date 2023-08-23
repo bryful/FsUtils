@@ -2,11 +2,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FsUtils", "FsUtils\FsUtils.vcxproj", "{491DC6E6-840C-4693-B523-B499A0320C3A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fu", "fu\fu.vcxproj", "{491DC6E6-840C-4693-B523-B499A0320C3A}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "FsUtils_Setup", "FsUtils_Setup\FsUtils_Setup.vdproj", "{74F6A7E9-1336-4C6D-BE6E-A687423CA6D3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FsUtilsCmd", "FsUtilsCmd\FsUtilsCmd.vcxproj", "{CCE44642-8E5C-43F1-BD07-DF83CEF90556}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fuCmd", "fuCmd\fuCmd.vcxproj", "{CCE44642-8E5C-43F1-BD07-DF83CEF90556}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChkForm", "ChkForm\ChkForm.csproj", "{7D8559C6-F42D-4415-9E02-0B05B6F5DA16}"
 EndProject

@@ -1,4 +1,4 @@
-#include "FsUtils.h"
+#include "fu.h"
 #include <stdlib.h>
 #include <stdio.h>
 //#define EXPORT __declspec(dllexport)
@@ -38,10 +38,9 @@ namespace {
         "isShiftKey,"
         "isControlKey,"
         "isAltlKey,"
-        "write_s,"
-        "writeLn_s,"
-        "writeCls,"
-        "testObj,"
+        "msg_s,"
+        "msgln_s,"
+        "msgcls,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -513,34 +512,7 @@ extern "C" {
         outputData->data.intval = IsAltKey();
         return kESErrOK;
     }
-    EXPORT long write(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
-
-        if (inputDataCount > 0)
-        {
-            if (inputData[0].type == kTypeString)
-            {
-                std::string argv = inputData[0].data.string;
-                ReplaceAll(argv, "\\", "\\\\");
-                ReplaceAll(argv, "\r", "\\r");
-                ReplaceAll(argv, "\n", "\\n");
-                ReplaceAll(argv, "\t", "\\t");
-                
-                argv = std::string(Utf8toShiftJis((char*)argv.c_str()));
-
-                std::string parent = DllPath();
-
-                std::string cmd = "\"" + parent + "\\MsgBox.exe\"" +  " \"" + argv + "\"";
-
-                char* str = getNewBuffer(cmd.c_str());
-                CallCommand(str);
-                //outputData->type = kTypeString;
-                //outputData->data.string = str;
-                return kESErrOK;
-            }
-        }
-        return kESErrBadArgumentList;
-    }
-    EXPORT long writeLn(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+    EXPORT long msg(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
         if (inputDataCount > 0)
         {
@@ -552,12 +524,13 @@ extern "C" {
                 ReplaceAll(argv, "\n", "\\n");
                 ReplaceAll(argv, "\t", "\\t");
 
+
                 argv = std::string(Utf8toShiftJis((char*)argv.c_str()));
 
                 std::string parent = DllPath();
 
-                std::string cmd = "\"" + parent + "\\MsgBox.exe\"" + " \"" + argv + "\\r\\n\"";
-
+                std::string cmd;
+                cmd = "\"" + parent + "\\MsgBox.exe\"" + " \"" + argv + "\"";
                 char* str = getNewBuffer(cmd.c_str());
                 CallCommand(str);
                 //outputData->type = kTypeString;
@@ -567,18 +540,46 @@ extern "C" {
         }
         return kESErrBadArgumentList;
     }
-    EXPORT long writeCls(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+    EXPORT long msgln(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                std::string argv = inputData[0].data.string;
+                argv += "\r\n";
+                ReplaceAll(argv, "\\", "\\\\");
+                ReplaceAll(argv, "\r", "\\r");
+                ReplaceAll(argv, "\n", "\\n");
+                ReplaceAll(argv, "\t", "\\t");
+
+
+                argv = std::string(Utf8toShiftJis((char*)argv.c_str()));
 
                 std::string parent = DllPath();
 
-                std::string cmd = "\"" + parent + "\\MsgBox.exe\" -cls";
-
+                std::string cmd;
+                cmd = "\"" + parent + "\\MsgBox.exe\"" + " \"" + argv + "\"";
                 char* str = getNewBuffer(cmd.c_str());
                 CallCommand(str);
                 //outputData->type = kTypeString;
                 //outputData->data.string = str;
                 return kESErrOK;
+            }
+        }
         return kESErrBadArgumentList;
+    }
+    EXPORT long msgcls(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        std::string parent = DllPath();
+
+        std::string cmd = "\"" + parent + "\\MsgBox.exe\" -cls";
+
+        char* str = getNewBuffer(cmd.c_str());
+        CallCommand(str);
+        //outputData->type = kTypeString;
+        //outputData->data.string = str;
+        return kESErrOK;
     }
     //
 } // この拡張機能固有のエクスポート関数

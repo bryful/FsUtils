@@ -24,20 +24,21 @@
     <ClInclude Include="..\Utils\FsFile.h" />
     <ClInclude Include="..\Utils\FsProcess.h" />
     <ClInclude Include="..\Utils\FsUtil.h" />
-    <ClInclude Include="FsUtils.h" />
+    <ClInclude Include="fu.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SequenceFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utils\AEProcess.cpp" />
     <ClCompile Include="..\Utils\FsFile.cpp" />
     <ClCompile Include="..\Utils\FsProcess.cpp" />
-    <ClCompile Include="FsUtils.cpp" />
+    <ClCompile Include="fu.cpp" />
     <ClCompile Include="..\Utils\FsUtil.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="FsUtils.rc" />
+    <ResourceCompile Include="fu.rc" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\Utils\res\sound\101.wav" />
@@ -97,7 +98,7 @@
     <ProjectGuid>{491DC6E6-840C-4693-B523-B499A0320C3A}</ProjectGuid>
     <RootNamespace>MyExtObj</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>FsUtils</ProjectName>
+    <ProjectName>fu</ProjectName>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

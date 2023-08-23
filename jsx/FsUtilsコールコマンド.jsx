@@ -1,15 +1,15 @@
-var fsU = null;
+var fu = null;
 
 function initExtension(extensionDir) {
     var ret = false;
     try {
-        fsU = new ExternalObject("lib:" + extensionDir);
+        fu = new ExternalObject("lib:" + extensionDir);
         ret = true;
     } catch (e) {
         ret = false;
         alert("exception: " + e);
     }
-    if (fsU==null)
+    if (fu==null)
     {
         alert("init error!");
     }
@@ -17,8 +17,7 @@ function initExtension(extensionDir) {
 }
 
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
-initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
+initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 // スクリプトの実行場所ならこれ
-//initExtension("FsUtils.dll");
 
-fsU.callCommand("C:\\Program Files\\bry-ful\\FsUtils\\ChkForm.exe");
+fu.callCommand("C:\\Program Files\\bry-ful\\FsUtils\\ChkForm.exe");

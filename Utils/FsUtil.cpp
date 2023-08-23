@@ -16,7 +16,7 @@ char* getNewBuffer(char* s)
 	lstrcpy(str, s);
 	return str;
 }
-/*
+
 std::string getNewString(char* s)
 {
 	const auto length = strlen(s) + 1;
@@ -24,19 +24,93 @@ std::string getNewString(char* s)
 	lstrcpy(str, s);
 	return std::string(str);
 }
-*/
+
 
 // ******************************************************************
-void ReplaceAll(std::string& stringreplace, const std::string& origin, const std::string& dest)
+std::string ReplaceAll(std::string& stringreplace, const std::string& origin, const std::string& dest)
 {
 	size_t pos = 0;
 	size_t offset = 0;
 	size_t len = origin.length();
-	// 指定文字列が見つからなくなるまでループする
 	while ((pos = stringreplace.find(origin, offset)) != std::string::npos) {
 		stringreplace.replace(pos, len, dest);
 		offset = pos + dest.length();
 	}
+	return stringreplace;
+}
+std::vector<std::string> Split(const std::string& s, const std::string& delim)
+{
+
+	std::vector<std::string> result;
+	result.clear();
+	using string = std::string;
+	string::size_type pos = 0;
+
+	while (pos != string::npos)
+	{
+		string::size_type p = s.find(delim, pos);
+
+		if (p == string::npos)
+		{
+			result.push_back(s.substr(pos));
+			break;
+		}
+		else {
+			result.push_back(s.substr(pos, p - pos));
+		}
+
+		pos = p + delim.size();
+	}
+	return result;
+}
+std::string Join(const std::vector<std::string>& v, std::string delim) {
+	std::string s;
+	if (!v.empty()) {
+		s += v[0];
+		for (decltype(v.size()) i = 1, c = v.size(); i < c; ++i) {
+			if (delim.empty()==false) s += delim;
+			s += v[i];
+		}
+	}
+	return s;
+}
+std::string Trim(const std::string& string)
+
+{
+	const char* trimCharacterList = " \t\v\r\n";
+	std::string result;
+	std::string::size_type left = string.find_first_not_of(trimCharacterList);
+	if (left != std::string::npos)
+	{
+		std::string::size_type right = string.find_last_not_of(trimCharacterList);
+		result = string.substr(left, right - left + 1);
+	}
+	return result;
+
+}
+std::string TrimTailSepa(const std::string& string)
+
+{
+	const char* trimCharacterList = " \\/";
+	std::string result;
+	//aaa00
+	//01234
+	std::string::size_type right = string.find_last_not_of(trimCharacterList);
+	result = string.substr(0, right+1);
+	return result;
+
+}
+std::string TrimHeadSepa(const std::string& string)
+
+{
+	const char* trimCharacterList = " \\/";
+	std::string result;
+	//aaa00
+	//01234
+	std::string::size_type left = string.find_first_not_of(trimCharacterList);
+	result = string.substr(left);
+	return result;
+
 }
 // ******************************************************************
 BOOL SetTextClipboard(LPCTSTR lpString)
@@ -477,3 +551,95 @@ bool IsAltKey()
 {
 	return IsModifierkey(VK_MENU);
 }
+std::string get_env(const char* environment_name)
+{
+	std::string ret = "";
+	DWORD buf = GetEnvironmentVariable(environment_name, nullptr, 0);
+	if (buf == 0) return ret;
+	std::string buffer;
+	buffer.resize(buf + 1);//reserve
+	GetEnvironmentVariable(environment_name , &buffer[0], buffer.size() );
+		ReplaceAll(buffer, "%3D", "=");
+		ReplaceAll(buffer, "/r", "//r");
+		ReplaceAll(buffer, "/n", "//n");
+		ReplaceAll(buffer, "/t", "//t");
+		ReplaceAll(buffer, "//", "////");
+
+	buffer.resize(std::strlen(buffer.c_str()));//resize
+	return buffer;
+}
+bool set_env(const char* environment_name,std::string v)
+{
+	bool ret = false;
+	if (v != "") {
+		ReplaceAll(v, "=", "%3D");
+		ReplaceAll(v, "//r", "/r");
+		ReplaceAll(v, "//n", "/n");
+		ReplaceAll(v, "//t", "/t");
+		ReplaceAll(v, "////", "//");
+		if (SetEnvironmentVariable(environment_name, v.c_str()) != 0)
+		{
+			ret = true;
+		}
+	}
+	else {
+		if (SetEnvironmentVariable(environment_name, nullptr) != 0)
+		{
+			ret = true;
+		}
+
+	}
+	return ret;
+}
+
+BOOL IsUTF8(char* bytes)
+{
+	int len = strlen(bytes);
+	if (len < 2) {
+		// 短すぎると判別不可能、Shift-jis とみなすことにする
+		return false;
+	}
+	else if ((bytes[0] == 0xEF) && (bytes[1] == 0xBB) && (bytes[2] == 0xBF)) {
+		// BOM 付き UTF-8
+		return true;
+	}
+	int sjis = 0;
+	for (int i = 0; i < len - 2; i++) {
+		char b1 = bytes[i];
+		char b2 = bytes[i + 1];
+		if (((0x81 <= b1 && b1 <= 0x9F) || (0xE0 <= b1 && b1 <= 0xFC)) &&
+			((0x40 <= b2 && b2 <= 0x7E) || (0x80 <= b2 && b2 <= 0xFC))) {
+			sjis += 2;
+			i++;
+		}
+	}
+	int utf8 = 0;
+	for (int i = 0; i < len - 2; i++) {
+		int b1 = bytes[i];
+		int b2 = bytes[i + 1];
+		if ((0xC0 <= b1 && b1 <= 0xDF) &&
+			(0x80 <= b2 && b2 <= 0xBF)) {
+			utf8 += 2;
+			i++;
+		}
+		else if (i < len - 2) {
+			int b3 = bytes[i + 2];
+			if ((0xE0 <= b1 && b1 <= 0xEF) &&
+				(0x80 <= b2 && b2 <= 0xBF) &&
+				(0x80 <= b3 && b3 <= 0xBF)) {
+				utf8 += 3;
+				i += 2;
+			}
+		}
+	}
+	if (sjis > utf8) {
+		return false;
+	}
+	else if (utf8 > sjis) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+BOOL IsUTF8(std::string s) { return IsUTF8((char*)s.c_str()); }

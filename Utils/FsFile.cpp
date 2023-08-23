@@ -126,7 +126,170 @@ bool IsInstalledESTK()
 
 	return ExistFile(ESTKPath);
 }
+std::string PathToWinFromJS(std::string str)
+{
+	std::string ret = "";
+	if (str.size() < 3) return str;
 
+	str = ReplaceAll(str, "/", "\\");
+	BOOL isJS = false;
+	if ((str[0] == '\\') && (str[2] == '\\'))
+	{
+		char c = str[1];
+		if ((c >= 'a') && (c <= 'z'))
+		{
+			isJS = true;
+			str[1] = str[1] + 'A' - 'a';
+		}
+		else if ((c >= 'A') && (c <= 'Z'))
+		{
+			isJS = true;
+		}
+	}
+	if (isJS == false)
+	{
+		ret = str;
+	}
+	else {
+		ret = str.substr(1, 1) + ":" + str.substr(2);
+	}
+	return ret;
+}
+std::string PathToJSFromWin(std::string str)
+{
+	std::string ret = "";
+	if (str.size() < 3) return str;
+
+	str = ReplaceAll(str, "\\", "/");
+	BOOL isWin = false;
+	if ((str[1] == ':') && (str[2] == '/'))
+	{
+		char c = str[0];
+		if ((c >= 'a') && (c <= 'z'))
+		{
+			isWin = true;
+		}
+		else if ((c >= 'A') && (c <= 'Z'))
+		{
+			str[0] = str[0] - ('A' - 'a');
+			isWin = true;
+		}
+	}
+	if (isWin == false)
+	{
+		ret = str;
+	}
+	else {
+		// A:\aaa
+		// /a/aaa
+		ret =  "/" + str.substr(0, 1)  + str.substr(2);
+	}
+	return ret;
+}
+std::string GetExt(std::string str)
+{
+	std::string ret = "";
+	if (str.size() <= 0) return ret;
+	int idx = str.find_last_of(".");
+	if (idx != std::string::npos)
+	{
+		ret = str.substr(idx);
+	}
+	return ret;
+}
+std::string GetFileName(std::string str)
+{
+	std::string ret = "";
+	if (str.size() <= 0) return ret;
+	int idx = str.find_last_of("\\");
+	if (idx != std::string::npos)
+	{
+		idx = str.find_last_of("/");
+	}
+	if (idx != std::string::npos)
+	{
+		ret = str.substr(idx);
+	}
+	return ret;
+}
+std::string GetFileNameWithoutExt(std::string str)
+{
+	std::string ret = "";
+	if (str.size() <= 0) return ret;
+	int idx = str.find_last_of("\\");
+	if (idx != std::string::npos)
+	{
+		idx = str.find_last_of("/");
+	}
+	if (idx != std::string::npos)
+	{
+		std::string n = str.substr(idx);
+		int idx2 = str.find_last_of(".");
+		if (idx2 != std::string::npos)
+		{
+			ret = n.substr(0, idx2);
+		}
+		else {
+			ret = n;
+		}
+	}
+	return ret;
+}
+std::string CombilePath(std::string str1, std::string str2)
+{
+	std::string ret = "";
+	if (str1.size() <= 0) return str2;
+	if (str2.size() <= 0) return str1;
+
+	str1 = TrimTailSepa(str1);
+	str2 = TrimHeadSepa(str2);
+
+	ret = str1 + "\\" + str2;
+	return ret;
+}
+std::string GetDir(std::string str)
+{
+	std::string ret = "";
+	if (str.size() <= 0) return ret;
+	int idx = str.find_last_of("\\");
+	if (idx != std::string::npos)
+	{
+		idx = str.find_last_of("/");
+	}
+	if (idx != std::string::npos)
+	{
+		ret = str.substr(0,idx);
+	}
+	return ret;
+}
+BOOL SplitFileName(std::string str, std::string& dir, std::string& name, std::string& ext )
+{
+	BOOL ret = FALSE;
+	dir = "";  name = ""; ext = "";
+	if (str.size() <= 0) return ret;
+	int didx = str.find_last_of("\\");
+	if (didx == std::string::npos)
+	{
+		didx = str.find_last_of("/");
+	}
+	std::string n = "";
+	//dir
+	if (didx != std::string::npos)
+	{
+		dir = str.substr(0, didx);
+		n = str.substr(didx+1);
+	}
+	else {
+		n = str;
+	}
+	int eidx = n.find_last_of(".");
+	if (eidx != std::string::npos)
+	{
+		ext = n.substr(eidx);
+		name = n.substr(0, eidx);
+	}
+	return TRUE;
+}
 char* GetExt(char* str)
 {
 	char* ret = "\0";

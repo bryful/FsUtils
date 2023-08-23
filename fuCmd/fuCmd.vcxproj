@@ -24,7 +24,7 @@
     <ProjectGuid>{cce44642-8e5c-43f1-bd07-df83cef90556}</ProjectGuid>
     <RootNamespace>Test</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>FsUtilsCmd</ProjectName>
+    <ProjectName>fuCmd</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -156,7 +156,7 @@
     <ClCompile Include="..\Utils\FsJson.cpp" />
     <ClCompile Include="..\Utils\FsProcess.cpp" />
     <ClCompile Include="..\Utils\FsUtil.cpp" />
-    <ClCompile Include="FsUtilsCmd.cpp" />
+    <ClCompile Include="fuCmd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Utils\AEProcess.h" />
@@ -167,7 +167,7 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="FsUtilsCmd.rc" />
+    <ResourceCompile Include="fuCmd.rc" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\Utils\res\sound\101.wav" />

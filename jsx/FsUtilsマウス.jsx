@@ -1,25 +1,26 @@
-var fsU = null;
+var fu = null;
 
 function initExtension(extensionDir) {
     var ret = false;
     try {
-        fsU = new ExternalObject("lib:" + extensionDir);
+        fu = new ExternalObject("lib:" + extensionDir);
         ret = true;
     } catch (e) {
         ret = false;
         alert("exception: " + e);
     }
-    if (fsU==null)
+    if (fu==null)
     {
         alert("init error!");
     }
     return ret;
 }
-//ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
-initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
 
-var pt = fsU.getMousePos();
+//ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
+initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
+
+var pt = fu.getMousePos();
 alert(pt.toSource());
 
 alert("マウスを左上に移動します");
-alert(fsU.setMousePos(20,20));
+alert(fu.setMousePos(20,20));

@@ -1,223 +1,226 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
+    <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="ヘッダー ファイル">
+    <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{884dc485-bcba-44df-8cc5-801cf850f510}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="リソース ファイル\wav">
-      <UniqueIdentifier>{37fc8214-d1ad-424f-b76d-82a2f6380509}</UniqueIdentifier>
+    <Filter Include="Resource Files\Wav">
+      <UniqueIdentifier>{c7c0987a-2ed1-4f8d-af16-c5bb963bdd9b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="fu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\Utils\FsUtil.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\AEProcess.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\FsFile.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="FsUtilsCmd.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\FsProcess.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Utils\FsJson.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Utils\FsUtil.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="..\include\SoSharedLibDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FsUtils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\AEProcess.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\FsFile.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\FsUtil.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\FsProcess.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\FsJson.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="SequenceFile.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="FsUtilsCmd.rc">
-      <Filter>リソース ファイル</Filter>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\Utils\res\sound\101.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\102.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\103.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\104.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\105.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\106.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\107.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\108.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\109.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\110.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\111.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\112.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\113.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\114.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\115.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\116.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\117.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\118.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\119.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\120.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\121.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\122.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\123.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\124.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\125.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\126.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\127.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\128.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\129.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\130.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\131.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\132.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\133.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\134.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\135.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\136.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\137.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\138.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\139.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\140.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\141.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\142.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\143.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\144.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\145.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\146.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\147.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\148.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\149.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\150.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\151.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
     <Media Include="..\Utils\res\sound\152.wav">
-      <Filter>リソース ファイル\wav</Filter>
+      <Filter>Resource Files\Wav</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="fu.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

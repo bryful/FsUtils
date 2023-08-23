@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="FsUtils"
+	Name="fu"
 	ProjectGUID="{491DC6E6-840C-4693-B523-B499A0320C3A}"
 	RootNamespace="MyExtObj"
 	Keyword="Win32Proj"
@@ -181,7 +181,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="FsUtils.cpp"
+				RelativePath="fu.cpp"
 				>
 			</File>
 		</Filter>

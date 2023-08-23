@@ -294,8 +294,24 @@ int main(int argc, char* argv[])
 	std::cout << "\n";
 	*/
 
+	std::string sss = "あああD/E愛してるEE.tgaあなたの名前はなる丸です";
 	
+	std::vector< std::string> sa = Split(sss, "/");
 
+	std::string  sa2 = Join(sa, "@@");
+	std::cout << sa2;
+	std::cout << "\n";
+
+	char* ff =  ShiftJistoUtf8((char*)sss.c_str());
+
+	if (IsUTF8(ff))
+	{
+		std::cout << "utf-8";
+	}
+	else {
+		std::cout << "sjis";
+	}
+	std::cout << "\n";
 
 	return ret;
 }

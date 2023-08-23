@@ -1,7 +1,8 @@
 ﻿
-# FsUtils.dll "ExternalObject"
+#  FsUtils [ fu.dll ] "ExternalObject"
 
 ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するものになります。<br>
+dllの名前をFsUtils.dllからfu.dllに変更しました。fsutilコマンドと間違えやすかったので、<br>
 <br>
 キー検出のコマンドが増えました<br>
 <br>
@@ -10,11 +11,10 @@ ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するも�
 ## 使い方
 
 インストラーを用意しましたので、それを使ってください。<br>下記の場所にインストールされます。
-FsUtils.dll単体は、インストールしてそこから取ってください。
 
 ```
 
-C:\Program Files\bry-ful\FsUtils\FsUtils.dll
+C:\Program Files\bry-ful\FsUtils\fu.dll
 
 ```
 
@@ -43,26 +43,25 @@ DLL単独で違う場所・スクリプトと同じ場所等に移動させる�
 
 ```
 
-var fsU = null;
+var fu = null;
 
 function initExtension(extensionDir) {
     var ret = false;
     try {
-        fsU = new ExternalObject("lib:" + extensionDir);
+        fu = new ExternalObject("lib:" + extensionDir);
         ret = true;
     } catch (e) {
         ret = false;
         alert("exception: " + e);
     }
-    if (fsU==null)
+    if (fu==null)
     {
         alert("init error!");
     }
     return ret;
 }
 
-//ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
-initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
+initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
 
 ```

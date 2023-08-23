@@ -43,6 +43,16 @@ bool ExistDirectory(const char* path);
 	ファイルパス文字の処理
 */
 // *********************************************************************************************
+std::string GetDir(std::string str);
+std::string GetFileName(std::string str);
+std::string GetFileNameWithoutExt(std::string str);
+std::string GetExt(std::string str);
+BOOL SplitFileName(std::string str, std::string& dir, std::string& name, std::string& ext);
+
+std::string PathToWinFromJS(std::string str);
+std::string PathToJSFromWin(std::string str);
+
+
 LPTSTR  GetName(LPTSTR  str);
 char* GetNameWithoutExt(char* str);
 char* GetExt(char* str);
@@ -50,4 +60,6 @@ char* GetParent(char* str);
 char* CombinePath(char* s0, char* s1);
 
 std::string DllPath();
+
+
 

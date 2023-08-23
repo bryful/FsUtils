@@ -1,27 +1,27 @@
-var fsU = null;
+var fu = null;
 
 function initExtension(extensionDir) {
     var ret = false;
     try {
-        fsU = new ExternalObject("lib:" + extensionDir);
+        fu = new ExternalObject("lib:" + extensionDir);
         ret = true;
     } catch (e) {
         ret = false;
         alert("exception: " + e);
     }
-    if (fsU==null)
+    if (fu==null)
     {
         alert("init error!");
     }
     return ret;
 }
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
-initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
+initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
-var d = fsU.installedAE();
+var d = fu.installedAE();
 
 alert(d.toSource());
 
-var dd = fsU.isInstalledESTK();
+var dd = fu.isInstalledESTK();
 
 alert("ESTK install:" + dd);

@@ -1,15 +1,15 @@
-﻿var fsU = null;
+﻿var fu = null;
 
 function initExtension(extensionDir) {
     var ret = false;
     try {
-        fsU = new ExternalObject("lib:" + extensionDir);
+        fu = new ExternalObject("lib:" + extensionDir);
         ret = true;
     } catch (e) {
         ret = false;
         alert("exception: " + e);
     }
-    if (fsU==null)
+    if (fu==null)
     {
         alert("init error!");
     }
@@ -17,21 +17,19 @@ function initExtension(extensionDir) {
 }
 
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
-initExtension("C:\\Program Files\\bry-ful\\FsUtils\\FsUtils.dll");
-// スクリプトの実行場所ならこれ
-//initExtension("FsUtils.dll");
+initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
 var a ="FsUtils.dll clipboardSetText()のコピーテストです。\r\nAAAAA\r\nBBBBBBB";
-fsU.clipboardSetText(a);
+fu.clipboardSetText(a);
 alert("このダイアログを閉じる前に、winキー +Vでクリップビードの内容を確認してください。\r\n\r\n終わったら適当なテキストをコピーしてみてください。");
 a = ""; //念のため消す。
-var c = fsU.clipboardGetText();
+var c = fu.clipboardGetText();
 alert("clipboardGetTextのテスト\r\n------------------\r\n" + c +"\r\n-------------------------");
 
 var path="/c/aaaa/bbbb/abc.tga";
 alert("path関係のテスト\r\n\r\n" + path);
-var ext = fsU.pathGetExt(path);
-var name =fsU.pathGetName(path);
-var nameE =fsU.pathGetNameWithoutExt(path);
-var par =fsU.pathGetParent(path);
+var ext = fu.pathGetExt(path);
+var name =fu.pathGetName(path);
+var nameE =fu.pathGetNameWithoutExt(path);
+var par =fu.pathGetParent(path);
 alert("Parent: " + par +"\r\nName: "+name+"\r\nNameWithoutExt: "+nameE + "\r\nExt: "+ext);
