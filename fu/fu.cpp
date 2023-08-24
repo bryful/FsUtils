@@ -1,6 +1,5 @@
 #include "fu.h"
-#include <stdlib.h>
-#include <stdio.h>
+
 //#define EXPORT __declspec(dllexport)
 
 #if defined (_WINDOWS)
@@ -41,6 +40,7 @@ namespace {
         "msg_s,"
         "msgln_s,"
         "msgcls,"
+        "lineEdit_s,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -580,6 +580,50 @@ extern "C" {
         //outputData->type = kTypeString;
         //outputData->data.string = str;
         return kESErrOK;
+    }
+    EXPORT long lineEdit(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                std::string send = std::string(inputData[0].data.string);
+
+                send = "#fuIn:" + send;
+
+                SetTextClipboard(send.c_str());
+
+                std::string parent = DllPath();
+                std::string cmd;
+                cmd = "\"" + parent + "lineEdit.exe\"" + " -clip";
+                char* str = (char*)cmd.c_str();
+                CallCommandWait(str);
+
+                std::string ret = GetTextClipboardStr();
+
+                std::string key = "#fuOut:";
+                size_t idx = ret.find(key);
+                if (idx == 0)
+                {
+                    ret = ret.substr(key.size());
+                    outputData->type = kTypeString;
+                    outputData->data.string = getNewBuffer(ret);
+                }
+                else 
+                {
+                    key = "#fuCancel:";
+                    idx = ret.find(key);
+                    if (idx == 0)
+                    {
+                        outputData->type = kTypeScript;
+                        outputData->data.string = getNewBuffer("(new Boolean(false))");
+                    }
+                }
+
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
     }
     //
 } // この拡張機能固有のエクスポート関数

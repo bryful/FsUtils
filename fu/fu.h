@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string>
 #include <atlstr.h>
+#include <stdio.h>
 
 #ifndef UNICODE
 #endif

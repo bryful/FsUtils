@@ -421,7 +421,7 @@ std::string DllPath()
 {
 	const size_t sz = 2048;
 	char szModulePath[sz];
-	HMODULE  hModule = GetModuleHandle("FsUtils.dll");
+	HMODULE  hModule = GetModuleHandle("fu.dll");
 	char  szModuleFileName[sz] = { 0 };
 	ZeroMemory(szModuleFileName, sz);
 	GetModuleFileName(hModule, szModuleFileName, sz);

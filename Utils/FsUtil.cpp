@@ -132,6 +132,26 @@ BOOL SetTextClipboard(LPCTSTR lpString)
     CloseClipboard();
     return true;
 }
+// ******************************************************************
+BOOL SetTextClipboard(std::string str)
+{
+	if (!OpenClipboard(NULL)) return false;
+	LPTSTR c = Utf8toShiftJis((char*)str.c_str());
+
+	EmptyClipboard();
+	HGLOBAL hg = GlobalAlloc(GHND | GMEM_SHARE, lstrlen(c) + 1);
+	LPTSTR strMem = (LPTSTR)GlobalLock(hg);
+	lstrcpy(strMem, c);
+	GlobalUnlock(hg);
+
+	if (SetClipboardData(CF_TEXT, hg) != 0)
+	{
+
+	}
+
+	CloseClipboard();
+	return true;
+}
 LPCTSTR GetTextClipboard()
 {
     HGLOBAL hg;
@@ -149,7 +169,23 @@ LPCTSTR GetTextClipboard()
 	}
     return strText;
 }
+std::string GetTextClipboardStr()
+{
+	HGLOBAL hg;
+	LPTSTR strText = '\0';
+	LPTSTR strClip = '\0';
+	if (OpenClipboard(NULL) && (hg = GetClipboardData(CF_TEXT))) {
+		strText = (PTSTR)malloc(GlobalSize(hg));
+		strClip = (PTSTR)GlobalLock(hg);
+		lstrcpy(strText, strClip);
 
+		GlobalUnlock(hg);
+		CloseClipboard();
+
+		strText = ShiftJistoUtf8(strText);
+	}
+	return std::string( strText);
+}
 // ******************************************************************
 // ******************************************************************
 /*

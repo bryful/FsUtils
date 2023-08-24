@@ -45,7 +45,9 @@ std::string TrimHeadSepa(const std::string& string);
 */
 // *********************************************************************************************
 BOOL SetTextClipboard(LPCTSTR lpString);
+BOOL SetTextClipboard(std::string str);
 LPCTSTR GetTextClipboard();
+std::string GetTextClipboardStr();
 
 // *********************************************************************************************
 /*

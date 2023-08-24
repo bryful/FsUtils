@@ -2,9 +2,9 @@
 #  FsUtils [ fu.dll ] "ExternalObject"
 
 ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するものになります。<br>
-dllの名前をFsUtils.dllからfu.dllに変更しました。fsutilコマンドと間違えやすかったので、<br>
+dllの名前をFsUtils.dllからfu.dllに変更しました。fsutilコマンドと間違えやすかったので(実害はないと思います)<br>
 <br>
-キー検出のコマンドが増えました<br>
+lineEditダイアログが表示できるようになりました。<br>
 <br>
 動作確認用のコマンドライン版(FsUtils.exe)も入れてあります。<br>
 
@@ -99,6 +99,7 @@ jsxフォルダ内にあるスクリプトを参考にしてください。
 * isShiftkey()<br>Shiftキーが押されていたらtrue
 * isControlkey()<br>Controlキーが押されていたらtrue
 * isAltkey()<br>Altキーが押されていたらtrue
+* lineEdit(str)<br>一行エディタを表示します。cancelでnullが帰るので注意
 
 
 
