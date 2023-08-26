@@ -6,25 +6,49 @@
 	ファイルがあるか確認
 */
 // ********************************************************************************************************
+bool ExistFile(std::string path)
+{
+	return ExistFile((const char*)path.c_str());
+}
+bool ExistDirectory(std::string path)
+{
+	return ExistDirectory((const char*)path.c_str());
+}
+
+
+bool ExistFile(char* path)
+{
+	return ExistFile((const char*)path);
+}
+bool ExistDirectory(char* path)
+{
+	return ExistDirectory((const char*)path);
+}
 bool ExistFile(const char* path)
 {
-	if ((PathFileExists(path) != 0))
-	{
-		return true;
-	}
-	else {
-		return false;
-	}
+	return PathFileExists((LPCSTR)path);
 }
 bool ExistDirectory(const char* path)
 {
-	if ((PathIsDirectory(path) != 0))
+	return PathIsDirectory((LPCSTR)path);
+}
+
+// ********************************************************************************************************
+std::string GetTempFolder()
+{
+	DWORD sz = GetTempPath(0, nullptr);
+	LPSTR lpBuffer = (LPSTR)malloc(sz + 1);
+	if (GetTempPath(sz, lpBuffer) == 0)
 	{
-		return true;
+		free(lpBuffer);
+		return std::string("");
 	}
-	else {
-		return false;
-	}
+	return std::string(lpBuffer);
+
+}
+std::string GetTempDataFile()
+{
+	return GetTempFolder() + "fuTemp.txt";
 }
 // ********************************************************************************************************
 std::string AEPath1 = "C:\\Program Files\\Adobe\\Adobe After Effects";
@@ -51,7 +75,7 @@ std::string ae_sound_fail()
 	for (int i = 0; i < AEPath2->size(); i++)
 	{
 		std::string p = AEPath1 + AEPath2[i] + snd0;
-		if (ExistFile(p.c_str()) == true)
+		if (ExistFile((char*)p.c_str()) == true)
 		{
 			return p;
 		}
@@ -63,7 +87,7 @@ std::string ae_sound_okay()
 	for (int i = 0; i < AEPath2->size(); i++)
 	{
 		std::string p = AEPath1 + AEPath2[i] + snd1;
-		if (ExistFile(p.c_str()) == true)
+		if (ExistFile((char *)p.c_str()) == true)
 		{
 			return p;
 		}
@@ -75,7 +99,7 @@ std::string ae_sound_snap()
 	for (int i = 0; i < AEPath2->size(); i++)
 	{
 		std::string p = AEPath1 + AEPath2[i] + snd2;
-		if (ExistFile(p.c_str()) == true)
+		if (ExistFile((char*)p.c_str()) == true)
 		{
 			return p;
 		}
@@ -91,7 +115,7 @@ std::vector< std::string> InstalledAFX()
 	for (int i = 0; i < AEPath2->size(); i++)
 	{
 		std::string p = AEPath1 + AEPath2[i] + AEPath3;
-		if (ExistFile(p.c_str()) == true)
+		if (ExistFile((char*)p.c_str()) == true)
 		{
 			ret.push_back(p);
 		}
@@ -124,7 +148,7 @@ bool IsInstalledESTK()
 {
 	const char*  ESTKPath = "C:\\Program Files (x86)\\Adobe\\Adobe ExtendScript Toolkit CC\\ExtendScript Toolkit.exe";
 
-	return ExistFile(ESTKPath);
+	return ExistFile((char*)ESTKPath);
 }
 std::string PathToWinFromJS(std::string str)
 {

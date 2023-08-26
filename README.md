@@ -6,7 +6,7 @@ dllの名前をFsUtils.dllからfu.dllに変更しました。fsutilコマンド
 <br>
 lineEditダイアログが表示できるようになりました。<br>
 <br>
-動作確認用のコマンドライン版(FsUtils.exe)も入れてあります。<br>
+動作確認用のコマンドライン版(fuCmd.exe)も入れてあります。<br>
 
 ## 使い方
 
@@ -99,7 +99,7 @@ jsxフォルダ内にあるスクリプトを参考にしてください。
 * isShiftkey()<br>Shiftキーが押されていたらtrue
 * isControlkey()<br>Controlキーが押されていたらtrue
 * isAltkey()<br>Altキーが押されていたらtrue
-* lineEdit(str)<br>一行エディタを表示します。cancelでnullが帰るので注意
+* lineEdit(str)<br>一行エディタを表示します。cancelでnullが返るので注意
 
 
 

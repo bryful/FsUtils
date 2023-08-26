@@ -19,7 +19,7 @@ function initExtension(extensionDir) {
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
 initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
-var s = "AAAあああいいえ";
+var s = "ZBAaaあああ";
 
 var s2 = fu.lineEdit(s);
 if(s2==null)

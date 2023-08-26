@@ -2,7 +2,7 @@
   "profiles": {
     "LineEdit": {
       "commandName": "Project",
-      "commandLineArgs": "-file test.txt"
+      "commandLineArgs": "-sm"
     }
   }
 }

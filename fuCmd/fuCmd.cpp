@@ -3,6 +3,7 @@
 #include "..\Utils\AEProcess.h"
 #include "..\Utils\FsProcess.h"
 #include "..\Utils\FsJson.h"
+#include "..\Utils\FsTempData.h"
 
 #include <vector>
 #include <windows.h>
@@ -19,6 +20,48 @@
 #include <cstdlib>
 #include <algorithm>
 
+std::string ExePath()
+{
+	const size_t sz = 2048;
+	char szModulePath[sz];
+	HMODULE  hModule = GetModuleHandle("fuCmd.exe");
+	char  szModuleFileName[sz] = { 0 };
+	ZeroMemory(szModuleFileName, sz);
+	GetModuleFileName(hModule, szModuleFileName, sz);
+	std::string ret = std::string(szModuleFileName);
+	int path_i = ret.find_last_of("\\") + 1;
+	std::string pathname = ret.substr(0, path_i);
+
+	return pathname;
+}
+static int lineEdit(char* src)
+{
+	int ret = 0;
+	std::string parent = ExePath();
+	std::string cmd;
+	cmd = parent + "LineEdit.exe";
+	if (ExistFile(cmd) == false) {
+		std::cout << "Exists Err";
+		std::cout << "\r\n";
+		return ret;
+	}
+	FsTempData td;
+	td.Data = std::string(src);
+	td.SaveInput();
+
+	cmd = "\"" + cmd + "\"" + " -tmp";
+	char* str = (char*)cmd.c_str();
+	CallCommandWait(str);
+
+	if (td.Load() == true)
+	{
+		std::cout << td.Data << std::endl;
+	}
+	else {
+		std::cout << "null" << std::endl;
+	}
+
+}
 // *****************************************************************************************
 static void Usage(char *ex)
 {
@@ -67,14 +110,14 @@ static int Command(int argc, char* argv[])
 		transform(key.begin(), key.end(), key.begin(), tolower);
 		if ((key == "getclip") || (key == "gc"))
 		{
-			std::cout << GetTextClipboard();
+			std::cout << GetTextClipboard(false);
 			std::cout << "\n";
 			ret = 1;
 		}
 		else if ((key == "setclip") || (key == "sc"))
 		{
 			if (argc >= 3) {
-				SetTextClipboard(argv[2]);
+				SetTextClipboard(argv[2],false);
 				std::cout << "SetTextClipboard() ok\n";
 				ret = 1;
 			}
@@ -259,9 +302,18 @@ static int Command(int argc, char* argv[])
 				ret = CallCommandWait(argv[2]);
 			}
 		}
+		else if ((key == "lineedit") || (key == "le"))
+		{
+			if (argc >= 3)
+			{
+				ret = lineEdit(argv[2]);
+			}
+		}
 	}
 	return ret;
 }
+// *****************************************************************************************
+
 // *****************************************************************************************
 int main(int argc, char* argv[])
 {
@@ -279,39 +331,7 @@ int main(int argc, char* argv[])
 	//CallCommandWait("ChkForm.exe");
 	//ret = CallCommand("ChkForm.exe");
 
-	/*
-	char js[] = "({aaa:12,bbb:\"aaa\\bbb\\\"\",cc:[12,23,({ddd:12,eee:\"eee\"})]})";
-	
-	std::string jss = std::string(js);
-	std::string jss2 = FromAEJson(jss);
-	std::string jss3 = ToAEJson(jss2);
 
-	std::cout << jss;
-	std::cout << "\n";
-	std::cout << jss2;
-	std::cout << "\n";
-	std::cout << jss3;
-	std::cout << "\n";
-	*/
-
-	std::string sss = "あああD/E愛してるEE.tgaあなたの名前はなる丸です";
-	
-	std::vector< std::string> sa = Split(sss, "/");
-
-	std::string  sa2 = Join(sa, "@@");
-	std::cout << sa2;
-	std::cout << "\n";
-
-	char* ff =  ShiftJistoUtf8((char*)sss.c_str());
-
-	if (IsUTF8(ff))
-	{
-		std::cout << "utf-8";
-	}
-	else {
-		std::cout << "sjis";
-	}
-	std::cout << "\n";
-
+	std::cout << GetTempFolder();
 	return ret;
 }

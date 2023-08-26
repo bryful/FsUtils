@@ -1,4 +1,5 @@
 using System.CodeDom;
+using System.Text;
 using System.Diagnostics.Eventing.Reader;
 
 namespace LineEdit
@@ -6,7 +7,6 @@ namespace LineEdit
 	public partial class MainForm : BaseForm
 	{
 		private InOutMode InOutMode = InOutMode.None;
-		private string m_TargetFile = string.Empty;
 		// ********************************************************************
 		private F_Pipe m_Server = new F_Pipe();
 		public void StartServer(string pipename)
@@ -64,41 +64,17 @@ namespace LineEdit
 			if (cmd.Count <= 0) return;
 			ArgItem[] cmdLines = cmd.ItemsWithoutOptin();
 
+
 			if (cmd.Options.Length > 0)
 			{
-				ArgItem? c3 = cmd.FindOption(new string[] { "command", "cmd" });
-				if (c3 != null)
+				ArgItem? c0 = cmd.FindOption(new string[] { "temp", "tmp" });
+				if (c0 != null)
 				{
-					if (cmd.CmdCount > 0)
+					FsTempData td = new FsTempData();
+					if (td.Load())
 					{
-						string s = "";
-						foreach (ArgItem s2 in cmdLines)
-						{
-							if (s2.Text != "") s += "\\r\\n";
-							s += s2.Text;
-						}
-						SetText(s);
-						InOutMode = InOutMode.None;
-						return;
-					}
-				}
-				ArgItem? c2 = cmd.FindOption(new string[] { "clipboard", "clip", "clp" });
-				if (c2 != null)
-				{
-					if (GetClipboard() == true)
-					{
-						return;
-					}
-				}
-				ArgItem? c1 = cmd.FindOption(new string[] { "file", "ld", "load" });
-				if (c1 != null)
-				{
-					if (cmd.CmdCount > 0)
-					{
-						if (GetFile(cmdLines[0].Text) == true)
-						{
-							return;
-						}
+						SetText( td.Data);
+						InOutMode = InOutMode.File;
 					}
 				}
 			}
@@ -110,16 +86,16 @@ namespace LineEdit
 				{
 					foreach (var item in items)
 					{
-						SetText(item.Text);
-						if (textEdit.Text != "")
+						if(item.Text!="")
 						{
-							InOutMode = InOutMode.None;
+							SetText(item.Text);
+							InOutMode = InOutMode.Cmd;
 							break;
 						}
+
 					}
 				}
 			}
-
 		}
 		private void SetText(string s)
 		{
@@ -188,181 +164,30 @@ namespace LineEdit
 		private void ExitWork(bool isOK)
 		{
 			bool noerr = false;
-			if (isOK)
+			FsTempData td = new FsTempData();
+			td.Data = textEdit.Text;
+			switch (InOutMode)
 			{
-				switch (InOutMode)
-				{
-					case InOutMode.Clip:
-						noerr = SetClipboard();
-						break;
-					case InOutMode.File:
-						noerr = SetFile();
-						break;
-					case InOutMode.None:
-						noerr = true;
-						break;
-				}
-			}
-			else
-			{
-				switch (InOutMode)
-				{
-					case InOutMode.Clip:
-						noerr = SetClipboardCancel();
-						break;
-					case InOutMode.File:
-						noerr = SetFileCancel();
-						break;
-					case InOutMode.None:
-						noerr = true;
-						break;
-				}
+				case InOutMode.File:
+					noerr = td.Save(isOK);
+					break;
+				case InOutMode.Cmd:
+					F_W.SettupConsole();
+					Console.WriteLine(td.DataT(isOK));
+					F_W.EndConsole(); 
+					break;
 			}
 			if (noerr == true)
 			{
 				Application.Exit();
 			}
 		}
-		// **********************************************************
-		private bool GetClipboard()
-		{
-			bool ret = false;
-			if (Clipboard.ContainsText(TextDataFormat.Text))
-			{
-				string s = ChkDecode(Clipboard.GetText());
-				if (s != "")
-				{
-					s = ChkTextHeader(s);
-					if (s != "")
-					{
-						textEdit.Text = s;
-						textEdit.SelectionLength = 0;
-						textEdit.SelectionStart = textEdit.Text.Length;
-						InOutMode = InOutMode.Clip;
-						ret = true;
-					}
-				}
-			}
-			return ret;
-		}
-		// **********************************************************
-		private bool SetClipboard()
-		{
-			bool ret = false;
-			try
-			{
-				string s = ChkEncode(textEdit.Text);
-				s = AddTextHeader(s);
-				Clipboard.SetText(s);
-				ret = true;
-			}
-			catch
-			{
-				ret = false;
-			}
-			return ret;
-		}
-		// **********************************************************
-		private bool SetClipboardCancel()
-		{
-			bool ret = false;
-			try
-			{
-				Clipboard.SetText(TextCancelHeader());
-				ret = true;
-			}
-			catch
-			{
-				ret = false;
-			}
-			return ret;
-		}
-		// **********************************************************
-		private string ChkTextHeader(string s)
-		{
-			if (s == "") return s;
-			string key = "#fuIn:";
-			int idx = s.IndexOf(key);
-			if (idx != 0) return s;
-			return s.Substring(key.Length).Trim();
-		}
-		// **********************************************************
-		private string AddTextHeader(string s)
-		{
-			return "#fuOut:" + s;
-		}
-		// **********************************************************
-		private string TextCancelHeader()
-		{
-			return "#fuCancel:";
-		}
-		// **********************************************************
-		private bool GetFile(string p)
-		{
-			bool ret = false;
-			if (File.Exists(p) == true)
-			{
-				try
-				{
-					string s = File.ReadAllText(p);
-					s = ChkTextHeader(s);
-					if (s != "")
-					{
-						m_TargetFile = p;
-						InOutMode = InOutMode.File;
-						SetText(s);
-						ret = true;
-					}
-				}
-				catch
-				{
-					m_TargetFile = "";
-					InOutMode = InOutMode.None;
-					ret = false;
-				}
-			}
-			return ret;
-		}
-		private bool SetFile()
-		{
-			bool ret = false;
-			if (m_TargetFile == "") return ret;
-			try
-			{
-				if (File.Exists(m_TargetFile) == true) File.Delete(m_TargetFile);
-				File.WriteAllText(m_TargetFile, AddTextHeader(textEdit.Text));
-				ret = File.Exists(m_TargetFile);
-			}
-			catch
-			{
-				ret = false;
-			}
-
-			return ret;
-		}
-		private bool SetFileCancel()
-		{
-			bool ret = false;
-			if (m_TargetFile == "") return ret;
-			try
-			{
-				if (File.Exists(m_TargetFile) == true) File.Delete(m_TargetFile);
-				File.WriteAllText(m_TargetFile, TextCancelHeader());
-				ret = File.Exists(m_TargetFile);
-			}
-			catch
-			{
-				ret = false;
-			}
-
-			return ret;
-		}
 	}
 	public enum InOutMode
 	{
 		None = 0,
-		Clip,
-		File
+		File,
+		Cmd
 	}
 
 }

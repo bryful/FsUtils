@@ -35,8 +35,17 @@ std::string ae_sound_snap();
 	ファイルパス文字の処理
 */
 // *********************************************************************************************
+bool ExistFile(char* path);
 bool ExistFile(const char* path);
+bool ExistFile(std::string path);
+
+bool ExistDirectory(char* path);
 bool ExistDirectory(const char* path);
+bool ExistDirectory(std::string  path);
+
+
+std::string GetTempFolder();
+std::string GetTempDataFile();
 
 // *********************************************************************************************
 /*

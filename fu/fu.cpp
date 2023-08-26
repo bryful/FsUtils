@@ -102,7 +102,7 @@ extern "C" {
 
         lstrcpy(str, message);
 
-        SetTextClipboard((LPCTSTR)str);
+        SetTextClipboard((LPCTSTR)str,true);
         outputData->data.string = str;
         outputData->type = kTypeString;
         return kESErrOK;
@@ -111,7 +111,7 @@ extern "C" {
 
     // *******************************************************************************
     EXPORT long clipboardGetText(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
-        LPCTSTR ls = GetTextClipboard();
+        LPCTSTR ls = GetTextClipboard(true);
 
         outputData->data.string = (char *)ls;
         outputData->type = kTypeString;
@@ -447,8 +447,30 @@ extern "C" {
         }
         return err;
     }
-    /*
-    EXPORT long callCommandGetResult(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+    EXPORT long callCommandGetResult1(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        long err = kESErrBadArgumentList;
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                std::string cmd = std::string(inputData[0].data.string);
+                std::string ret;
+                outputData->type = kTypeString;
+                if (CallCommandGetResult(cmd, ret) == true)
+                {
+                    outputData->data.string = getNewBuffer(ret);
+                }
+                else {
+                    outputData->data.string = getNewBuffer("error");
+                }
+                err = kESErrOK;
+            }
+        }
+        return err;
+    }
+    
+    EXPORT long callCommandGetResult2(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
         long err = kESErrBadArgumentList;
         if (inputDataCount > 0)
@@ -456,10 +478,10 @@ extern "C" {
             if (inputData[0].type == kTypeString)
             {
                 char* str = getNewBuffer(inputData[0].data.string);
-                char* buf = new char(5120);
-                memset(buf, '\0', 5120);
+                char* buf = new char(65536);
+                memset(buf, '\0', 65536);
 
-                if (CallCommandGetResult(str, buf, 5120) == 1)
+                if (CallCommandGetResult2(str, buf, 65536) == 1)
                 {
                     std::string stdOut = std::string(buf);
                     outputData->type = kTypeString;
@@ -478,7 +500,7 @@ extern "C" {
         }
         return err;
     }
-    */
+    
     EXPORT long isModifierKey(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
         if (inputDataCount > 0)
@@ -587,39 +609,32 @@ extern "C" {
         {
             if (inputData[0].type == kTypeString)
             {
-                std::string send = std::string(inputData[0].data.string);
-
-                send = "#fuIn:" + send;
-
-                SetTextClipboard(send.c_str());
+                FsTempData td;
+                char* s = inputData[0].data.string;
+                if (strlen(s) > 0)
+                {
+                    td.Data = std::string(s);
+                    td.SaveInput();
+                }
 
                 std::string parent = DllPath();
                 std::string cmd;
-                cmd = "\"" + parent + "lineEdit.exe\"" + " -clip";
+                cmd = "\"" + parent + "LineEdit.exe\"" + " -temp";
                 char* str = (char*)cmd.c_str();
                 CallCommandWait(str);
 
-                std::string ret = GetTextClipboardStr();
-
-                std::string key = "#fuOut:";
-                size_t idx = ret.find(key);
-                if (idx == 0)
+                if (td.Load() == true)
                 {
-                    ret = ret.substr(key.size());
                     outputData->type = kTypeString;
-                    outputData->data.string = getNewBuffer(ret);
-                }
-                else 
-                {
-                    key = "#fuCancel:";
-                    idx = ret.find(key);
-                    if (idx == 0)
-                    {
-                        outputData->type = kTypeScript;
-                        outputData->data.string = getNewBuffer("(new Boolean(false))");
-                    }
-                }
+                    outputData->data.string = getNewBuffer(td.Data);
 
+                }
+                else {
+                    outputData->type = kTypeScript;
+                    outputData->data.string = getNewBuffer("(new Boolean(false))");
+
+                }
+                td.Delete();
                 return kESErrOK;
             }
         }

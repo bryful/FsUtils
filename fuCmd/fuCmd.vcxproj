@@ -77,7 +77,7 @@
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>..\LineEdit\bin\Release\net6.0-windows</OutDir>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -163,6 +163,8 @@
     <ClInclude Include="..\Utils\FsFile.h" />
     <ClInclude Include="..\Utils\FsJson.h" />
     <ClInclude Include="..\Utils\FsProcess.h" />
+    <ClInclude Include="..\Utils\FsSharedMemory.h" />
+    <ClInclude Include="..\Utils\FsTempData.h" />
     <ClInclude Include="..\Utils\FsUtil.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

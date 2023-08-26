@@ -81,16 +81,16 @@ int CallCommandWait(char* cmd)
 
         // アプリケーションの終了コードの取得
         // (終了コードを使用しない場合は不要)
-        unsigned long exitCode;
-        GetExitCodeProcess(pi.hProcess, &exitCode);
+        //unsigned long exitCode;
+       // GetExitCodeProcess(pi.hProcess, &exitCode);
 
         // 終了コードが負の値になる場合もあるので、signedにキャストする
-        long ec = static_cast<long>(exitCode);
+        //long ec = static_cast<long>(exitCode);
 
         // ハンドルを閉じる
         CloseHandle(pi.hProcess);
         CloseHandle(pi.hThread);
-        return ec;
+        return 1;
     }
     else
     {
@@ -98,6 +98,8 @@ int CallCommandWait(char* cmd)
     }
 
 }
+
+
 int CallCommandGetResult(std::string cmd, std::string& result)
 {
     result = "";
@@ -117,7 +119,7 @@ int CallCommandGetResult(std::string cmd, std::string& result)
     STARTUPINFO si{};
     PROCESS_INFORMATION pi{};
 
-    char* buff = new char[arg.size()+1];
+    char* buff = new char[arg.size() + 1];
     memset(buff, 0, arg.size() + 1);
     lstrcpy(buff, (char*)arg.c_str());
 
@@ -134,7 +136,7 @@ int CallCommandGetResult(std::string cmd, std::string& result)
     {
         WaitForSingleObject(pi.hProcess, INFINITE);
 
-        if (ExistFile(tmpPath.c_str()) == true)
+        if (ExistFile((char*)tmpPath.c_str()) == true)
         {
             result = "";
             std::ifstream reading_file;
@@ -157,9 +159,7 @@ int CallCommandGetResult(std::string cmd, std::string& result)
     }
 }
 
-
-/*
-int CallCommandGetResult(const char* cmd, char* buf, DWORD size)
+int CallCommandGetResult2(const char* cmd, char* buf, DWORD size)
 {
     long ret = 0;
     if (strlen(cmd) <= 0) return ret;
@@ -234,4 +234,3 @@ int CallCommandGetResult(const char* cmd, char* buf, DWORD size)
     return ret;
 
 }
-*/
