@@ -28,14 +28,18 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			components = new System.ComponentModel.Container();
 			textEdit = new TextBox();
 			btnCancel = new Button();
 			btnOK = new Button();
+			contextMenuStrip1 = new ContextMenuStrip(components);
+			multilineMenu = new ToolStripMenuItem();
+			contextMenuStrip1.SuspendLayout();
 			SuspendLayout();
 			// 
 			// textEdit
 			// 
-			textEdit.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+			textEdit.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			textEdit.BackColor = Color.FromArgb(64, 64, 64);
 			textEdit.BorderStyle = BorderStyle.FixedSingle;
 			textEdit.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
@@ -43,7 +47,7 @@
 			textEdit.Location = new Point(34, 30);
 			textEdit.Name = "textEdit";
 			textEdit.ScrollBars = ScrollBars.Both;
-			textEdit.Size = new Size(441, 29);
+			textEdit.Size = new Size(440, 29);
 			textEdit.TabIndex = 0;
 			// 
 			// btnCancel
@@ -52,7 +56,7 @@
 			btnCancel.DialogResult = DialogResult.Cancel;
 			btnCancel.FlatStyle = FlatStyle.Flat;
 			btnCancel.ForeColor = SystemColors.ActiveBorder;
-			btnCancel.Location = new Point(313, 69);
+			btnCancel.Location = new Point(312, 69);
 			btnCancel.Name = "btnCancel";
 			btnCancel.Size = new Size(75, 23);
 			btnCancel.TabIndex = 1;
@@ -65,13 +69,25 @@
 			btnOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 			btnOK.FlatStyle = FlatStyle.Flat;
 			btnOK.ForeColor = SystemColors.ActiveBorder;
-			btnOK.Location = new Point(400, 69);
+			btnOK.Location = new Point(399, 69);
 			btnOK.Name = "btnOK";
 			btnOK.Size = new Size(75, 23);
 			btnOK.TabIndex = 2;
 			btnOK.Text = "OK";
 			btnOK.UseVisualStyleBackColor = true;
 			btnOK.Click += btnOK_Click;
+			// 
+			// contextMenuStrip1
+			// 
+			contextMenuStrip1.Items.AddRange(new ToolStripItem[] { multilineMenu });
+			contextMenuStrip1.Name = "contextMenuStrip1";
+			contextMenuStrip1.Size = new Size(122, 26);
+			// 
+			// multilineMenu
+			// 
+			multilineMenu.Name = "multilineMenu";
+			multilineMenu.Size = new Size(121, 22);
+			multilineMenu.Text = "Multiline";
 			// 
 			// MainForm
 			// 
@@ -81,7 +97,8 @@
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = Color.FromArgb(64, 64, 64);
 			CancelButton = btnCancel;
-			ClientSize = new Size(500, 100);
+			ClientSize = new Size(499, 100);
+			ContextMenuStrip = contextMenuStrip1;
 			Controls.Add(btnOK);
 			Controls.Add(btnCancel);
 			Controls.Add(textEdit);
@@ -89,7 +106,8 @@
 			MinimumSize = new Size(200, 100);
 			Name = "MainForm";
 			ShowIcon = false;
-			Text = "LineEdit";
+			Text = "Edit";
+			contextMenuStrip1.ResumeLayout(false);
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -99,5 +117,7 @@
 		private TextBox textEdit;
 		private Button btnCancel;
 		private Button btnOK;
+		private ContextMenuStrip contextMenuStrip1;
+		private ToolStripMenuItem multilineMenu;
 	}
 }

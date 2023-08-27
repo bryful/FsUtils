@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChkForm", "ChkForm\ChkForm.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsgBox", "MsgBox\MsgBox.csproj", "{3532EAC1-BABA-49FD-A966-F9368AFEEF7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineEdit", "LineEdit\LineEdit.csproj", "{97C4B70C-7D1F-45FA-8C51-22917870A501}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edit", "Edit\Edit.csproj", "{97C4B70C-7D1F-45FA-8C51-22917870A501}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -75,11 +75,12 @@ void PlayAESound(int v);
 void SoundPlay(char* s);
 
 // *********************************************************************************************
-bool IsModifierkey(char* key);
-bool IsModifierkey(int v);
+bool IsModifierKey(char* key);
+bool IsModifierKey(int v);
 bool IsShiftKey();
 bool IsControlKey();
 bool IsAltKey();
+bool IsControlCKey();
 
 // *********************************************************************************************
 std::string get_env(const char* environment_name);

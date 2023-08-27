@@ -1,4 +1,8 @@
 ﻿
+<style>
+P { text-indent: 1.5em; }
+</style>
+
 #  FsUtils [ fu.dll ] "ExternalObject"
 
 ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するものになります。<br>
@@ -76,30 +80,79 @@ jsxフォルダ内にあるスクリプトを参考にしてください。
 随時増やしていくつもりです。<br>
 まだ文字列に関するエラーチェックが甘いので変な文字列を与えるとヤバいです（近いうちに直します）
 
-* clipboardSetText(str)<br>クリップビードに文字列をコピーします。
-* clipboardGetText()<br>クリップボードから文字列を獲得します。
-* pathGetParent(path)<br>パス文字列から親ディレクトリを返します。
-* pathGetName(path)<br>パス文字列からファイル名のみ抜き出します。
-* pathGetNameWithoutExt(path)<br>パス文字列から拡張子なしのファイル名を抜き出します。
-* pathGetExt(path)<br>パス文字列から拡張子を返します。
-* processAEList()<br>起動しているAEの情報が配列で返ります。
-* processList()<br>起動しているプロセスの情報が配列で返ります。
-* showWindow(hWnd,nCmdShow)<br>指定したウィンドウハンドルで。ウィンドウの表示方法を制御します。
-* windowMax()<br>起動しているAE全てを最大化します。
-* windowMin()<br>起動しているAE全てを最小化します。
-* windowNormal()<br>起動しているAE全てを通常化します。
-* getMousePos()<br>マウスの位置をオブジェクトで返します。
-* setMousePos(x,y)<br>マウスの位置を設定します。
-* beep()<br>ビープ音を鳴らします。 1-52の値が指定できます。
-* installedAE()<br>インストールされているAfterFX.exeの実行ファイルパスの配列が変える。
-* isInstalledESTK()<br>Extend Script Tool Kit cc がインストールされているか(bool)
-* aePlaySound(num)<br>AEのリソースにあるWavファイルを再生します。
-* playSound(path)<br>wavファイルを再生します。パスはWindows形式で
-* isModifierkey(str)<br>指定したキーが押されてたらtrueが返ります。
-* isShiftkey()<br>Shiftキーが押されていたらtrue
-* isControlkey()<br>Controlキーが押されていたらtrue
-* isAltkey()<br>Altキーが押されていたらtrue
-* lineEdit(str)<br>一行エディタを表示します。cancelでnullが返るので注意
+
+### clipboardSetText(str)
+<p>クリップビードに文字列をコピーします。</p>
+
+```
+fu.clipboardSetText("aaa");
+```
+
+### clipboardGetText()
+<p>クリップボードから文字列を獲得します。</p>
+
+```
+var s = fu.clipboardGetText();
+alert(s);
+```
+
+### pathGetParent(path) / pathGetName(path) / pathGetNameWithoutExt(path) / pathGetExt(path)
+<p>パス文字列から親ディレクトリ・ファイル名・拡張子を返します。</p>
+
+```
+var p = "C:\\aaa\\ccc\\ddd.tga";
+var d = fu.pathGetParent(p); //"C:\\aaa\\ccc"
+var n = fu.pathGetName(p); //"ddd.tga"
+var h = fu.pathGetNameWithoutExt(p);//"ddd"
+var e = fu.pathExt(p); // ".tga"
+```
+
+### processAEList()
+<p>起動しているAEの情報が配列で返ります。</p>
+
+### processList()
+<p>起動しているプロセスの情報が配列で返ります。</p>
+
+### showWindow(hWnd,nCmdShow)
+<p>指定したウィンドウハンドルで。ウィンドウの表示方法を制御します。</p>
+
+### windowMax()　windowMin()　windowNormal()
+<p>起動しているAEを最大化・最小化・通常にします。</p>
+
+### getMousePos()
+<p>マウスの位置をオブジェクトで返します。</p>
+
+### setMousePos(x,y)
+<p>マウスの位置を設定します。</p>
+
+### beep()
+<p>ビープ音を鳴らします。 1-52の値が指定できます。</p>
+
+### installedAE()
+<p>インストールされているAfterFX.exeの実行ファイルパスの配列が変える。</p>
+
+### isInstalledESTK()
+<p>Extend Script Tool Kit cc がインストールされているか(bool)</p>
+
+### callCommand(str) callCommandWait(str) callCommandGetResult(str)
+<p>strのコマンドを実行します。<br>
+callCommandGetResultはコンソールコマンドの標準出力を取り込みます。</p>
+
+### aePlaySound(num)
+<p>AEのリソースにあるWavファイルを再生します。</p>
+
+### playSound(path)
+<p>wavファイルを再生します。パスはWindows形式で</p>
+
+### isModifierkey(str)
+<p>指定したキーが押されてたらtrueが返ります。</p>
+
+### isShiftkey() isAltkey() isControlkey()
+<p>Shift / Alt / Controlキーが押されていたらtrue</p>
+
+
+### edit(str)
+<p>一行エディタを表示します。cancelでnullが返るので注意</p>
 
 
 

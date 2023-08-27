@@ -23,7 +23,6 @@
     <ClInclude Include="..\Utils\AEProcess.h" />
     <ClInclude Include="..\Utils\FsFile.h" />
     <ClInclude Include="..\Utils\FsProcess.h" />
-    <ClInclude Include="..\Utils\FsSharedMemory.h" />
     <ClInclude Include="..\Utils\FsTempData.h" />
     <ClInclude Include="..\Utils\FsUtil.h" />
     <ClInclude Include="fu.h" />

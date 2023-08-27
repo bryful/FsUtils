@@ -7,7 +7,7 @@ function initExtension(extensionDir) {
         ret = true;
     } catch (e) {
         ret = false;
-        alert("exception: " + e);
+        alert("exception: " + e.toString());
     }
     if (fu==null)
     {
@@ -19,8 +19,16 @@ function initExtension(extensionDir) {
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
 initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
-var pt = fu.getMousePos();
-alert(pt.toSource());
 
-alert("マウスを左上に移動します");
-alert(fu.setMousePos(20,20));
+var s = "ZBAaaあああ";
+
+// sに改行コードが含まれていたら、マルチラインモードになります。
+var s2 = fu.edit(s);
+if(s2!=null)
+{
+	alert(s2);
+
+}else{
+	alert("NULL");
+}
+

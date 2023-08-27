@@ -409,7 +409,7 @@ namespace LineEdit
 		{
 			get { return base.ContainsFocus; }
 		}
-		[Category("Hypowered"), Browsable(false)]
+		[Category("Hypowered"), Browsable(true)]
 		public new System.Windows.Forms.ContextMenuStrip ContextMenuStrip
 		{
 			get { return base.ContextMenuStrip; }

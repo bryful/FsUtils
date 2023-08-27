@@ -7,7 +7,7 @@ function initExtension(extensionDir) {
         ret = true;
     } catch (e) {
         ret = false;
-        alert("exception: " + e);
+        alert("exception: " + e.toString());
     }
     if (fu==null)
     {
@@ -15,13 +15,15 @@ function initExtension(extensionDir) {
     }
     return ret;
 }
+
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
 initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
+// スクリプトの実行場所ならこれ
 
-var d = fu.installedAE();
 
-alert(d.toSource());
+fu.beep(5);
 
-var dd = fu.isInstalledESTK();
+var list = fu.processAEList();
+du.windowMax();
 
-alert("ESTK install:" + dd);
+alert(File.decode(list[0].path) +"\r\n" + File.decode(list[0].title));

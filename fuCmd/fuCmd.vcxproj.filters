@@ -56,9 +56,6 @@
     <ClInclude Include="..\Utils\FsJson.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\FsSharedMemory.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\FsTempData.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>

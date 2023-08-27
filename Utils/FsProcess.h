@@ -31,6 +31,6 @@
 
 int CallCommand(char* cmd);
 int CallCommandWait(char* cmd);
-int CallCommandGetResult2(const char* cmd, char* buf, DWORD size);
-int CallCommandGetResult(std::string cmd, std::string& result);
+int CallCommandGetResult(const char* cmd, char* buf, DWORD size);
+//int CallCommandGetResult(std::string cmd, std::string& result);
 

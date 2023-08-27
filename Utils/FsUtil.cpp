@@ -468,9 +468,9 @@ void SoundPlay(char * s)
 }
 
 // **********************************************************************************
-bool IsModifierkey(int v)
+bool IsModifierKey(int v)
 {
-	if ((GetKeyState(v) & 0x8000) == 0x8000)
+	if ((GetAsyncKeyState(v)& 1) )
 	{
 		return true;
 	}
@@ -478,7 +478,16 @@ bool IsModifierkey(int v)
 		return false;
 	}
 }
-bool IsModifierkey(char * key)
+bool IsControlCKey()
+{
+	bool ret = false;
+	if (GetAsyncKeyState(VK_CONTROL) & 1)
+	{
+		ret = (GetAsyncKeyState('C') & 1);
+	}
+	return ret;
+}
+bool IsModifierKey(char * key)
 {
 	std::string k = std::string(getNewBuffer(key));
 	if (k.empty() == true) return false;
@@ -486,69 +495,69 @@ bool IsModifierkey(char * key)
 
 	if (k.compare(std::string("lbutton")) == 0)
 	{
-		return IsModifierkey(VK_LBUTTON);
+		return IsModifierKey(VK_LBUTTON);
 	}
 	else if (k.compare(std::string("rbutton")) == 0)
 	{
-		return IsModifierkey(VK_RBUTTON);
+		return IsModifierKey(VK_RBUTTON);
 	}
 	else if (k.compare(std::string("mbutton")) == 0)
 	{
-		return IsModifierkey(VK_MBUTTON);
+		return IsModifierKey(VK_MBUTTON);
 	}
 	else if (k.compare(std::string("back")) == 0)
 	{
-		return IsModifierkey(VK_BACK);
+		return IsModifierKey(VK_BACK);
 	}
 	else if (k.compare(std::string("tab")) == 0)
 	{
-		return IsModifierkey(VK_TAB);
+		return IsModifierKey(VK_TAB);
 	}
 	else if (k.compare(std::string("help")) == 0)
 	{
-		return IsModifierkey(VK_HELP);
+		return IsModifierKey(VK_HELP);
 	}
 	else if (k.compare(std::string("shift")) == 0)
 	{
-		return IsModifierkey(VK_SHIFT);
+		return IsModifierKey(VK_SHIFT);
 	}
 	else if (k.compare(std::string("control")) == 0)
 	{
-		return IsModifierkey(VK_CONTROL);
+		return IsModifierKey(VK_CONTROL);
 	}
 	else if (k.compare(std::string("alt")) == 0)
 	{
-		return IsModifierkey(VK_MENU);
+		return IsModifierKey(VK_MENU);
 	}
 	else if (k.compare(std::string("escape")) == 0)
 	{
-		return IsModifierkey(VK_ESCAPE);
+		return IsModifierKey(VK_ESCAPE);
 	}
 	else if (k.compare(std::string("space")) == 0)
 	{
-		return IsModifierkey(VK_SPACE);
+		return IsModifierKey(VK_SPACE);
 	}
 	else if (k.compare(std::string("left")) == 0)
 	{
-		return IsModifierkey(VK_LEFT);
+		return IsModifierKey(VK_LEFT);
 	}
 	else if (k.compare(std::string("right")) == 0)
 	{
-		return IsModifierkey(VK_RIGHT);
+		return IsModifierKey(VK_RIGHT);
 	}
 	else if (k.compare(std::string("up")) == 0)
 	{
-		return IsModifierkey(VK_UP);
+		return IsModifierKey(VK_UP);
 	}
 	else if (k.compare(std::string("down")) == 0)
 	{
-		return IsModifierkey(VK_DOWN);
+		return IsModifierKey(VK_DOWN);
 	}
 	else {
 		char c = k[0];
 		if (((c >= '0') && (c <= '9')) || ((c >= 'a') && (c <= 'z')))
 		{
-			return IsModifierkey((int)c);
+			return IsModifierKey((int)c);
 		}
 	}
 
@@ -558,28 +567,29 @@ bool IsModifierkey(char * key)
 
 bool IsShiftKey()
 {
-	return IsModifierkey(VK_SHIFT);
+	return IsModifierKey(VK_SHIFT);
 }
 bool IsControlKey()
 {
-	return IsModifierkey(VK_CONTROL);
+	return IsModifierKey(VK_CONTROL);
 }
 bool IsAltKey()
 {
-	return IsModifierkey(VK_MENU);
+	return IsModifierKey(VK_MENU);
 }
 std::string get_env(const char* environment_name)
 {
 	std::string ret = "";
-	DWORD buf = GetEnvironmentVariable(environment_name, nullptr, 0);
+	DWORD buf = GetEnvironmentVariable(environment_name, nullptr,0);
 	if (buf == 0) return ret;
 	std::string buffer;
 	buffer.resize(buf + 1);//reserve
 	GetEnvironmentVariable(environment_name , &buffer[0], buffer.size() );
 		ReplaceAll(buffer, "%3D", "=");
-		ReplaceAll(buffer, "/r", "//r");
-		ReplaceAll(buffer, "/n", "//n");
-		ReplaceAll(buffer, "/t", "//t");
+		ReplaceAll(buffer, "//r", "/r");
+		ReplaceAll(buffer, "//n", "/n");
+		ReplaceAll(buffer, "//t", "/t");
+		//ReplaceAll(buffer, "///"", "/"");
 		ReplaceAll(buffer, "//", "////");
 
 	buffer.resize(std::strlen(buffer.c_str()));//resize
@@ -588,11 +598,12 @@ std::string get_env(const char* environment_name)
 bool set_env(const char* environment_name,std::string v)
 {
 	bool ret = false;
-	if (v != "") {
+	if (v.empty()==false) {
 		ReplaceAll(v, "=", "%3D");
-		ReplaceAll(v, "//r", "/r");
-		ReplaceAll(v, "//n", "/n");
-		ReplaceAll(v, "//t", "/t");
+		ReplaceAll(v, "/r", "//r");
+		ReplaceAll(v, "/n", "//n");
+		ReplaceAll(v, "/t", "//t");
+		//ReplaceAll(v, "///"", "/"");
 		ReplaceAll(v, "////", "//");
 		if (SetEnvironmentVariable(environment_name, v.c_str()) != 0)
 		{
@@ -660,19 +671,3 @@ BOOL IsUTF8(char* bytes)
 	}
 }
 BOOL IsUTF8(std::string s) { return IsUTF8((char*)s.c_str()); }
-
-
-/*
-std::string GetTempFolder()
-{
-	DWORD sz = GetTempPath(0, nullptr);
-	LPSTR lpBuffer = (LPSTR)malloc(sz+1);
-	if (GetTempPath(sz, lpBuffer) == 0)
-	{
-		free(lpBuffer);
-		return std::string("");
-	}
-	return std::string(lpBuffer);
-
-}
-*/

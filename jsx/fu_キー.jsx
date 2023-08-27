@@ -1,3 +1,4 @@
+
 var fu = null;
 
 function initExtension(extensionDir) {
@@ -7,7 +8,7 @@ function initExtension(extensionDir) {
         ret = true;
     } catch (e) {
         ret = false;
-        alert("exception: " + e);
+       alert("exception: " + e.toString());
     }
     if (fu==null)
     {
@@ -15,17 +16,35 @@ function initExtension(extensionDir) {
     }
     return ret;
 }
-
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
 initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
-var s = "ZBAaaあああ";
+alert("Ctrl / Shift / Alt のキー検出テスト。OKを押したらループ開始。\r\n適当なforループさせてます\r\n ");
 
-var s2 = fu.lineEdit(s);
-if(s2==null)
+var i=0;
+while(true)
 {
-	alert("NULL");
+	i++;
+	if (fu.isControlKey()==true)
+	{
+		alert("Crtlが押された");
+		break;
 
-}else{
-	alert(s2);
+	}
+	if (fu.isAltKey()==true)
+	{
+		alert("Altが押された");
+		break;
+
+	}
+	if(fu.isShiftKey())
+	{
+		alert("shiftが押された");
+		break;
+	}
+
+	if(i>=65536*10){
+		alert(i+"回ループしたので終わります");
+		break;
+	}
 }

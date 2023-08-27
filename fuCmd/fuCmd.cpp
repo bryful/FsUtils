@@ -34,12 +34,12 @@ std::string ExePath()
 
 	return pathname;
 }
-static int lineEdit(char* src)
+static int Edit(char* src)
 {
 	int ret = 0;
 	std::string parent = ExePath();
 	std::string cmd;
-	cmd = parent + "LineEdit.exe";
+	cmd = parent + "Edit.exe";
 	if (ExistFile(cmd) == false) {
 		std::cout << "Exists Err";
 		std::cout << "\r\n";
@@ -90,7 +90,8 @@ static void Usage(char *ex)
 	ret += "\t" + exe + " PlaySound num\r\n";
 	ret += "\t" + exe + " callCommand args\r\n";
 	ret += "\t" + exe + " callCommandWait args\r\n";
-	ret += "\t" + exe + " callCommandResult args\r\n";
+	ret += "\t" + exe + " callCommandGetResult cmd\r\n";
+	ret += "\t" + exe + " edit str\r\n";
 
 	//
 
@@ -302,11 +303,25 @@ static int Command(int argc, char* argv[])
 				ret = CallCommandWait(argv[2]);
 			}
 		}
+		else if ((key == "callcommandgetresult") || (key == "callcg"))
+		{
+			if (argc >= 3)
+			{
+				char buf[2048];
+				ZeroMemory(buf, 2048);
+				ret = CallCommandGetResult(argv[2],buf,2048);
+				if (ret != 0)
+				{
+					std::string rr(buf);
+					std::cout << rr << std::endl;
+				}
+			}
+			}
 		else if ((key == "lineedit") || (key == "le"))
 		{
 			if (argc >= 3)
 			{
-				ret = lineEdit(argv[2]);
+				ret = Edit(argv[2]);
 			}
 		}
 	}
@@ -331,7 +346,4 @@ int main(int argc, char* argv[])
 	//CallCommandWait("ChkForm.exe");
 	//ret = CallCommand("ChkForm.exe");
 
-
-	std::cout << GetTempFolder();
-	return ret;
 }

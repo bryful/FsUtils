@@ -40,7 +40,7 @@ namespace {
         "msg_s,"
         "msgln_s,"
         "msgcls,"
-        "lineEdit_s,"
+        "edit_s,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -403,7 +403,8 @@ extern "C" {
         {
             if (inputData[0].type == kTypeString)
             {
-                char* str = getNewBuffer(inputData[0].data.string);
+                char* str = Utf8toShiftJis(inputData[0].data.string);
+                str = getNewBuffer(str);
                 outputData->type = kTypeInteger;
                 outputData->data.intval = CallCommand(str);
                 return kESErrOK;
@@ -417,7 +418,8 @@ extern "C" {
         {
             if (inputData[0].type == kTypeString)
             {
-                char* str = getNewBuffer(inputData[0].data.string);
+                char* str = Utf8toShiftJis(inputData[0].data.string);
+                str = getNewBuffer(str);
                 outputData->type = kTypeInteger;
                 outputData->data.intval = CallCommandWait(str);
                 return kESErrOK;
@@ -425,6 +427,7 @@ extern "C" {
         }
         return kESErrBadArgumentList;
     }
+   
     EXPORT long callCommandGetResult(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
         long err = kESErrBadArgumentList;
@@ -432,62 +435,19 @@ extern "C" {
         {
             if (inputData[0].type == kTypeString)
             {
-                std::string cmd = std::string(inputData[0].data.string);
-                std::string ret;
-                outputData->type = kTypeString;
-                if (CallCommandGetResult(cmd, ret) == true)
-                {
-                    outputData->data.string = getNewBuffer(ret);
-                }
-                else {
-                    outputData->data.string = getNewBuffer("error");
-                }
-                err = kESErrOK;
-            }
-        }
-        return err;
-    }
-    EXPORT long callCommandGetResult1(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+                char* str = Utf8toShiftJis(inputData[0].data.string);
+                str = getNewBuffer(str);
 
-        long err = kESErrBadArgumentList;
-        if (inputDataCount > 0)
-        {
-            if (inputData[0].type == kTypeString)
-            {
-                std::string cmd = std::string(inputData[0].data.string);
-                std::string ret;
-                outputData->type = kTypeString;
-                if (CallCommandGetResult(cmd, ret) == true)
-                {
-                    outputData->data.string = getNewBuffer(ret);
-                }
-                else {
-                    outputData->data.string = getNewBuffer("error");
-                }
-                err = kESErrOK;
-            }
-        }
-        return err;
-    }
-    
-    EXPORT long callCommandGetResult2(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
-
-        long err = kESErrBadArgumentList;
-        if (inputDataCount > 0)
-        {
-            if (inputData[0].type == kTypeString)
-            {
-                char* str = getNewBuffer(inputData[0].data.string);
-                char* buf = new char(65536);
+                char buf[65536];
                 memset(buf, '\0', 65536);
 
-                if (CallCommandGetResult2(str, buf, 65536) == 1)
+                if (CallCommandGetResult(str, buf, 65536) == 1)
                 {
                     std::string stdOut = std::string(buf);
                     outputData->type = kTypeString;
-                    ReplaceAll(stdOut, "\\", "\\\\");
+                    //ReplaceAll(stdOut, "\\", "\\\\");
                     char* ret = ShiftJistoUtf8((char *)stdOut.c_str());
-                    outputData->data.string = getNewBuffer("ABAAA");
+                    outputData->data.string = getNewBuffer(ret);
                 }
                 else {
                     outputData->type = kTypeString;
@@ -510,7 +470,7 @@ extern "C" {
                 char* str = getNewBuffer(inputData[0].data.string);
 
                 outputData->type = kTypeBool;
-                outputData->data.intval = IsModifierkey(str);
+                outputData->data.intval = IsModifierKey(str);
                 return kESErrOK;
             }
         }
@@ -526,6 +486,12 @@ extern "C" {
 
         outputData->type = kTypeBool;
         outputData->data.intval = IsControlKey();
+        return kESErrOK;
+    }
+    EXPORT long isControlCKey(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        outputData->type = kTypeBool;
+        outputData->data.intval = IsControlCKey();
         return kESErrOK;
     }
     EXPORT long isAltKey(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
@@ -545,6 +511,7 @@ extern "C" {
                 ReplaceAll(argv, "\r", "\\r");
                 ReplaceAll(argv, "\n", "\\n");
                 ReplaceAll(argv, "\t", "\\t");
+                ReplaceAll(argv, "\"", "\\\"");
 
 
                 argv = std::string(Utf8toShiftJis((char*)argv.c_str()));
@@ -574,6 +541,7 @@ extern "C" {
                 ReplaceAll(argv, "\r", "\\r");
                 ReplaceAll(argv, "\n", "\\n");
                 ReplaceAll(argv, "\t", "\\t");
+                ReplaceAll(argv, "\"", "\\\"");
 
 
                 argv = std::string(Utf8toShiftJis((char*)argv.c_str()));
@@ -603,23 +571,42 @@ extern "C" {
         //outputData->data.string = str;
         return kESErrOK;
     }
-    EXPORT long lineEdit(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+    EXPORT long edit(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
         if (inputDataCount > 0)
         {
             if (inputData[0].type == kTypeString)
             {
                 FsTempData td;
-                char* s = inputData[0].data.string;
-                if (strlen(s) > 0)
-                {
-                    td.Data = std::string(s);
-                    td.SaveInput();
-                }
-
                 std::string parent = DllPath();
                 std::string cmd;
-                cmd = "\"" + parent + "LineEdit.exe\"" + " -temp";
+
+                char* s = inputData[0].data.string;
+
+                int len = strlen(s);
+                bool isCmd = ((len >= 0) && (len < 2048));
+                if (len > 0)
+                {
+                    if (isCmd) 
+                    {
+                        std::string cc = std::string(s);
+                        cc = ReplaceAll(cc, "\\", "\\\\");
+                        cc = ReplaceAll(cc, "\r", "\\r");
+                        cc = ReplaceAll(cc, "\n", "\\n");
+                        cc = ReplaceAll(cc, "\t", "\\t");
+                        cc = ReplaceAll(cc, "\"", "\\\"");
+                        char* dddd = Utf8toShiftJis((char*)cc.c_str());
+                        cc = std::string(dddd);
+                        cmd = "\"" + parent + "Edit.exe\"" + " -cmdfile " +"\"" + cc + "\"";
+                    }
+                    else 
+                    {
+                        td.Data = std::string(s);
+                        td.SaveInput();
+                        cmd = "\"" + parent + "Edit.exe\"" + " -temp";
+                    }
+                }
+
                 char* str = (char*)cmd.c_str();
                 CallCommandWait(str);
 
@@ -631,7 +618,7 @@ extern "C" {
                 }
                 else {
                     outputData->type = kTypeScript;
-                    outputData->data.string = getNewBuffer("(new Boolean(false))");
+                    outputData->data.string = getNewBuffer("(null)");
 
                 }
                 td.Delete();

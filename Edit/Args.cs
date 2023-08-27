@@ -170,5 +170,20 @@ namespace LineEdit
 			}
 			return list.ToArray();
 		}
+		public string[] CommandWithoutOptin()
+		{
+			List<string> list = new List<string>();
+			if (_args.Length > 0)
+			{
+				foreach (ArgItem a in _args)
+				{
+					if (a.IsOption == false)
+					{
+						list.Add(a.Text);
+					}
+				}
+			}
+			return list.ToArray();
+		}
 	}
 }

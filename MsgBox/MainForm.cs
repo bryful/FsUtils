@@ -108,7 +108,7 @@ namespace MsgBox
 						else if (isClear == false)
 						{
 							string s2 = arg;
-							s2 = s2.Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\\\", "\\");
+							s2 = s2.Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\\"", "\"").Replace("\\\\", "\\");
 							isText += s2;
 
 						}

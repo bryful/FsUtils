@@ -100,7 +100,7 @@ int CallCommandWait(char* cmd)
 }
 
 
-int CallCommandGetResult(std::string cmd, std::string& result)
+int CallCommandGetResult0(std::string cmd, std::string& result)
 {
     result = "";
     if (cmd.size() <= 0) return false;
@@ -159,7 +159,7 @@ int CallCommandGetResult(std::string cmd, std::string& result)
     }
 }
 
-int CallCommandGetResult2(const char* cmd, char* buf, DWORD size)
+int CallCommandGetResult(const char* cmd, char* buf, DWORD size)
 {
     long ret = 0;
     if (strlen(cmd) <= 0) return ret;

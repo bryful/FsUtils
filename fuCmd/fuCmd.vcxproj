@@ -163,7 +163,6 @@
     <ClInclude Include="..\Utils\FsFile.h" />
     <ClInclude Include="..\Utils\FsJson.h" />
     <ClInclude Include="..\Utils\FsProcess.h" />
-    <ClInclude Include="..\Utils\FsSharedMemory.h" />
     <ClInclude Include="..\Utils\FsTempData.h" />
     <ClInclude Include="..\Utils\FsUtil.h" />
     <ClInclude Include="resource.h" />

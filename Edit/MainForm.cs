@@ -1,11 +1,35 @@
 using System.CodeDom;
 using System.Text;
 using System.Diagnostics.Eventing.Reader;
+using System.Diagnostics;
 
 namespace LineEdit
 {
 	public partial class MainForm : BaseForm
 	{
+		public bool IsMultiline
+		{
+			get { return textEdit.Multiline; }
+			set
+			{
+				if (value)
+				{
+					this.MinimumSize = new Size(200, 100);
+					this.MaximumSize = new Size(3000, 2000);
+					if (this.Height < 200) this.Height = 200;
+					textEdit.Multiline = true;
+					this.AcceptButton = null;
+				}
+				else
+				{
+					this.MinimumSize = new Size(200, 100);
+					this.MaximumSize = new Size(3000, 100);
+					this.Height = 100;
+					textEdit.Multiline = false;
+					this.AcceptButton = btnOK;
+				}
+			}
+		}
 		private InOutMode InOutMode = InOutMode.None;
 		// ********************************************************************
 		private F_Pipe m_Server = new F_Pipe();
@@ -35,6 +59,16 @@ namespace LineEdit
 			InitializeComponent();
 			this.FormClosed += (sender, e) => { LastSettings(); };
 			StartSettings();
+
+			contextMenuStrip1.Opening += (sender, e) =>
+			{
+				multilineMenu.Checked = IsMultiline;
+			};
+			multilineMenu.Click += (sender, e) =>
+			{
+				IsMultiline = !multilineMenu.Checked;
+			};
+
 			Command(Environment.GetCommandLineArgs().Skip(1).ToArray(), PIPECALL.StartupExec);
 		}
 		// **********************************************************
@@ -43,12 +77,17 @@ namespace LineEdit
 			PrefFile pf = new PrefFile(this);
 			pf.Load();
 			Rectangle? rect = pf.GetBounds();
+			//object? v = null;
+			//v = pf.JsonFile.ValueAuto("Multiline", typeof(Boolean).Name);
+			//if (v != null) IsMultiline = (bool)v;
+
 		}
 		// **********************************************************
 		private void LastSettings()
 		{
 			PrefFile pf = new PrefFile(this);
 			pf.SetBounds();
+			//pf.JsonFile.SetValue("Multiline", IsMultiline);
 			pf.Save();
 		}
 
@@ -62,7 +101,7 @@ namespace LineEdit
 		{
 			Args cmd = new Args(args);
 			if (cmd.Count <= 0) return;
-			ArgItem[] cmdLines = cmd.ItemsWithoutOptin();
+			string[] cmdLines = cmd.CommandWithoutOptin();
 
 
 			if (cmd.Options.Length > 0)
@@ -73,33 +112,52 @@ namespace LineEdit
 					FsTempData td = new FsTempData();
 					if (td.Load())
 					{
-						SetText( td.Data);
-						InOutMode = InOutMode.File;
+						SetText(td.Data);
+						InOutMode = InOutMode.FileFile;
 					}
+				}
+				ArgItem? c1 = cmd.FindOption(new string[] { "cmdfile", "commandfile" });
+				if (c1 != null)
+				{
+					string s = "";
+					if (cmdLines.Length > 0)
+					{
+						s = ChkDecode(cmdLines[0]);
+					}
+					SetText(s);
+					InOutMode = InOutMode.CmdFile;
+				}
+				ArgItem? c2 = cmd.FindOption(new string[] { "cmd", "command" });
+				if (c2 != null)
+				{
+					string s = "";
+					if (cmdLines.Length > 0)
+					{
+						s = ChkDecode(cmdLines[0]);
+					}
+					SetText(s);
+					InOutMode = InOutMode.CmdCmd;
 				}
 			}
 			else
 			{
-				ArgItem[] items = cmd.ItemsWithoutOptin();
-
-				if (items.Length > 0)
+				string s = "";
+				if (cmdLines.Length > 0)
 				{
-					foreach (var item in items)
-					{
-						if(item.Text!="")
-						{
-							SetText(item.Text);
-							InOutMode = InOutMode.Cmd;
-							break;
-						}
-
-					}
+					s = ChkDecode(cmdLines[0]);
 				}
+				SetText(s);
+				InOutMode = InOutMode.CmdNone;
 			}
 		}
 		private void SetText(string s)
 		{
-			textEdit.Text = ChkDecode(s);
+			string[] sa = s.Split("\n");
+			if (sa.Length > 1)
+			{
+				IsMultiline = true;
+			}
+			textEdit.Text = s;
 			if (textEdit.Text != "")
 			{
 				textEdit.SelectionLength = 0;
@@ -108,13 +166,13 @@ namespace LineEdit
 		}
 		private string ChkDecode(string s)
 		{
-			s = s.Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\\\", "\\");
+			s = s.Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\\"", "\"").Replace("\\\\", "\\");
 
 			return s;
 		}
 		private string ChkEncode(string s)
 		{
-			s = s.Replace("\\", "\\\\").Replace("\r", "\\r").Replace("\n", "\\n").Replace("\t", "\\t");
+			s = s.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r", "\\r").Replace("\n", "\\n").Replace("\t", "\\t");
 
 			return s;
 		}
@@ -165,29 +223,43 @@ namespace LineEdit
 		{
 			bool noerr = false;
 			FsTempData td = new FsTempData();
-			td.Data = textEdit.Text;
 			switch (InOutMode)
 			{
-				case InOutMode.File:
+				case InOutMode.CmdFile:
+				case InOutMode.FileFile:
+					td.Data = textEdit.Text;
 					noerr = td.Save(isOK);
 					break;
-				case InOutMode.Cmd:
+				case InOutMode.CmdCmd:
 					F_W.SettupConsole();
+					td.Data = ChkEncode(textEdit.Text);
 					Console.WriteLine(td.DataT(isOK));
-					F_W.EndConsole(); 
+					noerr = true;
+					F_W.EndConsole();
 					break;
+				default:
+					noerr = true;
+					break;
+
 			}
 			if (noerr == true)
 			{
 				Application.Exit();
 			}
 		}
+
+		private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+
+		}
 	}
 	public enum InOutMode
 	{
 		None = 0,
-		File,
-		Cmd
+		FileFile,
+		CmdCmd,
+		CmdFile,
+		CmdNone
 	}
 
 }

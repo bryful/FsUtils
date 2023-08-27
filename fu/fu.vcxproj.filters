@@ -59,9 +59,6 @@
     <ClInclude Include="fu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\FsSharedMemory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Utils\FsTempData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
