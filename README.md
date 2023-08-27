@@ -8,7 +8,7 @@ P { text-indent: 1.5em; }
 ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するものになります。<br>
 dllの名前をFsUtils.dllからfu.dllに変更しました。fsutilコマンドと間違えやすかったので(実害はないと思います)<br>
 <br>
-lineEditダイアログが表示できるようになりました。<br>
+editとMsgBOxダイアログが表示できるようになりました。<br>
 <br>
 動作確認用のコマンドライン版(fuCmd.exe)も入れてあります。<br>
 
@@ -154,6 +154,8 @@ callCommandGetResultはコンソールコマンドの標準出力を取り込み
 ### edit(str)
 <p>一行エディタを表示します。cancelでnullが返るので注意</p>
 
+### msg(str) / msgln(str) / msgcls()
+<p>メッセージウインドウにメッセージを送ります。<br>msglnは改行付き、msgclsはウィンドウの初期化です。</p>
 
 
 processAEList()の返り値は配列です。toSource()すると以下の感じです。<br>
