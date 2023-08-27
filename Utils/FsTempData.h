@@ -71,8 +71,8 @@ public:
 				size_t idx = str.find_first_of(fuOK);
 				if ( idx == 0) {
 					Data = str.substr(fuOK.size());
+					ret = true;
 				}
-				ret = true;
 			}
 		}
 		return ret;

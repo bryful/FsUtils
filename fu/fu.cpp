@@ -343,7 +343,7 @@ extern "C" {
                 else if (v > 52)v = 52;
             }
         }
-        HINSTANCE hInst = GetModuleHandle("FsUtils.dll");
+        HINSTANCE hInst = GetModuleHandle("fu.dll");
         PlayResource(hInst,v);
         return kESErrOK;
     }
