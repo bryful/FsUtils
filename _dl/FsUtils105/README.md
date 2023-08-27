@@ -8,7 +8,7 @@ P { text-indent: 1.5em; }
 ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するものになります。<br>
 dllの名前をFsUtils.dllからfu.dllに変更しました。fsutilコマンドと間違えやすかったので(実害はないと思います)<br>
 <br>
-editとMsgBOxダイアログが表示できるようになりました。<br>
+editとMsgBoxダイアログが表示できるようになりました。<br>
 <br>
 動作確認用のコマンドライン版(fuCmd.exe)も入れてあります。<br>
 
