@@ -395,16 +395,48 @@ std::string listupAEProcess(BOOL IsUTF8)
 
 void AEShowWindow(int idx)
 {
+	ShowWindow(MyWindowHandle(), idx);
+	/*
 	std::vector<PCell> list = AEProcessList(true);
 	if (list.size() > 0)
 	{
 		for (int i = 0; i < list.size(); i++)
 		{
-			ShowWindow(list[i].hWnd, idx);
 		}
 	}
+	*/
 }
 void AEShowWindow(HWND hWnd, int idx)
 {
 	ShowWindow(hWnd, idx);
+}
+HWND GetWindowHandle(	// –ß‚è’l: ¬Œ÷ –]‚Ý‚ÌHWND / Ž¸”s NULL
+	const DWORD TargetID)	// ƒvƒƒZƒXID
+{
+	TCHAR   szTitle[1024];
+	memset(szTitle, '\0', 1024);
+	HWND hWnd = GetTopWindow(NULL);
+	do {
+		if (GetWindowLong(hWnd, -8) != 0 || !IsWindowVisible(hWnd))
+			continue;
+		DWORD ProcessID;
+		GetWindowThreadProcessId(hWnd, &ProcessID);
+		if (TargetID == ProcessID) {
+			GetWindowText(hWnd, szTitle, sizeof(szTitle));
+			std::string s = std::string(szTitle);
+			if (s.empty() == false) {
+				if (s.find("Adobe After Effects ") == 0)
+				{
+					return hWnd;
+				}
+			}
+		}
+	} while ((hWnd = GetNextWindow(hWnd, GW_HWNDNEXT)) != NULL);
+
+	return NULL;
+}
+HWND MyWindowHandle()
+{
+	DWORD pid = GetCurrentProcessId();
+	return GetWindowHandle(pid);
 }

@@ -41,6 +41,9 @@ namespace {
         "msgln_s,"
         "msgcls,"
         "edit_s,"
+        "processID,"
+        "windowHandle,"
+        "test_a,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -626,6 +629,66 @@ extern "C" {
             }
         }
         return kESErrBadArgumentList;
+    }
+    EXPORT long test(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount > 0)
+        {
+            char s [256];
+            ZeroMemory(s, 256);
+            switch (inputData[0].type )
+            {
+            case kTypeString:
+                lstrcpy(s, inputData[0].data.string);
+
+                break;
+            case kTypeBool:
+                lstrcpy(s, "bool");
+                break;
+            case kTypeDouble:
+                lstrcpy(s, "double");
+                break;
+            case kTypeInteger:
+                lstrcpy(s, "integer");
+                break;
+            case kTypeUInteger:
+                lstrcpy(s, "uinteger");
+                break;
+            case kTypeScript:
+                lstrcpy(s, "script");
+                break;
+            case kTypeLiveObjectRelease:
+                lstrcpy(s, "LiveObjectRelease");
+                break;
+            case kTypeUndefined:
+                lstrcpy(s, "undefined");
+                break;
+            case kTypeLiveObject:
+                lstrcpy(s, "liveobject");
+                break;
+            default:
+                lstrcpy(s, "none");
+                break;
+            }
+            outputData->type = kTypeString;
+            outputData->data.string = getNewBuffer(s);
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long processID(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        
+        outputData->type = kTypeInteger;
+        outputData->data.intval = (int)GetCurrentProcessId();
+
+        return kESErrOK;
+    }
+    EXPORT long windowHandle(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        outputData->type = kTypeInteger;
+        outputData->data.intval = (int)MyWindowHandle();
+
+        return kESErrOK;
     }
     //
 } // この拡張機能固有のエクスポート関数

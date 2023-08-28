@@ -128,21 +128,29 @@ var e = fu.pathExt(p); // ".tga"
 ### beep()
 <p>ビープ音を鳴らします。 1-52の値が指定できます。</p>
 
+### aePlaySound(num)
+<p>AEのリソースにあるWavファイルを再生します。</p>
+
+### playSound(path)
+<p>wavファイルを再生します。パスはWindows形式で</p>
+
 ### installedAE()
 <p>インストールされているAfterFX.exeの実行ファイルパスの配列が変える。</p>
 
 ### isInstalledESTK()
 <p>Extend Script Tool Kit cc がインストールされているか(bool)</p>
 
+### processID()
+<p>After EffectsのプロセスIDを返します</p>
+
+### windowHandle()
+<p>After Effectsのメインウィンドウのハンドルを返します。ダイアログのタイトルが"Adobe After Effects"で始まってると間違えてそれを返すので注意</p>
+
+
 ### callCommand(str) callCommandWait(str) callCommandGetResult(str)
 <p>strのコマンドを実行します。<br>
 callCommandGetResultはコンソールコマンドの標準出力を取り込みます。</p>
 
-### aePlaySound(num)
-<p>AEのリソースにあるWavファイルを再生します。</p>
-
-### playSound(path)
-<p>wavファイルを再生します。パスはWindows形式で</p>
 
 ### isModifierkey(str)
 <p>指定したキーが押されてたらtrueが返ります。</p>

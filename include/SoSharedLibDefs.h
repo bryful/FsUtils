@@ -15,12 +15,18 @@
 /**
 This is the C header file which you need to write DLLs that ExtendScript can
 load at runtime.
+his is the C header file which you need to write DLLs that ExtendScript can
+load at runtime.
 */
+
 
 /**
 The list of runtime errors. Errors with negative values are considered fatal
 and cannot be caught by Javascript. This is a subset of all possible runtime
 errors. Please do not use other error codes.
+実行時エラーのリスト。 負の値のエラーは致命的とみなされます
+JavaScript ではキャッチできません。 これは考えられるすべてのランタイムのサブセットです
+エラー。 他のエラーコードは使用しないでください
 */
 
 /** No error */
@@ -83,6 +89,12 @@ to provide a FreeMem() entry point in your DLL so ExtendScript can free the
 memory after usage.
 Since ExtendScript does not know about the structure packing alignment, please
 use a pack alignment of 8. This should be OK for all 32-bit systems.
+すべてのデータは、タグ付きデータ構造内で受け渡されます。 この構造により、
+いくつかの基本的なデータ型を保持します。 文字列値を返したい場合は、次のものが必要です。
+DLL に FreeMem() エントリ ポイントを提供して、ExtendScript が
+使用後の記憶。
+ExtendScript は構造体のパッキング アライメントについては知りませんので、
+パック アライメント 8 を使用します。これはすべての 32 ビット システムで問題ありません。
 */
 struct TaggedData_s
 {
@@ -105,13 +117,21 @@ typedef struct TaggedData_s TaggedData ;
 value in if an argument is supplied as "undefined". If a function should not
 return any value, the return value is Undefined as well. The return value for
 a function is always preset to Undefined.
+未定義は、この値が定義されていないことを意味します。 ExtendScript はこれを渡します
+引数が「未定義」として指定された場合の値。 関数を使用すべきではない場合
+任意の値を返しますが、戻り値も未定義です。 の戻り値
+関数は常に未定義にプリセットされます。
 */
 #define kTypeUndefined	0
 /** A boolean value is either interpreted as false (if the value is zero) or
 true (if the value is nonzero). The field is intval, the value is 0 or 1.
+ブール値は false (値がゼロの場合) として解釈されるか、または
+true (値がゼロ以外の場合)。 フィールドは intval で、値は 0 または 1 です。
+
 */
 #define kTypeBool		2
 /** A double floating point value (64 bits). The field is fltval.
+倍精度浮動小数点値 (64 ビット)。 フィールドは fltval です。
 */
 #define kTypeDouble		3
 /** A string value. If you provide a string value, define the entry point
@@ -119,20 +139,31 @@ FreeMem() in your DLL so ExtendScript can free your memory after use. Strings
 are supposed to be encoded in UTF-8 and to be null-terminated. The field is string,
 and if you want ExtendScript to release a returned memory pointer, implement
 FreeMem().
+文字列値。 文字列値を指定する場合は、エントリ ポイントを定義します
+DLL 内の FreeMem() により、使用後に ExtendScript がメモリを解放します。 文字列
+UTF-8 でエンコードされ、null で終了する必要があります。 フィールドは文字列です。
+ExtendScript で返されたメモリ ポインタを解放したい場合は、次のように実装します。
+FreeMem()。
 */
 #define kTypeString		4
 /** An object value is a pointer to a LiveObject. The field is hObject.
 A LiveObject pointer returned as a function result is not released
+ブジェクト値は LiveObject へのポインタです。 フィールドは hObject です。
+関数の結果として返された LiveObject ポインタが解放されない
 */
 #define kTypeLiveObject 6
 /** An object value is a pointer to a LiveObject. The field is hObject.
 A LiveObject pointer returned as a function result is released
+オブジェクト値は LiveObject へのポインタです。 フィールドは hObject です。
+関数の結果として返された LiveObject ポインタが解放される
 */
 #define kTypeLiveObjectRelease 7
 /** An integer value is a signed 32-bit quantity. The field is intval.
+整数値は符号付き 32 ビット量です。 フィールドは間隔です。
 */
 #define kTypeInteger	123
 /** An unsigned integer value is an unsigned 32-bit quantity. The field is intval.
+An unsigned integer value is an unsigned 32-bit quantity. The field is intval.
 */
 #define kTypeUInteger	124
 /** A script is an executable string. You can return a script, which causes
@@ -140,6 +171,11 @@ ExtendScript to run the returned string as a JavaScript and to return from
 the function call with whatever the evaluation of the string returned. The
 field is string, and if you want ExtendScript to release a returned memory
 pointer, implement FreeMem().
+スクリプトは実行可能な文字列です。 スクリプトを返すことができます。
+ExtendScript は、返された文字列を JavaScript として実行し、次から戻ります。
+返された文字列の評価を使用した関数呼び出し。 の
+フィールドが文字列で、返されたメモリを ExtendScript で解放したい場合
+ポインター、FreeMem() を実装します。
 */
 #define kTypeScript		125
 
@@ -176,6 +212,27 @@ are the remaining arguments of the ExtendScript ExternalObject constructor.
 extern char* ESInitialize (TaggedData* argv, long argc);
 
 Terminate the library.
+
+extern void ESTerminate (void);
+
+文字列を返す場合は以下の関数を実装してExtendScriptを実行します。
+この関数を呼び出して、文字列に関連付けられたメモリを解放できます。
+
+extern void ESFreeMem (void* p);
+
+次の関数を実装すると、ExtendScript の結果は次のようになります。
+読み取り専用プロパティ「version」の値として使用できる関数。
+
+extern long ESGetVersion (void);
+
+ライブラリを初期化し、関数シグネチャを返します。 戻らなかったら
+関数シグネチャの場合は、空の文字列または NULL を返します。 この文字列は解放されていません
+ExtendScript では、DLL 内で静的であると想定されているためです。 引数
+は、ExtendScript ExternalObject コンストラクターの残りの引数です。
+
+extern char* ESInitialize (TaggedData* argv, long argc);
+
+ライブラリを終了します。
 
 extern void ESTerminate (void);
 */
