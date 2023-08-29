@@ -1,4 +1,3 @@
-
 var fu = null;
 
 function initExtension(extensionDir) {
@@ -19,23 +18,11 @@ function initExtension(extensionDir) {
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
 initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
-//var obj = "({aaa:1,bbb:\"bbb\"})";
+var js ="{\"aaa\":1,\"bbb\":\"BBB\",\"ccc\":[10,11,12]}";
+var obj = fu.jsonToObj(js);
+var js1 = fu.objStrToJson(obj.toSource());
 
-var obj = "aaa";
-//obj.aaa = 1;
-//obj.bbb = "bbb";
-
-//var obj=new File("/c/AFlics.log");
-//var obj = function (){return 0;}
-//var obj = eval("({aaa:1,bbb:\"aaa\",ccc:12})");
-//var obj = new Folder("/c/tmp");
-//var obj = 12;
-//var obj =[12,2,"3",new Folder("/c/tmp")];
-alert(obj);
-
-/*
-var s = fu.processAEList();
-var i = fu.processID();
-var i2 = fu.windowHandle();
-alert(s.toSource() + "\r\n" +i+"\r\n" + i2);
-*/
+var r ="js: "+ js +"\r\n";
+r +="obj: " + obj.toSource()+"\r\n";
+r +="json: " + js1+"\r\n";
+alert(r);

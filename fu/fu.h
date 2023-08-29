@@ -5,6 +5,7 @@
 #include "../Utils/AEProcess.h"
 #include "../Utils/FsProcess.h"
 #include "../Utils/FsTempData.h"
+#include "../Utils/FsJson.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>

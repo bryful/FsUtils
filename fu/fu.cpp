@@ -46,6 +46,8 @@ namespace {
         "windowHandle,"
         "loginUserName,"
         "computerName,"
+        "jsonToObj_s,"
+        "objStrToJson_s,"
         "test_s,"
     };
 
@@ -709,7 +711,29 @@ extern "C" {
         outputData->data.string = getNewBuffer(ComputerName());
         return kESErrOK;
     }
-    //
+    EXPORT long jsonToObj(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        if (inputDataCount > 0)
+        {
+            std::string src = std::string(inputData[0].data.string);
+            std::string dst = ToAEJson(src);
+            outputData->type = kTypeScript;
+            outputData->data.string = getNewBuffer(dst);
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long objStrToJson(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        if (inputDataCount > 0)
+        {
+            std::string src = std::string(inputData[0].data.string);
+            std::string dst = FromAEJson(src);
+            outputData->type = kTypeString;
+            outputData->data.string = getNewBuffer(dst);
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
+    //objStrTojson_s
 } // この拡張機能固有のエクスポート関数
 
 #if defined (_WINDOWS)

@@ -22,6 +22,7 @@
     <ClInclude Include="..\include\SoSharedLibDefs.h" />
     <ClInclude Include="..\Utils\AEProcess.h" />
     <ClInclude Include="..\Utils\FsFile.h" />
+    <ClInclude Include="..\Utils\FsJson.h" />
     <ClInclude Include="..\Utils\FsProcess.h" />
     <ClInclude Include="..\Utils\FsTempData.h" />
     <ClInclude Include="..\Utils\FsUtil.h" />
@@ -32,6 +33,7 @@
   <ItemGroup>
     <ClCompile Include="..\Utils\AEProcess.cpp" />
     <ClCompile Include="..\Utils\FsFile.cpp" />
+    <ClCompile Include="..\Utils\FsJson.cpp" />
     <ClCompile Include="..\Utils\FsProcess.cpp" />
     <ClCompile Include="fu.cpp" />
     <ClCompile Include="..\Utils\FsUtil.cpp">
