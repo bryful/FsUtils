@@ -113,6 +113,10 @@ var e = fu.pathExt(p); // ".tga"
 ### processList()
 <p>起動しているプロセスの情報が配列で返ります。</p>
 
+### aeInfo()
+<p>これが実行しているAEの情報</p>
+
+
 ### showWindow(hWnd,nCmdShow)
 <p>指定したウィンドウハンドルで。ウィンドウの表示方法を制御します。</p>
 

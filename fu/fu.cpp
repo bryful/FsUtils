@@ -19,6 +19,7 @@ namespace {
         "pathGetExt_s,"
         "processList,"
         "processAEList,"
+        "aeInfo,"
         "showWindow_dd,"
         "windowMax,"
         "windowMin,"
@@ -43,7 +44,9 @@ namespace {
         "edit_s,"
         "processID,"
         "windowHandle,"
-        "test_a,"
+        "loginUserName,"
+        "computerName,"
+        "test_s,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -688,6 +691,22 @@ extern "C" {
         outputData->type = kTypeInteger;
         outputData->data.intval = (int)MyWindowHandle();
 
+        return kESErrOK;
+    }
+    EXPORT long aeInfo(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        outputData->type = kTypeScript;
+        outputData->data.string = getNewBuffer(GetAEInfoStr());
+
+        return kESErrOK;
+    }
+    EXPORT long loginUserName(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        outputData->type = kTypeString;
+        outputData->data.string = getNewBuffer(LoginUserName());
+        return kESErrOK;
+    }
+    EXPORT long computerName(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        outputData->type = kTypeString;
+        outputData->data.string = getNewBuffer(ComputerName());
         return kESErrOK;
     }
     //

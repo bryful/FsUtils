@@ -23,7 +23,9 @@ initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
 fu.beep(5);
 
-var list = fu.processAEList();
-du.windowMax();
+//var list = fu.processAEList();
+var list = fu.aeInfo();
+fu.windowMax();
 
-alert(File.decode(list[0].path) +"\r\n" + File.decode(list[0].title));
+alert(fu.loginUserName() + "/" + fu.computerName() + "\r\n"+
+    list.processID +"\r\n" +File.decode(list.path) +"\r\n" + File.decode(list.title));

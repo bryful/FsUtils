@@ -671,3 +671,27 @@ BOOL IsUTF8(char* bytes)
 	}
 }
 BOOL IsUTF8(std::string s) { return IsUTF8((char*)s.c_str()); }
+
+// *******************************************************************
+std::string LoginUserName()
+{
+	std::string ret = "";
+	TCHAR user[1024];
+	DWORD dwUserSize; // 取得したユーザ名の文字列の長さ
+	if (GetUserName(user, &dwUserSize)) {
+
+		ret = std::string(user);
+	}
+	return ret;
+}
+std::string ComputerName()
+{
+	std::string ret = "";
+	TCHAR buf[1024];
+	DWORD dwSize; // 取得したユーザ名の文字列の長さ
+	if (GetComputerName(buf, &dwSize))
+	{
+		ret = std::string(buf);
+	}
+	return ret;
+}

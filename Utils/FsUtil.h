@@ -85,3 +85,5 @@ bool IsControlCKey();
 // *********************************************************************************************
 std::string get_env(const char* environment_name);
 bool set_env(const char* environment_name, std::string v);
+std::string LoginUserName();
+std::string ComputerName();

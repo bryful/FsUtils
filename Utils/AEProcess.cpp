@@ -286,7 +286,7 @@ std::string BoolToString(BOOL b)
 std::string ToPathString(std::string s)
 {
 	std::string ss = s;
-	ReplaceAll(ss, std::string("\\"), std::string("\\\\"));
+	//ReplaceAll(ss, std::string("\\"), std::string("\\\\"));
 	
 	if (m_IsUtf8 == false)
 	{
@@ -439,4 +439,95 @@ HWND MyWindowHandle()
 {
 	DWORD pid = GetCurrentProcessId();
 	return GetWindowHandle(pid);
+}
+// 戻り値: 成功 望みのHWND / 失敗 NULL
+PCell GetAEInfo()	// プロセスID
+{
+	DWORD pid = GetCurrentProcessId();
+	TCHAR   szTitle[1024];
+	memset(szTitle, '\0', 1024);
+	TCHAR   szFile[1024] = { 0 };
+	memset(szFile, '\0', 1024);
+	HMODULE Module[1024] = { 0 };
+	DWORD	dwSize;
+	HWND hWnd = GetTopWindow(NULL);
+	PCell ret;
+	ZeroMemory(&ret, sizeof(PCell));
+	ret.Pid = pid;
+
+	do {
+		if (GetWindowLong(hWnd, -8) != 0 || !IsWindowVisible(hWnd))
+			continue;
+		DWORD ProcessID;
+		GetWindowThreadProcessId(hWnd, &ProcessID);
+		if (pid == ProcessID) {
+			GetWindowText(hWnd, szTitle, sizeof(szTitle));
+			std::string s = std::string(szTitle);
+			if (s.empty() == false) {
+				if (s.find("Adobe After Effects ") == 0)
+				{
+					ret.Pid = pid;
+					ret.hWnd = hWnd;
+					ret.Title = s;
+					ret.IsZoomed = IsZoomed(hWnd);
+					ret.IsIconic = IsIconic(hWnd);
+					ret.IsWindow = IsWindow(hWnd);
+					ret.ProcessName = "AfterFX.exe";
+					return ret;
+				}
+			}
+		}
+	} while ((hWnd = GetNextWindow(hWnd, GW_HWNDNEXT)) != NULL);
+
+	return ret;
+}
+std::string GetAEInfoStr()	// プロセスID
+{
+	DWORD pid = GetCurrentProcessId();
+	TCHAR   szTitle[1024];
+	memset(szTitle, '\0', 1024);
+	TCHAR   szFile[1024] = { 0 };
+	memset(szFile, '\0', 1024);
+	HMODULE Module[1024] = { 0 };
+	DWORD	dwSize;
+	HWND hWnd = GetTopWindow(NULL);
+	TCHAR	processName[MAX_PATH];
+	memset(processName, '\0', MAX_PATH);
+	PCell ret;
+	ZeroMemory(&ret, sizeof(PCell));
+	ret.Pid = pid;
+
+	do {
+		if (GetWindowLong(hWnd, -8) != 0 || !IsWindowVisible(hWnd))
+			continue;
+		DWORD ProcessID;
+		GetWindowThreadProcessId(hWnd, &ProcessID);
+		if (pid == ProcessID) {
+			GetWindowText(hWnd, szTitle, sizeof(szTitle));
+			std::string s = std::string(szTitle);
+			if (s.empty() == false) {
+
+				if (s.find("Adobe After Effects ") == 0)
+				{
+					ret.Pid = pid;
+					ret.hWnd = hWnd;
+					ret.Title = s;
+					ret.IsZoomed = IsZoomed(hWnd);
+					ret.IsIconic = IsIconic(hWnd);
+					ret.IsWindow = IsWindow(hWnd);
+
+					HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, ProcessID);
+					GetModuleBaseName(hProcess, NULL, processName, _countof(processName));
+					if (EnumProcessModules(hProcess, Module, sizeof(Module), &dwSize)) {
+						GetModuleFileNameEx(hProcess, Module[0], szFile, sizeof(szFile));
+						ret.ProcessName = processName;
+						ret.Path = szFile;
+					}
+					return PCellToString(ret);
+				}
+			}
+		}
+	} while ((hWnd = GetNextWindow(hWnd, GW_HWNDNEXT)) != NULL);
+
+	return "(null)";
 }

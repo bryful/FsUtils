@@ -46,4 +46,6 @@ std::string listupAEProcess(BOOL IsUTF8);
 void AEShowWindow(int idx);
 void AEShowWindow(HWND hWnd, int idx);
 HWND MyWindowHandle();
+PCell GetAEInfo();	// プロセスID
+std::string GetAEInfoStr();	// プロセスID
 
