@@ -38,6 +38,7 @@ std::string Join(const std::vector<std::string>& v, std::string delim);
 std::string Trim(const std::string& string);
 std::string TrimTailSepa(const std::string& string);
 std::string TrimHeadSepa(const std::string& string);
+std::vector<std::string> CammaSplit(const std::string& s);
 
 // *********************************************************************************************
 /*

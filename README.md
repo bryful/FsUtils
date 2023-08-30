@@ -169,6 +169,9 @@ callCommandGetResultはコンソールコマンドの標準出力を取り込み
 ### msg(str) / msgln(str) / msgcls()
 <p>メッセージウインドウにメッセージを送ります。<br>msglnは改行付き、msgclsはウィンドウの初期化です。</p>
 
+### jsonToObj(json) / objStrToJson(obj.toSource())
+<p>Json扱う関数。単純にtoSource()形式をJSON形式に変換するものです</p>
+
 
 processAEList()の返り値は配列です。toSource()すると以下の感じです。<br>
 

@@ -50,6 +50,39 @@ std::string GetTempDataFile()
 {
 	return GetTempFolder() + "fuTemp.txt";
 }
+
+std::string GetAppDataFolder()
+{
+	TCHAR waFolderPath[MAX_PATH];
+	SHGetSpecialFolderPath(NULL, waFolderPath, CSIDL_APPDATA, 0);
+	return std::string(waFolderPath);
+}
+std::string GetAppDataFolder(std::string name,std::string productname)
+{
+	TCHAR waFolderPath[MAX_PATH];
+	SHGetSpecialFolderPath(NULL, waFolderPath, CSIDL_APPDATA, 0);
+	std::string rr = "";
+	if (productname.size() > 0) {
+		rr = CombinePath(std::string(waFolderPath), productname);
+		if (ExistDirectory(rr) == false)
+		{
+			_mkdir(rr.c_str());
+		}
+	}
+	else {
+		rr = std::string(waFolderPath);
+	}
+	if (name.size() > 0)
+	{
+		rr = CombinePath(rr, name);
+		if (ExistDirectory(rr) == false)
+		{
+			_mkdir(rr.c_str());
+		}
+	}
+	return rr;
+}
+
 // ********************************************************************************************************
 std::string AEPath1 = "C:\\Program Files\\Adobe\\Adobe After Effects";
 std::string AEPath2[] = {
@@ -68,7 +101,6 @@ std::string AEPath3 = "\\Support Files\\AfterFX.exe";
 std::string snd0 = "\\Support Files\\sounds\\rnd_fail.wav";
 std::string snd1 = "\\Support Files\\sounds\\rnd_okay.wav";
 std::string snd2 = "\\Support Files\\sounds\\snap.wav";
-
 
 std::string ae_sound_fail()
 {
@@ -259,7 +291,7 @@ std::string GetFileNameWithoutExt(std::string str)
 	}
 	return ret;
 }
-std::string CombilePath(std::string str1, std::string str2)
+std::string CombinePath(std::string str1, std::string str2)
 {
 	std::string ret = "";
 	if (str1.size() <= 0) return str2;
@@ -401,7 +433,6 @@ char* GetNameWithoutExt(char* str)
 
 	return ret;
 }
-
 char* CombinePath(char* s0, char* s1)
 {
 
@@ -454,4 +485,37 @@ std::string DllPath()
 	std::string pathname = ret.substr(0, path_i);
 
 	return pathname;
+}
+
+BOOL SavePref(std::string fname, std::string dname, std::string productName, std::string data)
+{
+	std::string ap = GetAppDataFolder(dname,productName);
+	std::string filename = CombinePath(ap, fname);
+	std::ofstream writing_file;
+	BOOL ret = false;
+
+	if (ExistFile(filename) == true) DeleteFile((LPCSTR)filename.c_str());
+
+	writing_file.open(filename, std::ios::app);
+	writing_file << data << std::endl;
+	ret = ExistFile(filename);
+	writing_file.close();
+
+	return ret;
+}
+BOOL LoadPref(std::string fname, std::string dname, std::string productName, std::string& data)
+{
+	std::string ap = GetAppDataFolder(dname,productName);
+	std::string filename = CombinePath(ap, fname);
+	std::ofstream writing_file;
+	BOOL ret = false;
+
+	if (ExistFile(filename) == true)
+	{
+		std::ifstream ifs(filename);
+		std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+		data = str;
+		ret = true;
+	}
+	return ret;
 }

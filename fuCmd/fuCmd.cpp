@@ -346,4 +346,10 @@ int main(int argc, char* argv[])
 	//CallCommandWait("ChkForm.exe");
 	//ret = CallCommand("ChkForm.exe");
 
+
+	SavePref("aaa.pref","AAA", "bry-ful", "ABC\nDEF");
+	std::string f;
+	LoadPref("aaa.pref", "AAA", "bry-ful",f);
+	std::cout << f << std::endl;
+
 }

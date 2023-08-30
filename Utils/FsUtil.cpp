@@ -112,6 +112,58 @@ std::string TrimHeadSepa(const std::string& string)
 	return result;
 
 }
+std::vector<std::string> CammaSplit(const std::string& s)
+{
+
+	std::vector<std::string> result;
+	result.clear();
+	int cnt = s.size();
+	if (cnt <= 0) return result;
+	std::string block =  "";
+
+	int idx = 0;
+	while (idx<cnt)
+	{
+		std::string c = s.substr(idx,1);
+		if (c == "\"")
+		{
+			int idx2 = -1;
+			for (int i = idx + 1; i < cnt; i++)
+			{
+				std::string c2 = s.substr(i, 1);
+				if (c2 == "\"")
+				{
+					if (s[i-1]=='\\') continue;
+					idx2 = i;
+					break;
+				}
+			}
+			//   "000000"
+			//   01234567
+			if (idx2 > 0)
+			{
+				block += s.substr(idx, idx2 - idx + 1);
+				idx = idx2+1;
+			}
+			else {
+				block += s.substr(idx);
+				idx = cnt;
+			}
+		}else if (c == ",")
+		{
+			result.push_back(block);
+			block = "";
+			idx++;
+		}
+		else {
+			block += c;
+			idx++;
+
+		}
+	}
+	if (block.empty()==false) result.push_back(block);
+	return result;
+}
 // ******************************************************************
 BOOL SetTextClipboard(LPCTSTR lpString,bool IsU)
 {

@@ -11,6 +11,8 @@
 #include <windows.h>
 #include <winbase.h>
 #include <winuser.h>
+#include <Shlobj_core.h>
+#include <direct.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
@@ -46,6 +48,8 @@ bool ExistDirectory(std::string  path);
 
 std::string GetTempFolder();
 std::string GetTempDataFile();
+std::string GetAppDataFolder();
+std::string GetAppDataFolder(std::string name, std::string productname);
 
 // *********************************************************************************************
 /*
@@ -67,8 +71,11 @@ char* GetNameWithoutExt(char* str);
 char* GetExt(char* str);
 char* GetParent(char* str);
 char* CombinePath(char* s0, char* s1);
+std::string CombinePath(std::string str1, std::string str2);
 
 std::string DllPath();
 
+BOOL LoadPref(std::string fname, std::string dname, std::string productName, std::string& data);
+BOOL SavePref(std::string fname, std::string dname, std::string productName, std::string data);
 
 

@@ -18,11 +18,12 @@ function initExtension(extensionDir) {
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
 initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
+// 簡単なJSONデータ
 var js ="{\"aaa\":1,\"bbb\":\"BBB\",\"ccc\":[10,11,12]}";
 var obj = fu.jsonToObj(js);
 var js1 = fu.objStrToJson(obj.toSource());
 
-var r ="js: "+ js +"\r\n";
+var r ="json: "+ js +"\r\n";
 r +="obj: " + obj.toSource()+"\r\n";
-r +="json: " + js1+"\r\n";
+r +="json2: " + js1+"\r\n";
 alert(r);
