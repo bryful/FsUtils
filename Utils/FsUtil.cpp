@@ -636,13 +636,17 @@ std::string get_env(const char* environment_name)
 	if (buf == 0) return ret;
 	std::string buffer;
 	buffer.resize(buf + 1);//reserve
+
 	GetEnvironmentVariable(environment_name , &buffer[0], buffer.size() );
-		ReplaceAll(buffer, "%3D", "=");
-		ReplaceAll(buffer, "//r", "/r");
-		ReplaceAll(buffer, "//n", "/n");
-		ReplaceAll(buffer, "//t", "/t");
-		//ReplaceAll(buffer, "///"", "/"");
-		ReplaceAll(buffer, "//", "////");
+
+	buffer = std::string(ShiftJistoUtf8((char*)buffer.c_str()));
+	
+	ReplaceAll(buffer, "%3D", "=");
+	ReplaceAll(buffer, "//r", "/r");
+	ReplaceAll(buffer, "//n", "/n");
+	ReplaceAll(buffer, "//t", "/t");
+	//ReplaceAll(buffer, "///"", "/"");
+	ReplaceAll(buffer, "//", "////");
 
 	buffer.resize(std::strlen(buffer.c_str()));//resize
 	return buffer;

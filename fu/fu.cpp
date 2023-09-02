@@ -17,6 +17,9 @@ namespace {
         "pathGetName_s,"
         "pathGetNameWithoutExt_s,"
         "pathGetExt_s,"
+        "pathGetFrame_s,"
+        "pathGetNameWithoutFrame_s,"
+        "indexOfFrameNumber_s,"
         "processList,"
         "processAEList,"
         "aeInfo,"
@@ -46,8 +49,16 @@ namespace {
         "windowHandle,"
         "loginUserName,"
         "computerName,"
-        "jsonToObj_s,"
+        "jsonToObjStr_s,"
         "objStrToJson_s,"
+        "pathWinToJs_s,"
+        "pathJsToWin_s,"
+        "replaceAll_sss,"
+        "trim_s,"
+        "loadPref_sss,"
+        "savePref_ssss,"
+        "getEnv_s,"
+        "setEnv_ss,"
         "test_aaaaaaaaaaaaaaaaaa,"
     };
 
@@ -254,6 +265,46 @@ extern "C" {
         outputData->type = kTypeString;
         return kESErrOK;
 
+    }
+    EXPORT long indexOfFrameNumber(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        int ret = 0;
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                ret = IndexOfFrameNumber(std::string(inputData[0].data.string));
+                outputData->type = kTypeInteger;
+                outputData->data.intval = ret;
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long pathGetFrame(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                std::string  ret = GetFrame(std::string(inputData[0].data.string));
+                outputData->type = kTypeString;
+                outputData->data.string = getNewBuffer((char*)ret.c_str());;
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long pathGetNameWithoutFrame(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                std::string  ret = GetNameWithoutFrame(std::string(inputData[0].data.string));
+                outputData->type = kTypeString;
+                outputData->data.string = getNewBuffer((char*)ret.c_str());
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
     }
     // *******************************************************************************
     EXPORT long processAEList(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
@@ -711,12 +762,12 @@ extern "C" {
         outputData->data.string = getNewBuffer(ComputerName());
         return kESErrOK;
     }
-    EXPORT long jsonToObj(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+    EXPORT long jsonToObjStr(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
         if (inputDataCount > 0)
         {
             std::string src = std::string(inputData[0].data.string);
             std::string dst = ToAEJson(src);
-            outputData->type = kTypeScript;
+            outputData->type = kTypeString;
             outputData->data.string = getNewBuffer(dst);
             return kESErrOK;
         }
@@ -733,6 +784,129 @@ extern "C" {
         }
         return kESErrBadArgumentList;
     }
+    EXPORT long pathWinToJs(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        if (inputDataCount > 0)
+        {
+            std::string src = std::string(inputData[0].data.string);
+            std::string dst = PathToJSFromWin(src);
+            outputData->type = kTypeString;
+            outputData->data.string = getNewBuffer(dst);
+            return kESErrOK;
+        }
+    }
+    EXPORT long pathJsToWin(TaggedData * inputData, long inputDataCount, TaggedData * outputData) {
+        if (inputDataCount > 0)
+        {
+            std::string src = std::string(inputData[0].data.string);
+            std::string dst = PathToWinFromJS(src);
+            outputData->type = kTypeString;
+            outputData->data.string = getNewBuffer(dst);
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long replaceAll(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        if (inputDataCount >= 3)
+        {
+            std::string src = std::string(inputData[0].data.string);
+            std::string srcP = std::string(inputData[1].data.string);
+            std::string dstP = std::string(inputData[2].data.string);
+
+            std::string dst = ReplaceAll(src,srcP,dstP);
+            outputData->type = kTypeString;
+            outputData->data.string = getNewBuffer(dst);
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long trim(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        if (inputDataCount > 0)
+        {
+            std::string src = std::string(inputData[0].data.string);
+            std::string dst = Trim(src);
+            outputData->type = kTypeString;
+            outputData->data.string = getNewBuffer(dst);
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long loadPref(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        if (inputDataCount > 3)
+        {
+            std::string filename = std::string(inputData[0].data.string);
+            std::string appname = std::string(inputData[0].data.string);
+            std::string productname = std::string(inputData[0].data.string);
+            std::string data = "";
+            if (LoadPref(filename, appname, productname, data) == false)
+            {
+                data = "";
+            }
+
+            outputData->type = kTypeString;
+            outputData->data.string = getNewBuffer(data);
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long savePref(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        if (inputDataCount > 4)
+        {
+            std::string filename = std::string(inputData[0].data.string);
+            std::string appname = std::string(inputData[0].data.string);
+            std::string productname = std::string(inputData[0].data.string);
+            std::string data = std::string(inputData[4].data.string);
+            if (SavePref(filename, appname, productname, data) == true)
+            {
+                outputData->type = kTypeBool;
+                outputData->data.intval = 1;
+            }
+            else {
+                outputData->type = kTypeScript;
+                outputData->data.string ="(null)";
+            }
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long getEnv(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount > 0)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                std::string ret = get_env(inputData[0].data.string);
+                outputData->type = kTypeString;
+                outputData->data.string = getNewBuffer(ret);
+                return kESErrOK;
+            }
+        }
+        outputData->type = kTypeString;
+        outputData->data.string = getNewBuffer("");
+        return kESErrBadArgumentList;
+    }
+    EXPORT long setEnv(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        int ret = 0;
+        outputData->type = kTypeBool;
+        if (inputDataCount >= 2)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                char* data = Utf8toShiftJis(inputData[1].data.string);
+                ret = set_env(
+                    (const char *)inputData[0].data.string,
+                    std::string(data));
+                outputData->data.intval = ret;
+                return kESErrOK;
+            }
+            else {
+                outputData->data.intval = ret;
+                return kESErrOK;
+            }
+        }
+        outputData->data.intval = ret;
+        return kESErrBadArgumentList;
+    }
+
     //objStrTojson_s
 } // この拡張機能固有のエクスポート関数
 

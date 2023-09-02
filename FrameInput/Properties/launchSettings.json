@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FrameInput": {
+      "commandName": "Project",
+      "commandLineArgs": "-cmd aaaa\\r\\nbbb"
+    }
+  }
+}

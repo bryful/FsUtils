@@ -32,10 +32,3 @@ var c = fu.clipboardGetText();
 alert("clipboardGetTextのテスト\r\n------------------\r\n" + c +"\r\n-------------------------");
 
 
-var path="/c/aaaa/bbbb/abc.tga";
-alert("path関係のテスト\r\n\r\n" + path);
-var ext = fu.pathGetExt(path);
-var name =fu.pathGetName(path);
-var nameE =fu.pathGetNameWithoutExt(path);
-var par =fu.pathGetParent(path);
-alert("Parent: " + par +"\r\nName: "+name+"\r\nNameWithoutExt: "+nameE + "\r\nExt: "+ext);

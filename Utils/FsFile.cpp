@@ -57,7 +57,7 @@ std::string GetAppDataFolder()
 	SHGetSpecialFolderPath(NULL, waFolderPath, CSIDL_APPDATA, 0);
 	return std::string(waFolderPath);
 }
-std::string GetAppDataFolder(std::string name,std::string productname)
+std::string GetAppDataFile(std::string name,std::string productname)
 {
 	TCHAR waFolderPath[MAX_PATH];
 	SHGetSpecialFolderPath(NULL, waFolderPath, CSIDL_APPDATA, 0);
@@ -253,41 +253,33 @@ std::string GetExt(std::string str)
 	}
 	return ret;
 }
-std::string GetFileName(std::string str)
+std::string GetName(std::string str)
 {
 	std::string ret = "";
 	if (str.size() <= 0) return ret;
 	int idx = str.find_last_of("\\");
-	if (idx != std::string::npos)
+	if (idx == std::string::npos)
 	{
 		idx = str.find_last_of("/");
 	}
 	if (idx != std::string::npos)
 	{
-		ret = str.substr(idx);
+		ret = str.substr(idx+1);
+	}
+	else {
+		ret = str;
 	}
 	return ret;
 }
-std::string GetFileNameWithoutExt(std::string str)
+std::string GetNameWithoutExt(std::string str)
 {
 	std::string ret = "";
 	if (str.size() <= 0) return ret;
-	int idx = str.find_last_of("\\");
-	if (idx != std::string::npos)
+	ret = GetName(str);
+	int idx2 = ret.find_last_of(".");
+	if (idx2 != std::string::npos)
 	{
-		idx = str.find_last_of("/");
-	}
-	if (idx != std::string::npos)
-	{
-		std::string n = str.substr(idx);
-		int idx2 = str.find_last_of(".");
-		if (idx2 != std::string::npos)
-		{
-			ret = n.substr(0, idx2);
-		}
-		else {
-			ret = n;
-		}
+		ret = ret.substr(0, idx2);
 	}
 	return ret;
 }
@@ -345,6 +337,113 @@ BOOL SplitFileName(std::string str, std::string& dir, std::string& name, std::st
 		name = n.substr(0, eidx);
 	}
 	return TRUE;
+}
+
+int IndexOfFrameNumber(std::string src)
+{
+	int ret = -1;
+	if (src.empty() == true) return ret;
+
+	int idx = -1;
+	for (int i = src.size() - 1; i >= 0; i--)
+	{
+		if ((src[i] >= '0') && (src[i] <= '9')) continue;
+		idx = i;
+		break;
+	}
+	if (idx == src.size() - 1)
+	{
+		ret = -1;
+	}
+	else {
+		ret = idx + 1;
+	}
+	return ret;
+}
+
+BOOL IsSeqensNumber(std::string str, std::string& start, std::string& last)
+{
+	BOOL ret = false;
+	start = "";
+	last = "";
+	str = Trim(str);
+	if (str.empty() == true) return ret;
+	if ((str[0] == '[') && (str[str.size() - 1] == ']'))
+	{
+		str = str.substr(1, str[str.size() - 2]);
+		int idx = str.find("-");
+		if (idx > 0)
+		{
+			start = Trim(str.substr(0, idx));
+			last = Trim(str.substr(idx+1));
+			ret = ((start.empty() == false) && (last.empty() == false));
+		}
+	}
+	return ret;
+}
+std::string GetFrame(std::string src)
+{
+	std::string ret = "";
+	src = GetNameWithoutExt(src);
+	if (src.empty() == true) return src;
+	int idx = -1;
+	if (src[src.size() - 1] == ']')
+	{
+		idx = src.find_last_of('[');
+		if (idx >= 0)
+		{
+			ret = src.substr(idx);
+			std::string s0 = "";
+			std::string s1 = "";
+			if (IsSeqensNumber(ret, s0, s1) == false)
+			{
+				ret = "";
+			}
+		}
+	}
+	else {
+		idx = IndexOfFrameNumber(src);
+		if (idx < 0)
+		{
+			ret = "";
+		}
+		else {
+			ret = src.substr(idx);
+		}
+	}
+	return ret;
+}
+std::string GetNameWithoutFrame(std::string src)
+{
+	std::string ret = "";
+	src = GetNameWithoutExt(src);
+	if (src.empty() == true) return src;
+	int idx = -1;
+	if (src[src.size() - 1] == ']')
+	{
+		idx = src.find_last_of('[');
+		if (idx >= 0)
+		{
+			std::string n = src.substr(idx);
+			std::string s0 = "";
+			std::string s1 = "";
+			if (IsSeqensNumber(n, s0, s1) == true)
+			{
+				ret = src.substr(0,idx);
+			}
+		}
+	}
+	else {
+		idx = IndexOfFrameNumber(src);
+		if (idx < 0)
+		{
+			ret = src;
+		}
+		else {
+			ret = src.substr(0,idx);
+		}
+	}
+	return ret;
 }
 char* GetExt(char* str)
 {
@@ -489,7 +588,7 @@ std::string DllPath()
 
 BOOL SavePref(std::string fname, std::string dname, std::string productName, std::string data)
 {
-	std::string ap = GetAppDataFolder(dname,productName);
+	std::string ap = GetAppDataFile(dname,productName);
 	std::string filename = CombinePath(ap, fname);
 	std::ofstream writing_file;
 	BOOL ret = false;
@@ -505,7 +604,7 @@ BOOL SavePref(std::string fname, std::string dname, std::string productName, std
 }
 BOOL LoadPref(std::string fname, std::string dname, std::string productName, std::string& data)
 {
-	std::string ap = GetAppDataFolder(dname,productName);
+	std::string ap = GetAppDataFile(dname,productName);
 	std::string filename = CombinePath(ap, fname);
 	std::ofstream writing_file;
 	BOOL ret = false;

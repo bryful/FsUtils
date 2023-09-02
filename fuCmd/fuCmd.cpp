@@ -324,6 +324,24 @@ static int Command(int argc, char* argv[])
 				ret = Edit(argv[2]);
 			}
 		}
+		else if ((key == "getframe") || (key == "gf"))
+		{
+			if (argc >= 2)
+			{
+				std::string  gf = GetFrame(std::string(argv[2]));
+				std::cout << gf << std::endl;
+				ret = 1;
+			}
+		}
+		else if ((key == "getnamewitoutframe") || (key == "gnwf"))
+		{
+			if (argc >= 2)
+			{
+				std::string  gf1 = GetNameWithoutFrame(std::string(argv[2]));
+				std::cout << gf1 << std::endl;
+				ret = 1;
+			}
+		}
 	}
 	return ret;
 }
@@ -346,10 +364,5 @@ int main(int argc, char* argv[])
 	//CallCommandWait("ChkForm.exe");
 	//ret = CallCommand("ChkForm.exe");
 
-
-	SavePref("aaa.pref","AAA", "bry-ful", "ABC\nDEF");
-	std::string f;
-	LoadPref("aaa.pref", "AAA", "bry-ful",f);
-	std::cout << f << std::endl;
 
 }

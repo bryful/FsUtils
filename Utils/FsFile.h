@@ -49,7 +49,7 @@ bool ExistDirectory(std::string  path);
 std::string GetTempFolder();
 std::string GetTempDataFile();
 std::string GetAppDataFolder();
-std::string GetAppDataFolder(std::string name, std::string productname);
+std::string GetAppDataFile(std::string name, std::string productname);
 
 // *********************************************************************************************
 /*
@@ -57,10 +57,15 @@ std::string GetAppDataFolder(std::string name, std::string productname);
 */
 // *********************************************************************************************
 std::string GetDir(std::string str);
-std::string GetFileName(std::string str);
-std::string GetFileNameWithoutExt(std::string str);
+std::string GetName(std::string str);
+std::string GetNameWithoutExt(std::string str);
 std::string GetExt(std::string str);
-BOOL SplitFileName(std::string str, std::string& dir, std::string& name, std::string& ext);
+BOOL SplitName(std::string str, std::string& dir, std::string& name, std::string& ext);
+
+int IndexOfFrameNumber(std::string src);
+std::string GetFrame(std::string src);
+std::string GetNameWithoutFrame(std::string src);
+
 
 std::string PathToWinFromJS(std::string str);
 std::string PathToJSFromWin(std::string str);

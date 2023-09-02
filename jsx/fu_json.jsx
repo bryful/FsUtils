@@ -20,10 +20,10 @@ initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
 // 簡単なJSONデータ
 var js ="{\"aaa\":1,\"bbb\":\"BBB\",\"ccc\":[10,11,12]}";
-var obj = fu.jsonToObj(js);
-var js1 = fu.objStrToJson(obj.toSource());
+var obj = fu.jsonToObjStr(js);
+var js1 = fu.objStrToJson(obj);
 
 var r ="json: "+ js +"\r\n";
-r +="obj: " + obj.toSource()+"\r\n";
+r +="obj: " + obj+"\r\n";
 r +="json2: " + js1+"\r\n";
 alert(r);
