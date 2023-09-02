@@ -310,6 +310,27 @@ std::string GetDir(std::string str)
 	}
 	return ret;
 }
+std::string ChangeExt(std::string path, std::string newExt)
+{
+	std::string ret = "";
+	if (path.empty() == true) return ret;
+	
+	std::string p = GetDir(path);
+	std::string n = GetNameWithoutExt(path);
+
+	if (newExt.size() > 0)
+	{
+		if (newExt[0] != '.') newExt = "." + newExt;
+	}
+	if (newExt != ".")
+	{
+		n = n + newExt;
+	}
+	ret = CombinePath(p, n);
+
+	return ret;
+}
+
 BOOL SplitFileName(std::string str, std::string& dir, std::string& name, std::string& ext )
 {
 	BOOL ret = FALSE;

@@ -66,17 +66,12 @@ int IndexOfFrameNumber(std::string src);
 std::string GetFrame(std::string src);
 std::string GetNameWithoutFrame(std::string src);
 
+std::string ChangeExt(std::string path, std::string newExt);
+std::string CombinePath(std::string str1, std::string str2);
 
 std::string PathToWinFromJS(std::string str);
 std::string PathToJSFromWin(std::string str);
 
-
-LPTSTR  GetName(LPTSTR  str);
-//char* GetNameWithoutExt(char* str);
-//char* GetExt(char* str);
-//char* GetParent(char* str);
-//char* CombinePath(char* s0, char* s1);
-std::string CombinePath(std::string str1, std::string str2);
 
 std::string DllPath();
 

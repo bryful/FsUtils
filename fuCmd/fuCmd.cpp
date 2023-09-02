@@ -66,7 +66,7 @@ static int Edit(char* src)
 static void Usage(char *ex)
 {
 	std::string ret = "";
-	std::string exe = std::string((char*)GetName(ex));
+	std::string exe = GetName(std::string(ex));
 	ret = "[" + exe + "] FsUtils.dll動作確認用コマンド\r\n";
 	ret += "\n";
 	ret += "\t" + exe + " getClip\r\n";
@@ -135,7 +135,7 @@ static int Command(int argc, char* argv[])
 		else if ((key == "pathgetname") || (key == "getname"))
 		{
 			if (argc >= 3) {
-				char* s = GetName(argv[2]);
+				std::string s  = GetName(std::string(argv[2]));
 				std::cout << s;
 				std::cout << "\n";
 				ret = 1;

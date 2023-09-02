@@ -178,26 +178,9 @@ extern "C" {
         if (strlen(inputData[0].data.string) <= 0) {
             return kESErrBadArgumentList;
         }
-        /*
-        char* str = nullptr;
-        const char* par = strrchr(inputData[0].data.string, '\\');
-        if (par == NULL)
-        {
-            par = strrchr(inputData[0].data.string, '/');
-        }
-        if (par != NULL)
-        {
-            par++;
-            const auto length = strlen(par) + 1;
-            str = (char*)malloc(length);
-            lstrcpy(str, par);
-        }
-        else {
-            str = "\0";
-        }
-        */
-        char* str = GetName(inputData[0].data.string);
-        outputData->data.string = str;
+
+        std::string str = GetName(std::string(inputData[0].data.string));
+        outputData->data.string = getNewBuffer( str);
         outputData->type = kTypeString;
         return kESErrOK;
 
