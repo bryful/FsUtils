@@ -154,12 +154,11 @@ extern "C" {
             return kESErrBadArgumentList;
         }
 
-        char* str = nullptr;
 
-        str = GetExt(inputData[0].data.string);
+        std::string str = GetExt(std::string(inputData[0].data.string));
 
 
-        outputData->data.string = str;
+        outputData->data.string = getNewBuffer(str);
         outputData->type = kTypeString;
         return kESErrOK;
 
@@ -238,8 +237,8 @@ extern "C" {
             str = "\0";
         }
         */
-        char* str = GetParent(inputData[0].data.string);
-        outputData->data.string = str;
+        std::string str = GetDir(std::string(inputData[0].data.string));
+        outputData->data.string = getNewBuffer( str);
         outputData->type = kTypeString;
         return kESErrOK;
 
@@ -260,8 +259,8 @@ extern "C" {
             return kESErrBadArgumentList;
         }
     
-        char* str = GetNameWithoutExt(inputData[0].data.string);
-        outputData->data.string = str;
+        std::string str = GetNameWithoutExt(std::string(inputData[0].data.string));
+        outputData->data.string = getNewBuffer(str);
         outputData->type = kTypeString;
         return kESErrOK;
 

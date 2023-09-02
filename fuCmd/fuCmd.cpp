@@ -126,7 +126,7 @@ static int Command(int argc, char* argv[])
 		else if ((key == "pathgetparent") || (key == "getparent"))
 		{
 			if (argc >= 3) {
-				char* s = GetParent(argv[2]);
+				std::string s = GetDir(std::string(argv[2]));
 				std::cout << s;
 				std::cout << "\n";
 				ret = 1;
@@ -144,7 +144,7 @@ static int Command(int argc, char* argv[])
 		else if ((key == "pathgetnamewithoutext") || (key == "getnamewithoutext"))
 		{
 			if (argc >= 3) {
-				char* s = GetNameWithoutExt(argv[2]);
+				std::string s = GetNameWithoutExt(std::string(argv[2]));
 				std::cout << s;
 				std::cout << "\n";
 				ret = 1;
@@ -153,7 +153,7 @@ static int Command(int argc, char* argv[])
 		else if ((key == "pathgetext") || (key == "getext"))
 		{
 			if (argc >= 3) {
-				char* s = GetExt(argv[2]);
+				std::string s = GetExt(std::string(argv[2]));
 				std::cout << s;
 				std::cout << "\n";
 				ret = 1;

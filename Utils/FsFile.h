@@ -72,10 +72,10 @@ std::string PathToJSFromWin(std::string str);
 
 
 LPTSTR  GetName(LPTSTR  str);
-char* GetNameWithoutExt(char* str);
-char* GetExt(char* str);
-char* GetParent(char* str);
-char* CombinePath(char* s0, char* s1);
+//char* GetNameWithoutExt(char* str);
+//char* GetExt(char* str);
+//char* GetParent(char* str);
+//char* CombinePath(char* s0, char* s1);
 std::string CombinePath(std::string str1, std::string str2);
 
 std::string DllPath();
