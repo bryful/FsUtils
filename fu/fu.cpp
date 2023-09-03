@@ -19,6 +19,7 @@ namespace {
         "pathGetExt_s,"
         "pathGetFrame_s,"
         "pathGetNameWithoutFrame_s,"
+        "pathChangeExt_ss,"
         "indexOfFrameNumber_s,"
         "processList,"
         "processAEList,"
@@ -281,6 +282,22 @@ extern "C" {
             if (inputData[0].type == kTypeString)
             {
                 std::string  ret = GetNameWithoutFrame(std::string(inputData[0].data.string));
+                outputData->type = kTypeString;
+                outputData->data.string = getNewBuffer((char*)ret.c_str());
+                return kESErrOK;
+            }
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long pathChangeExt(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+        if (inputDataCount > 1)
+        {
+            if ((inputData[0].type == kTypeString)&& (inputData[1].type == kTypeString))
+            {
+                std::string  ret = ChangeExt(
+                    std::string(inputData[0].data.string),
+                    std::string(inputData[1].data.string)
+                );
                 outputData->type = kTypeString;
                 outputData->data.string = getNewBuffer((char*)ret.c_str());
                 return kESErrOK;
