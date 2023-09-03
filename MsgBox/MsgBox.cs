@@ -1,6 +1,6 @@
 namespace MsgBox
 {
-	public partial class MainForm : BaseForm
+	public partial class MsgBox : BaseForm
 	{
 		// ********************************************************************
 		private F_Pipe m_Server = new F_Pipe();
@@ -24,7 +24,7 @@ namespace MsgBox
 		{
 			m_Server.StopServer();
 		}
-		public MainForm()
+		public MsgBox()
 		{
 			this.AllowDrop = true;
 			InitializeComponent();

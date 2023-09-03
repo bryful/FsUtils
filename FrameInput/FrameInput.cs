@@ -5,9 +5,35 @@ using System.Text;
 
 namespace FrameInput
 {
-	public partial class MainForm : BaseForm
+	public enum FPS
 	{
+		f24 = 24,
+		f30 = 30
+	}
+	public partial class FrameInput : BaseForm
+	{
+		private bool RefFLag = false;
+		private double m_Duration = 0;
+		public double Duration
+		{
+			get
+			{
+				return m_Duration;
+			}
+			set
+			{
+				//SetDuration(value);
+			}
+		}
+		private FPS m_fps = FPS.f24;
+		public FPS Fps
+		{
+			get { return m_fps; }
+			set
+			{
 
+			}
+		}
 		private InOutMode InOutMode = InOutMode.None;
 		// ********************************************************************
 		private F_Pipe m_Server = new F_Pipe();
@@ -31,25 +57,23 @@ namespace FrameInput
 		{
 			m_Server.StopServer();
 		}
-		public MainForm()
+		public FrameInput()
 		{
-			this.AllowDrop = true;
+			//this.AllowDrop = true;
 			InitializeComponent();
 			this.FormClosed += (sender, e) => { LastSettings(); };
 			StartSettings();
-
-
+			
 			Command(Environment.GetCommandLineArgs().Skip(1).ToArray(), PIPECALL.StartupExec);
 		}
+		// **********************************************************
+		
+		// **********************************************************
 		// **********************************************************
 		private void StartSettings()
 		{
 			PrefFile pf = new PrefFile(this);
 			pf.Load();
-			//Rectangle? rect = pf.GetBounds();
-			//object? v = null;
-			//v = pf.JsonFile.ValueAuto("Multiline", typeof(Boolean).Name);
-			//if (v != null) IsMultiline = (bool)v;
 
 		}
 		// **********************************************************
@@ -133,6 +157,7 @@ namespace FrameInput
 
 			return s;
 		}
+		/*
 		protected override void OnDragEnter(DragEventArgs drgevent)
 		{
 			if ((drgevent != null) && (drgevent.Data != null))
@@ -164,6 +189,7 @@ namespace FrameInput
 				base.OnDragDrop(drgevent);
 			}
 		}
+		*/
 
 		// **********************************************************
 		private void btnOK_Click(object sender, EventArgs e)
@@ -206,6 +232,13 @@ namespace FrameInput
 		}
 
 		private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			bool b = (m_fps == FPS.f24);
+			fps24Menu.Checked = b;
+			fps30Menu.Checked = !b;
+		}
+
+		private void FrameInput_Load(object sender, EventArgs e)
 		{
 
 		}

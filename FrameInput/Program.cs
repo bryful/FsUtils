@@ -19,7 +19,7 @@ namespace FrameInput
 				// To customize application configuration such as set high DPI settings or default font,
 				// see https://aka.ms/applicationconfiguration.
 				ApplicationConfiguration.Initialize();
-				MainForm mf = new MainForm();
+				FrameInput mf = new FrameInput();
 				mf.StartServer(Id);
 				Application.Run(mf);
 				mf.StopServer();

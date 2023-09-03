@@ -1,6 +1,6 @@
 ﻿namespace MsgBox
 {
-	partial class MainForm
+	partial class MsgBox
 	{
 		/// <summary>
 		///  Required designer variable.
