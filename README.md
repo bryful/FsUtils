@@ -112,7 +112,9 @@ var e = fu.pathExt(p); // ".tga"
 "A0001.tga"の場合は"A"、"A[0001-0013].tga"の場合は"A"を返す。
 </p>
 
-
+### pathChangeExt(path,newExt)
+<p>拡張子を変更します
+</p>
 
 ### pathWinToJs(path) / pathJsToWin(path)
 <p>パス文字列をExtendScript形式とWindows形式と変換します。</p>
