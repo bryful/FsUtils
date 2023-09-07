@@ -206,14 +206,19 @@ showWindow()はwin31apiを呼び出してるだけです。
 <p>After Effectsのメインウィンドウのハンドルを返します。ダイアログのタイトルが"Adobe After Effects"で始まってると間違えてそれを返すので注意</p>
 
 
-### callCommand(str) callCommandWait(str) callCommandGetResult(str)
+### callCommand(str) callCommandWait(str)
 <p>strのコマンドを実行します。<br>
-callCommandGetResultはコンソールコマンドの標準出力を取り込みます。</p>
+</p>
+### popen(cmd,arg)
+<p>コマンドを実行して、その標準出力を返します。<br>
+
+["C++で外部プロセスを立ち上げて結果を得る"](https://chichimotsu.hateblo.jp/entry/2014/11/21/020825) にあったものをそのまま使わせてもらわせて貰っています。
+</p>
 
 
 ### isModifierkey(str)
 <p>指定したキーが押されてたらtrueが返ります。
-isModifierkey(str)の引数には、
+isModifierkey(str)の引数には以下のもの使えますが、スクリプトの内部の問題であまりキーが拾えません。
 
 * lbutton
 * rbutton
@@ -278,6 +283,13 @@ C:\Users\＜ユーザー名＞\AppData\Roaming\ccc\BBB\aaa.pref
 | productName | プロダクションフォルダ名 |
 
 </p>
+
+### frameInput(duration, fps)
+<p>
+フレーム入力ダイアログを表示します。cancelでnullが帰ります。<br>
+120と5+0の表記どちらも可能です。無いとは思いますがfpsを変更する時は右クリックで変更できます。
+</p>
+
 
 
 ## 忘れるな！自分に対しての覚え書き

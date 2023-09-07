@@ -2,37 +2,42 @@ using System.CodeDom;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Text;
+using BRY;
 
 namespace FrameInput
 {
-	public enum FPS
-	{
-		f24 = 24,
-		f30 = 30
-	}
+
 	public partial class FrameInput : BaseForm
 	{
-		private bool RefFLag = false;
-		private double m_Duration = 0;
 		public double Duration
 		{
 			get
 			{
-				return m_Duration;
-			}
-			set
-			{
-				//SetDuration(value);
+				return frameEdit1.Duration;
 			}
 		}
-		private FPS m_fps = FPS.f24;
+		public void SetDuration(double b)
+		{
+			frameEdit1.SetDuration(b);
+		}
+		public int Frame
+		{
+			get
+			{
+				return frameEdit1.Frame;
+			}
+		}
+		public void SetFrame(int f)
+		{
+			frameEdit1.SetFrame(f);
+		}
 		public FPS Fps
 		{
-			get { return m_fps; }
-			set
-			{
-
-			}
+			get { return frameEdit1.fps; }
+		}
+		public void SetFps(FPS fps)
+		{
+			frameEdit1.SetFps(fps);
 		}
 		private InOutMode InOutMode = InOutMode.None;
 		// ********************************************************************
@@ -63,25 +68,32 @@ namespace FrameInput
 			InitializeComponent();
 			this.FormClosed += (sender, e) => { LastSettings(); };
 			StartSettings();
-			
+
+			fps24Menu.Click += (sender, e) => { frameEdit1.SetFps(FPS.f24); };
+			fps30Menu.Click += (sender, e) => { frameEdit1.SetFps(FPS.f30); };
+
 			Command(Environment.GetCommandLineArgs().Skip(1).ToArray(), PIPECALL.StartupExec);
+			ToCenter();
 		}
 		// **********************************************************
-		
+
 		// **********************************************************
 		// **********************************************************
 		private void StartSettings()
 		{
-			PrefFile pf = new PrefFile(this);
+			PrefFile pf = new PrefFile(this,"FsUtils","FrameInput");
 			pf.Load();
+			object? v = null;
+			v = pf.JsonFile.ValueAuto("TopMost", typeof(Boolean).Name);
+			if (v != null) this.TopMost = (bool)v;
 
 		}
 		// **********************************************************
 		private void LastSettings()
 		{
-			PrefFile pf = new PrefFile(this);
+			PrefFile pf = new PrefFile(this, "FsUtils", "FrameInput");
 			pf.SetBounds();
-			//pf.JsonFile.SetValue("Multiline", IsMultiline);
+			pf.JsonFile.SetValue("TopMost", this.TopMost);
 			pf.Save();
 		}
 
@@ -93,58 +105,50 @@ namespace FrameInput
 		/// <param name="IsPipe">起動時かダブルクリック時か判別</param>
 		public void Command(string[] args, PIPECALL IsPipe = PIPECALL.StartupExec)
 		{
-			Args cmd = new Args(args);
-			if (cmd.Count <= 0) return;
-			string[] cmdLines = cmd.CommandWithoutOptin();
-
-
-			if (cmd.Options.Length > 0)
+			CmdArgv ca = new CmdArgv(args);
+			string[] cmds;
+			SetDuration(0);
+			SetFps(FPS.f24);
+			int idx = ca.FindKeys(new string[] { "fps", "framerate" });
+			if (idx >= 0)
 			{
-				ArgItem? c0 = cmd.FindOption(new string[] { "temp", "tmp" });
-				if (c0 != null)
+				cmds = ca.KeyCmd(idx);
+				if (cmds.Length > 0)
 				{
-					FsTempData td = new FsTempData();
-					if (td.Load())
+					double dd = double.Parse(cmds[0]);
+					if ((dd == 30) || (dd == 29.97))
 					{
-						//SetText(td.Data);
-						InOutMode = InOutMode.FileFile;
+						SetFps(FPS.f30);
 					}
-				}
-				ArgItem? c1 = cmd.FindOption(new string[] { "cmdfile", "commandfile" });
-				if (c1 != null)
-				{
-					string s = "";
-					if (cmdLines.Length > 0)
-					{
-						s = ChkDecode(cmdLines[0]);
-					}
-					//SetText(s);
-					InOutMode = InOutMode.CmdFile;
-				}
-				ArgItem? c2 = cmd.FindOption(new string[] { "cmd", "command" });
-				if (c2 != null)
-				{
-					string s = "";
-					if (cmdLines.Length > 0)
-					{
-						s = ChkDecode(cmdLines[0]);
-					}
-					//SetText(s);
-					InOutMode = InOutMode.CmdCmd;
 				}
 			}
-			else
+			idx = ca.FindKeys(new string[] { "frame", "f" });
+			if (idx >= 0)
 			{
-				string s = "";
-				if (cmdLines.Length > 0)
+				cmds = ca.KeyCmd(idx);
+				if (cmds.Length > 0)
 				{
-					s = ChkDecode(cmdLines[0]);
+					int f;
+					if (int.TryParse(cmds[0], out f))
+					{
+						SetFrame(f);
+					}
 				}
-				//SetText(s);
-				InOutMode = InOutMode.CmdNone;
+			}
+			idx = ca.FindKeys(new string[] { "duration", "d" });
+			if (idx >= 0)
+			{
+				cmds = ca.KeyCmd(idx);
+				if (cmds.Length > 0)
+				{
+					double f2;
+					if (double.TryParse(cmds[0], out f2))
+					{
+						SetDuration(f2);
+					}
+				}
 			}
 		}
-
 		private string ChkDecode(string s)
 		{
 			s = s.Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\\"", "\"").Replace("\\\\", "\\");
@@ -205,26 +209,22 @@ namespace FrameInput
 		private void ExitWork(bool isOK)
 		{
 			bool noerr = false;
-			FsTempData td = new FsTempData();
-			switch (InOutMode)
+			F_W.SettupConsole();
+			if (isOK)
 			{
-				case InOutMode.CmdFile:
-				case InOutMode.FileFile:
-					//td.Data = textEdit.Text;
-					noerr = td.Save(isOK);
-					break;
-				case InOutMode.CmdCmd:
-					F_W.SettupConsole();
-					//td.Data = ChkEncode(textEdit.Text);
-					Console.WriteLine(td.DataT(isOK));
-					noerr = true;
-					F_W.EndConsole();
-					break;
-				default:
-					noerr = true;
-					break;
-
+				Console.WriteLine($"{Duration}");
 			}
+			else
+			{
+				Console.WriteLine("-1");
+			}
+			noerr = true;
+			F_W.EndConsole();
+			/*
+			FsTempData td = new FsTempData();
+			td.Data = $"{frameEdit1.Duration}";
+			noerr = td.Save(isOK);
+			*/
 			if (noerr == true)
 			{
 				Application.Exit();
@@ -233,7 +233,7 @@ namespace FrameInput
 
 		private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			bool b = (m_fps == FPS.f24);
+			bool b = (Fps == FPS.f24);
 			fps24Menu.Checked = b;
 			fps30Menu.Checked = !b;
 		}
@@ -241,6 +241,11 @@ namespace FrameInput
 		private void FrameInput_Load(object sender, EventArgs e)
 		{
 
+		}
+		public void ToCenter()
+		{
+			Rectangle r = Screen.PrimaryScreen.Bounds;
+			this.Location = new Point((r.Width - this.Width) / 2, (r.Height - this.Height) / 2);
 		}
 	}
 	public enum InOutMode

@@ -2,10 +2,11 @@ using System.CodeDom;
 using System.Text;
 using System.Diagnostics.Eventing.Reader;
 using System.Diagnostics;
+using BRY;
 
 namespace LineEdit
 {
-	public partial class MainForm : BaseForm
+	public partial class Edit : BaseForm
 	{
 		public bool IsMultiline
 		{
@@ -53,7 +54,7 @@ namespace LineEdit
 		{
 			m_Server.StopServer();
 		}
-		public MainForm()
+		public Edit()
 		{
 			this.AllowDrop = true;
 			InitializeComponent();
@@ -74,20 +75,20 @@ namespace LineEdit
 		// **********************************************************
 		private void StartSettings()
 		{
-			PrefFile pf = new PrefFile(this);
+			PrefFile pf = new PrefFile(this,"FsUtils","Edit");
 			pf.Load();
 			Rectangle? rect = pf.GetBounds();
-			//object? v = null;
-			//v = pf.JsonFile.ValueAuto("Multiline", typeof(Boolean).Name);
-			//if (v != null) IsMultiline = (bool)v;
+			object? v = null;
+			v = pf.JsonFile.ValueAuto("TopMost",typeof(Boolean).Name);
+			if (v != null) this.TopMost = (bool)v;
 
 		}
 		// **********************************************************
 		private void LastSettings()
 		{
-			PrefFile pf = new PrefFile(this);
+			PrefFile pf = new PrefFile(this, "FsUtils", "Edit");
 			pf.SetBounds();
-			//pf.JsonFile.SetValue("Multiline", IsMultiline);
+			pf.JsonFile.SetValue("TopMost", this.TopMost);
 			pf.Save();
 		}
 

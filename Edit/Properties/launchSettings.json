@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "LineEdit": {
+    "Edit": {
       "commandName": "Project",
       "commandLineArgs": "-cmd aaaa\\r\\nbbb"
     }

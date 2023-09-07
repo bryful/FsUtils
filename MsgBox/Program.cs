@@ -1,3 +1,5 @@
+using BRY;
+
 namespace MsgBox
 {
 	internal static class Program

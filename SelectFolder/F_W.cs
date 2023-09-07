@@ -7,12 +7,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BRY
+namespace SelectFolder
 {
 	public class F_W
 	{
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		struct SHFILEINFO
+		private struct SHFILEINFO
 		{
 			public IntPtr hIcon;
 			public IntPtr iIcon;
@@ -375,7 +375,7 @@ namespace BRY
 			ret += "})";
 			return ret;
 		}
-		 // *****************************************************************************
+		// *****************************************************************************
 		[System.Runtime.InteropServices.DllImport("Kernel32.dll")]
 		static extern bool AttachConsole(int processId);
 		const int ATTACH_PARENT_PROCESS = -1;

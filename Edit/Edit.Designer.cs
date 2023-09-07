@@ -1,6 +1,6 @@
 ﻿namespace LineEdit
 {
-	partial class MainForm
+	partial class Edit
 	{
 		/// <summary>
 		///  Required designer variable.
@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Edit));
 			textEdit = new TextBox();
 			btnCancel = new Button();
 			btnOK = new Button();
@@ -89,7 +90,7 @@
 			multilineMenu.Size = new Size(121, 22);
 			multilineMenu.Text = "Multiline";
 			// 
-			// MainForm
+			// Edit
 			// 
 			AcceptButton = btnOK;
 			AllowDrop = true;
@@ -102,10 +103,10 @@
 			Controls.Add(btnOK);
 			Controls.Add(btnCancel);
 			Controls.Add(textEdit);
+			Icon = (Icon)resources.GetObject("$this.Icon");
 			MaximumSize = new Size(2000, 100);
 			MinimumSize = new Size(200, 100);
-			Name = "MainForm";
-			ShowIcon = false;
+			Name = "Edit";
 			Text = "Edit";
 			contextMenuStrip1.ResumeLayout(false);
 			ResumeLayout(false);

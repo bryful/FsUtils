@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MsgBox));
 			tbConsole = new TextBox();
 			SuspendLayout();
 			// 
@@ -45,7 +46,7 @@
 			tbConsole.Size = new Size(575, 209);
 			tbConsole.TabIndex = 0;
 			// 
-			// MainForm
+			// MsgBox
 			// 
 			AllowDrop = true;
 			AutoScaleDimensions = new SizeF(7F, 15F);
@@ -53,8 +54,8 @@
 			BackColor = Color.FromArgb(64, 64, 64);
 			ClientSize = new Size(598, 258);
 			Controls.Add(tbConsole);
-			Name = "MainForm";
-			ShowIcon = false;
+			Icon = (Icon)resources.GetObject("$this.Icon");
+			Name = "MsgBox";
 			Text = "MsgBox";
 			ResumeLayout(false);
 			PerformLayout();

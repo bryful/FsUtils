@@ -13,7 +13,7 @@ using System.Text.Unicode;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrameInput
+namespace BRY
 {
 	public class JsonFile
 	{

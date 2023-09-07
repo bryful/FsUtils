@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ で生成されたインクルード ファイル。
-// FsUtilsCmd.rc で使用
+// fuCmd.rc で使用
 //
 #define IDR_WAVE1                       101
 #define IDR_WAVE2                       102
@@ -54,12 +54,13 @@
 #define IDR_WAVE50                      150
 #define IDR_WAVE51                      151
 #define IDR_WAVE52                      152
+#define IDI_ICON1                       153
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        153
+#define _APS_NEXT_RESOURCE_VALUE        154
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101

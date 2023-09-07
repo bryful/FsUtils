@@ -21,6 +21,7 @@
 #include <iostream>  // cout
 #include <memory>    // shared_ptr
 #include <fstream>
+#include <fileapi.h>
 
 #include "FsUtil.h"
 #include "FsFile.h"
@@ -34,3 +35,4 @@ int CallCommandWait(char* cmd);
 int CallCommandGetResult(const char* cmd, char* buf, DWORD size);
 //int CallCommandGetResult(std::string cmd, std::string& result);
 
+std::string Popen(const std::string command, const std::string arguments);

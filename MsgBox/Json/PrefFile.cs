@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MsgBox
+namespace BRY
 {
 	public class PrefFile
 	{
@@ -19,11 +19,18 @@ namespace MsgBox
 		private string m_AppDataDirectory = "";
 		public string AppDataDirectory { get { return m_AppDataDirectory; } }
 		// ****************************************************
-		public PrefFile(Form fm)
+		public PrefFile(Form fm,string ProductName, string AppName)
 		{
 			m_form = fm;
-			m_AppName = Path.GetFileNameWithoutExtension(Application.ExecutablePath);
-			m_AppDataDirectory = GetAppDataPath();
+			if(AppName!="")
+			{
+				m_AppName = AppName;
+			}
+			else
+			{
+				m_AppName = Path.GetFileNameWithoutExtension(Application.ExecutablePath);
+			}
+			m_AppDataDirectory = GetAppDataPath(ProductName);
 			m_AppDataPath = Path.Combine(m_AppDataDirectory, m_AppName + ".json");
 
 		}
@@ -45,19 +52,11 @@ namespace MsgBox
 			{
 				foreach (System.Windows.Forms.Screen s in System.Windows.Forms.Screen.AllScreens)
 				{
-					//ディスプレイのデバイス名を表示
-					//Console.WriteLine("デバイス名:{0}", s.DeviceName);
-					//ディスプレイの左上の座標を表示
-					//Console.WriteLine("X:{0} Y:{1}", s.Bounds.X, s.Bounds.Y);
-					//ディスプレイの大きさを表示
-					//Console.WriteLine("高さ:{0} 幅:{1}", s.Bounds.Height, s.Bounds.Width);
 					if (IsInRect(s.Bounds, (Rectangle)rct))
 					{
 						isIn = true;
 					}
 				}
-
-
 
 			}
 			if ((isIn == false)||(rct==null))
@@ -90,17 +89,17 @@ namespace MsgBox
 			return JsonFile.Load(s);
 		}
 		// ****************************************************
-		static public string GetAppDataPath()
+		static public string GetAppDataPath(string ProductName)
 		{
-			return GetFileSystemPath(Environment.SpecialFolder.ApplicationData);
+			return GetFileSystemPath(Environment.SpecialFolder.ApplicationData, ProductName);
 		}
 		// ****************************************************
-		static public string GetFileSystemPath(Environment.SpecialFolder folder)
+		static public string GetFileSystemPath(Environment.SpecialFolder folder,string ProductName)
 		{
 			// パスを取得
 			string path = $"{Environment.GetFolderPath(folder)}\\"
 				+ $"{Application.CompanyName}\\"
-				+ $"{Application.ProductName}";
+				+ $"{ProductName}";
 
 			// パスのフォルダを作成
 			lock (typeof(Application))

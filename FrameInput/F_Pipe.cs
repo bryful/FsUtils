@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace FrameInput
+namespace BRY
 {
 	/// <summary>
 	/// どこから送られたか

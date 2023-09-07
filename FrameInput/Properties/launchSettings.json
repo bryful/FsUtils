@@ -2,7 +2,7 @@
   "profiles": {
     "FrameInput": {
       "commandName": "Project",
-      "commandLineArgs": "-cmd aaaa\\r\\nbbb"
+      "commandLineArgs": "-frame 96"
     }
   }
 }

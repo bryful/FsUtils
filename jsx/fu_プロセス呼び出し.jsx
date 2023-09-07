@@ -16,10 +16,10 @@ function initExtension(extensionDir) {
     return ret;
 }
 
-//ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
 initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
-// スクリプトの実行場所ならこれ
 
-var ss = fu.callCommandGetResult("cmd.exe /c dir");
+//var ss = fu.popen("cmd.exe", "/c dir /b");
+//alert(ss);
+
+var ss = fu.popen("C:\\Program Files\\bry-ful\\FsUtils\\Edit.exe", "-cmd  aaa");
 alert(ss);
-

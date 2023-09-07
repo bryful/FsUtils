@@ -16,9 +16,7 @@ function initExtension(extensionDir) {
     return ret;
 }
 
-//ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
 initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
-// スクリプトの実行場所ならこれ
 
 
 fu.msgln("メッセージを送る");

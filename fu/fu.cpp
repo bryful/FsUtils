@@ -37,7 +37,7 @@ namespace {
         "playSound_s,"
         "callCommand_s,"
         "callCommandWait_s,"
-        "callCommandGetResult_s,"
+        "popen_ss,"
         "isModifierKey_s,"
         "isShiftKey,"
         "isControlKey,"
@@ -46,6 +46,8 @@ namespace {
         "msgln_s,"
         "msgcls,"
         "edit_s,"
+        "frameInput_ff,"
+        "selectFolder,"
         "processID,"
         "windowHandle,"
         "loginUserName,"
@@ -485,40 +487,33 @@ extern "C" {
         }
         return kESErrBadArgumentList;
     }
-   
-    EXPORT long callCommandGetResult(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+    EXPORT long popen(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
-        long err = kESErrBadArgumentList;
-        if (inputDataCount > 0)
+        std::string str0 = "";
+        std::string str1 = "";
+        if (inputDataCount >= 1)
         {
             if (inputData[0].type == kTypeString)
             {
-                char* str = Utf8toShiftJis(inputData[0].data.string);
-                str = getNewBuffer(str);
-
-                char buf[65536];
-                memset(buf, '\0', 65536);
-
-                if (CallCommandGetResult(str, buf, 65536) == 1)
-                {
-                    std::string stdOut = std::string(buf);
-                    outputData->type = kTypeString;
-                    //ReplaceAll(stdOut, "\\", "\\\\");
-                    char* ret = ShiftJistoUtf8((char *)stdOut.c_str());
-                    outputData->data.string = getNewBuffer(ret);
-                }
-                else {
-                    outputData->type = kTypeString;
-                    char* ret = "erroer";
-                    outputData->data.string = ret;
-                }
-                //delete buf;
-                err = kESErrOK;
+                str0 = std::string(Utf8toShiftJis(inputData[0].data.string));
             }
         }
-        return err;
+        if (inputDataCount >= 2)
+        {
+            if (inputData[1].type == kTypeString)
+            {
+                str1 = std::string(Utf8toShiftJis(inputData[1].data.string));
+            }
+        }
+        if (str0.empty() == false)
+        {
+            std::string ret = Popen(str0, str1);
+            outputData->type = kTypeString;
+            outputData->data.string = getNewBuffer(ShiftJistoUtf8((char*)ret.c_str()));
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
     }
-    
     EXPORT long isModifierKey(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
         if (inputDataCount > 0)
@@ -684,6 +679,64 @@ extern "C" {
             }
         }
         return kESErrBadArgumentList;
+    }
+    EXPORT long frameInput(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        if (inputDataCount > 0)
+        {
+            std::string parent = DllPath();
+            std::string cmd;
+
+            cmd = "\"" + parent + "FrameInput.exe\"";
+            std::string prm = "";
+
+            if (inputData[0].type == kTypeDouble)
+            {
+                prm += " -duration " + std::to_string(inputData[0].data.fltval);
+            }
+            if ((inputDataCount > 1) && (inputData[1].type == kTypeDouble))
+            {
+                prm += " -framerate " + std::to_string(inputData[1].data.fltval);
+            }
+            std::string ret = Popen(cmd, prm);
+
+            double retv = std::atof(ret.c_str());
+            if (retv >0)
+            {
+                outputData->type = kTypeDouble;
+                outputData->data.fltval = retv;
+
+            }
+            else {
+                outputData->type = kTypeScript;
+                outputData->data.string = getNewBuffer("(null)");
+            }
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long selectFolder(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        std::string parent = DllPath();
+        std::string cmd;
+        std::string prm = "";
+
+        cmd = "\"" + parent + "SelectFolder.exe\"";
+
+        std::string ret = Trim(Popen(cmd, prm));
+        ret = ReplaceAll(ret, "\\", "\\\\");
+        if (ret.empty() == false )
+        {
+            outputData->type = kTypeScript;
+            ret = "(new Folder(\"" + ret + "\"))";
+            outputData->data.string = getNewBuffer(ret);
+
+        }
+        else {
+            outputData->type = kTypeScript;
+            outputData->data.string = getNewBuffer("(null)");
+        }
+        return kESErrOK;
     }
     EXPORT long test(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 

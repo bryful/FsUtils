@@ -8,7 +8,7 @@ using System.Text.Json.Nodes;
 using System.Text.Unicode;
 using System.Threading.Tasks;
 
-namespace MsgBox
+namespace BRY
 {
 	/// <summary>
 	/// After EffectsとJsonでデータのやりとりするためのクラス

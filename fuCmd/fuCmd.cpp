@@ -4,6 +4,7 @@
 #include "..\Utils\FsProcess.h"
 #include "..\Utils\FsJson.h"
 #include "..\Utils\FsTempData.h"
+#include "resource.h"
 
 #include <vector>
 #include <windows.h>
@@ -350,13 +351,16 @@ static int Command(int argc, char* argv[])
 // *****************************************************************************************
 int main(int argc, char* argv[])
 {
+	WNDCLASSEX wcx;
+	HINSTANCE hInstance = GetModuleHandle("fuCmd.exe");
+	wcx.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
+	wcx.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
 
 	int ret = Command(argc, argv);
 	if (ret == 0)
 	{
 		Usage(argv[0]);
 	}
-	//HINSTANCE hInst = GetModuleHandle("FsUtils.exe");
 	//PlayResource(hInst, 52);
 	//PlayAESound(0);
 	//SoundPlay("C:\\Windows\\Media\\Windows Logon.wav");

@@ -1,3 +1,4 @@
+using BRY;
 namespace MsgBox
 {
 	public partial class MsgBox : BaseForm
@@ -35,15 +36,19 @@ namespace MsgBox
 		// **********************************************************
 		private void StartSettings()
 		{
-			PrefFile pf = new PrefFile(this);
+			PrefFile pf = new PrefFile(this,"FsUtils","MsgBox");
 			pf.Load();
 			Rectangle? rect = pf.GetBounds();
+			object? v = null;
+			v = pf.JsonFile.ValueAuto("TopMost", typeof(Boolean).Name);
+			if (v != null) this.TopMost = (bool)v;
 		}
 		// **********************************************************
 		private void LastSettings()
 		{
-			PrefFile pf = new PrefFile(this);
+			PrefFile pf = new PrefFile(this, "FsUtils", "MsgBox");
 			pf.SetBounds();
+			pf.JsonFile.SetValue("TopMost", this.TopMost);
 			pf.Save();
 		}
 		// **********************************************************
@@ -80,7 +85,7 @@ namespace MsgBox
 						}
 						else if ((opt == "getenv") || (opt == "env"))
 						{
-							if (idx< args.Length-1)
+							if (idx < args.Length - 1)
 							{
 								env = args[idx + 1];
 							}
@@ -123,10 +128,10 @@ namespace MsgBox
 			{
 				this.TopMost = (bool)istopmost;
 			}
-			if (env!="")
+			if (env != "")
 			{
 				string? envs = Environment.GetEnvironmentVariable(env);
-				if ((envs!=null)&&(envs!=""))
+				if ((envs != null) && (envs != ""))
 				{
 					/*
 					ReplaceAll(argv, "\\", "\\\\");

@@ -223,4 +223,9 @@
       <Filter>リソース ファイル\wav</Filter>
     </Media>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="fuCmd.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
