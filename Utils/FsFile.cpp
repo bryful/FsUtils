@@ -639,3 +639,54 @@ BOOL LoadPref(std::string fname, std::string dname, std::string productName, std
 	}
 	return ret;
 }
+// ************************************************************************
+std::vector<std::string> GetDriveList()
+{
+	LPTSTR  lpSeek;
+	DWORD dwDrive = GetLogicalDrives();
+	std::vector<std::string> ret;
+
+	for (int nDrive = 0; nDrive < 26; nDrive++) {
+
+		if ((dwDrive & 0x01) == 0x01)
+		{
+			char buf[3];
+			buf[0] = 'a' + nDrive;
+			buf[1] = '\0';
+			ret.push_back(std::string(buf));
+		}
+		dwDrive >>= 1;
+	}
+	return ret;
+}
+BOOL IsExt(std::string p,std::vector<std::string> el)
+{
+	BOOL ret = false;
+	if (el.size() <= 0) return ret;
+	std::string e = ToLowwer(GetExt(p));
+	for (int i = 0; i < el.size(); i++)
+	{
+		if (e == ToLowwer(el.at(i)))
+		{
+			ret = true;
+			break;
+		}
+	}
+	return ret;
+}
+BOOL IsPict(std::string p)
+{
+	BOOL ret = false;
+	std::vector<std::string> el = { ".tga",".tif",".png",".jpg",".psd",".bmp" };
+	if (el.size() <= 0) return ret;
+	std::string e = ToLowwer(GetExt(p));
+	for (int i = 0; i < el.size(); i++)
+	{
+		if (e == el.at(i))
+		{
+			ret = true;
+			break;
+		}
+	}
+	return ret;
+}

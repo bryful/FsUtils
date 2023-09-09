@@ -7,7 +7,7 @@ function initExtension(extensionDir) {
         ret = true;
     } catch (e) {
         ret = false;
-       alert("exception: " + e.toString());
+        alert("exception: " + e.toString());
     }
     if (fu==null)
     {
@@ -15,13 +15,10 @@ function initExtension(extensionDir) {
     }
     return ret;
 }
+
 initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
-var f = fu.selectFolder();
-if(f==null)
-{
-	alert("none");
-}else{
-	//fu.msgln(f);
-	alert(f.fullName);
-}
+
+var dl = fu.getDriveList();
+
+fu.msgln(dl.toSource());

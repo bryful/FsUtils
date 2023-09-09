@@ -164,6 +164,26 @@ std::vector<std::string> CammaSplit(const std::string& s)
 	if (block.empty()==false) result.push_back(block);
 	return result;
 }
+std::string ToLowwer(std::string s)
+{
+	if (s.size() <= 0) return std::string("");
+	char* s2 = (char*)s.c_str();
+	while (*s2) {
+		*s2 = tolower(*s2);
+		s2++;
+	}
+	return std::string(s2);
+}
+std::string ToUpper(std::string s)
+{
+	if (s.size() <= 0) return std::string("");
+	char* s2 = (char*)s.c_str();
+	while (*s2) {
+		*s2 = toupper(*s2);
+		s2++;
+	}
+	return std::string(s2);
+}
 // ******************************************************************
 BOOL SetTextClipboard(LPCTSTR lpString,bool IsU)
 {

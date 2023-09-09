@@ -100,7 +100,7 @@ namespace SelectFolder
 			get { return base.HelpButton; }
 			set { base.HelpButton = value; }
 		}
-		[Category("Hypowered"), Browsable(false)]
+		[Category("Hypowered"), Browsable(true)]
 		public new System.Drawing.Icon Icon
 		{
 			get { return base.Icon; }

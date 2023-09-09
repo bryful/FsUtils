@@ -12,6 +12,11 @@
     <PlatformTarget>x64</PlatformTarget>
     <SignAssembly>False</SignAssembly>
     <BaseOutputPath></BaseOutputPath>
+    <ApplicationIcon>SelectFolder.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="SelectFolder.ico" />
+  </ItemGroup>
 
 </Project>

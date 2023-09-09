@@ -19,7 +19,7 @@ function initExtension(extensionDir) {
 //ここではインストールしてあるものを使ってますが、好きなところにdllをコピーしてパスを書き換えれば大丈夫です。
 initExtension("C:\\Program Files\\bry-ful\\FsUtils\\fu.dll");
 
-
+/*
 $.setenv("AAA","AAAaaあああ");
 var a = fu.getEnv("AAA");
 alert(a);
@@ -29,3 +29,10 @@ alert(aa);
 var b = $.getenv("CCC");
 alert(b);
 alert(a);
+*/
+var obj ={};
+obj.bbb = 12
+obj.ccc = "aaa";
+var fld = new File("C:\\bin\\7z\\7za.exe");
+var s = fu.test(fld);
+alert(s);

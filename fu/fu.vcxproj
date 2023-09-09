@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\SoSharedLibDefs.h" />
     <ClInclude Include="..\Utils\AEProcess.h" />
+    <ClInclude Include="..\Utils\CPPl.h" />
     <ClInclude Include="..\Utils\FsFile.h" />
     <ClInclude Include="..\Utils\FsJson.h" />
     <ClInclude Include="..\Utils\FsProcess.h" />
@@ -209,6 +210,8 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>CompileAsCpp</CompileAs>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -247,6 +250,8 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>CompileAsCpp</CompileAs>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>

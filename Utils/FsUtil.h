@@ -39,6 +39,8 @@ std::string Trim(const std::string& string);
 std::string TrimTailSepa(const std::string& string);
 std::string TrimHeadSepa(const std::string& string);
 std::vector<std::string> CammaSplit(const std::string& s);
+std::string ToLowwer(std::string s);
+std::string ToUpper(std::string s);
 
 // *********************************************************************************************
 /*

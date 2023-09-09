@@ -62,7 +62,8 @@ namespace {
         "savePref_ssss,"
         "getEnv_s,"
         "setEnv_ss,"
-        "test_aaaaaaaaaaaaaaaaaa,"
+        "getDriveList,"
+        "test_ssss,"
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -724,11 +725,9 @@ extern "C" {
         cmd = "\"" + parent + "SelectFolder.exe\"";
 
         std::string ret = Trim(Popen(cmd, prm));
-        ret = ReplaceAll(ret, "\\", "\\\\");
         if (ret.empty() == false )
         {
             outputData->type = kTypeScript;
-            ret = "(new Folder(\"" + ret + "\"))";
             outputData->data.string = getNewBuffer(ret);
 
         }
@@ -957,6 +956,26 @@ extern "C" {
         }
         outputData->data.intval = ret;
         return kESErrBadArgumentList;
+    }
+    EXPORT long getDriveList(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        std::vector<std::string> lst = GetDriveList();
+        std::string ret = "";
+        if (lst.size() > 0)
+        {
+            for (int i = 0; i < lst.size(); i++)
+            {
+                if (ret.empty() == false) ret += ",";
+
+                ret += "new Folder(\"/" + lst.at(i) + "\")";
+            }
+        }
+        ret = "([" + ret + "])";
+        //outputData->type = kTypeString;
+        outputData->type = kTypeScript;
+        outputData->data.string = getNewBuffer(ret);
+
+        return kESErrOK;
     }
 
     //objStrTojson_s

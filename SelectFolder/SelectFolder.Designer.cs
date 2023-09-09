@@ -61,12 +61,12 @@
 			driveListBox1.DirectoryName = "C:\\";
 			driveListBox1.Dock = DockStyle.Fill;
 			driveListBox1.DrawMode = DrawMode.OwnerDrawFixed;
-			driveListBox1.Drives = new string[] { "C:\\", "D:\\", "E:\\", "F:\\", "G:\\", "K:\\", "M:\\", "N:\\", "O:\\", "P:\\", "Q:\\", "S:\\", "T:\\", "X:\\", "Y:\\", "Z:\\" };
+			driveListBox1.Drives = new string[] { "C:\\", "D:\\", "E:\\", "F:\\", "K:\\", "M:\\", "N:\\", "O:\\", "P:\\", "Q:\\", "S:\\", "T:\\", "X:\\", "Y:\\", "Z:\\" };
 			driveListBox1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
 			driveListBox1.ForeColor = Color.FromArgb(230, 230, 230);
 			driveListBox1.FormattingEnabled = true;
 			driveListBox1.ItemHeight = 20;
-			driveListBox1.Items.AddRange(new object[] { "C (Windows)", "D (Recovery Image)", "E (ボリューム)", "F (HDCZ-UT)", "G (Google Drive)", "K (DCst-Other)", "M (DCst-SEED)", "N (DCst-ZEP)", "O (DCst-GOR_Public)", "P (DCst-FLD)", "Q (DCst-TAB)", "S (DCst-SDS)", "T (DCst-IKS)", "X (DCst-USERS)", "Y (DCst-BS_3D)", "Z (DCst-Setting)" });
+			driveListBox1.Items.AddRange(new object[] { "C (Windows)", "D (Recovery Image)", "E (ボリューム)", "F (HDCZ-UT)", "K (DCst-Other)", "M (DCst-SEED)", "N (DCst-ZEP)", "O (DCst-GOR_Public)", "P (DCst-FLD)", "Q (DCst-TAB)", "S (DCst-SDS)", "T (DCst-IKS)", "X (DCst-USERS)", "Y (DCst-BS_3D)", "Z (DCst-Setting)" });
 			driveListBox1.Location = new Point(0, 0);
 			driveListBox1.Name = "driveListBox1";
 			driveListBox1.SelectedColor = SystemColors.WindowFrame;

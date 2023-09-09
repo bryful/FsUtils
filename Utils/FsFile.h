@@ -78,4 +78,7 @@ std::string DllPath();
 BOOL LoadPref(std::string fname, std::string dname, std::string productName, std::string& data);
 BOOL SavePref(std::string fname, std::string dname, std::string productName, std::string data);
 
-
+// *********************************************************************************************
+std::vector<std::string> GetDriveList();
+BOOL IsExt(std::string p, std::vector<std::string> el);
+BOOL IsPict(std::string p);

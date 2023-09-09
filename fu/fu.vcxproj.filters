@@ -68,6 +68,9 @@
     <ClInclude Include="..\Utils\FsJson.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\CPPl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\Utils\res\sound\101.wav">

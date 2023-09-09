@@ -368,5 +368,8 @@ int main(int argc, char* argv[])
 	//CallCommandWait("ChkForm.exe");
 	//ret = CallCommand("ChkForm.exe");
 
+	std::vector<string> rr = GetDriveList();
+
+	std::cout << Join(rr,std::string(",")) << std::endl;
 
 }

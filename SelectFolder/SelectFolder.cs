@@ -107,11 +107,11 @@ namespace SelectFolder
 			//base.OnLoad(e);
 			LoadPref();
 			string[] sa = Environment.GetCommandLineArgs().Skip(1).ToArray();
-			if (sa.Length>0)
+			if (sa.Length > 0)
 			{
 				foreach (string s in sa)
 				{
-					if(Directory.Exists(s))
+					if (Directory.Exists(s))
 					{
 						m_FileName = s;
 						break;
@@ -140,7 +140,7 @@ namespace SelectFolder
 			F_W.SettupConsole();
 			if (isOK)
 			{
-				Console.WriteLine($"{FileName}");
+				Console.WriteLine($"(new Folder(\"{FileName.Replace("\\","\\\\")}\"))");
 			}
 			else
 			{
