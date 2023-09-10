@@ -4,6 +4,7 @@
 #include "..\Utils\FsProcess.h"
 #include "..\Utils\FsJson.h"
 #include "..\Utils\FsTempData.h"
+#include "..\Utils\CmdArg.h"
 #include "resource.h"
 
 #include <vector>
@@ -51,8 +52,7 @@ static int Edit(char* src)
 	td.SaveInput();
 
 	cmd = "\"" + cmd + "\"" + " -tmp";
-	char* str = (char*)cmd.c_str();
-	CallCommandWait(str);
+	Popen(cmd,"");
 
 	if (td.Load() == true)
 	{
@@ -63,291 +63,71 @@ static int Edit(char* src)
 	}
 
 }
+
+
 // *****************************************************************************************
-static void Usage(char *ex)
+static void Usage(CmdArg arg)
 {
 	std::string ret = "";
-	std::string exe = GetName(std::string(ex));
-	ret = "[" + exe + "] FsUtils.dll動作確認用コマンド\r\n";
-	ret += "\n";
-	ret += "\t" + exe + " getClip\r\n";
-	ret += "\t" + exe + " setClip string\r\n";
-	ret += "\t" + exe + " GetParent '文字列'\r\n";
-	ret += "\t" + exe + " GetName '文字列'\r\n";
-	ret += "\t" + exe + " GetNameWithoutExt '文字列'\r\n";
-	ret += "\t" + exe + " GetExt '文字列'\r\n";
-	ret += "\t" + exe + " processAEList\r\n";
-	ret += "\t" + exe + " processList\r\n";
-	ret += "\t" + exe + " showWindow  ウィンドウハンドル sw\r\n";
-	ret += "\t" + exe + " windowMax\r\n";
-	ret += "\t" + exe + " windowMin\r\n";
-	ret += "\t" + exe + " windowNormal\r\n";
-	ret += "\t" + exe + " getMousePos\r\n";
-	ret += "\t" + exe + " setMousePos x y\r\n";
-	ret += "\t" + exe + " beep num\r\n";
-	ret += "\t" + exe + " installedAE\r\n";
-	ret += "\t" + exe + " isInstalledESTK\r\n";
-	ret += "\t" + exe + " aePlaySound num\r\n";
-	ret += "\t" + exe + " PlaySound num\r\n";
-	ret += "\t" + exe + " callCommand args\r\n";
-	ret += "\t" + exe + " callCommandWait args\r\n";
-	ret += "\t" + exe + " callCommandGetResult cmd\r\n";
-	ret += "\t" + exe + " edit str\r\n";
-
-	//
-
-
-
-	std::cout << ret;
+	std::string exe = "fuCmd.exe";
+	ret = "[" + exe + "] FsUtils.dll動作確認用コマンド\n\n";
+	ret += arg.OptionList();
+	std::cout << ret << std::endl;
 }
 // *****************************************************************************************
-static int Command(int argc, char* argv[])
+int SetClip(std::vector<std::string> op)
 {
 	int ret = 0;
-	if (argc <= 1) return ret;
-	if (argc >= 2)
-	{
-
-		std::string key = std::string(argv[1]);
-		transform(key.begin(), key.end(), key.begin(), tolower);
-		if ((key == "getclip") || (key == "gc"))
+	if (op.size() > 0) {
+		if (SetTextClipboard(op[0], false))
 		{
-			std::cout << GetTextClipboard(false);
-			std::cout << "\n";
 			ret = 1;
-		}
-		else if ((key == "setclip") || (key == "sc"))
-		{
-			if (argc >= 3) {
-				SetTextClipboard(argv[2],false);
-				std::cout << "SetTextClipboard() ok\n";
-				ret = 1;
-			}
-		}
-		else if ((key == "pathgetparent") || (key == "getparent"))
-		{
-			if (argc >= 3) {
-				std::string s = GetDir(std::string(argv[2]));
-				std::cout << s;
-				std::cout << "\n";
-				ret = 1;
-			}
-		}
-		else if ((key == "pathgetname") || (key == "getname"))
-		{
-			if (argc >= 3) {
-				std::string s  = GetName(std::string(argv[2]));
-				std::cout << s;
-				std::cout << "\n";
-				ret = 1;
-			}
-		}
-		else if ((key == "pathgetnamewithoutext") || (key == "getnamewithoutext"))
-		{
-			if (argc >= 3) {
-				std::string s = GetNameWithoutExt(std::string(argv[2]));
-				std::cout << s;
-				std::cout << "\n";
-				ret = 1;
-			}
-		}
-		else if ((key == "pathgetext") || (key == "getext"))
-		{
-			if (argc >= 3) {
-				std::string s = GetExt(std::string(argv[2]));
-				std::cout << s;
-				std::cout << "\n";
-				ret = 1;
-			}
-		}
-		else if ((key == "processaelist") || (key == "plist") || (key == "aps"))
-		{
-			if (argc >= 3) {
-				std::cout << listupAEProcess(false);
-				std::cout << "\n";
-				ret = 1;
-			}
-		}
-		else if ((key == "showwindow") || (key == "shw"))
-		{
-			if (argc >= 4) {
-				HWND hWND = (HWND)atoi(argv[2]);
-				int sw = atoi(argv[3]);
-				int ff = ShowWindow(hWND, sw);
-				std::cout << "ShowWindow : ";
-				std::cout << ff;
-				std::cout << "\n";
-				ret = ff;
-			}
-		}
-		else if ((key == "aeshowwindow") || (key == "aeshow"))
-		{
-			if (argc >= 3)
-			{
-				int sw = (int)atoi(argv[2]);
-				AEShowWindow(sw);
-				std::cout << "AEShowWindow:";
-				std::cout << argv[2];
-				std::cout << "\n";
-				ret = 1;
-			}
-		}
-		else if ((key == "windowmax") || (key == "wmax"))
-		{
-			AEShowWindow(3);
-			std::cout << "WindowMin\n";
-			ret = 1;
-		}
-		else if ((key == "windowmin") || (key == "wmin"))
-		{
-			AEShowWindow(2);
-			std::cout << "WindowMin\n";
-			ret = 1;
-		}
-		else if ((key == "windownormal") || (key == "wnormal"))
-		{
-			AEShowWindow(1);
-			std::cout << "WindowNormal\n";
-			ret = 1;
-		}
-		else if ((key == "getmousepos") || (key == "getmp"))
-		{
-			std::cout << GetMousePosString();
-			std::cout << "\n";
-			ret = 1;
-		}
-		else if ((key == "setmousepos") || (key == "setmp"))
-		{
-			if (argc >= 4)
-			{
-				int x = atoi(argv[2]);
-				int y = atoi(argv[3]);
-				SetMousePos(x, y);
-				std::cout << "SetMousePos()\n";
-				ret = 1;
-			}
-		}
-		else if ((key == "beep") || (key == "bp"))
-		{
-			HINSTANCE hInst= NULL;
-			if (argc >= 2)hInst = GetModuleHandle("FsUtils.exe");
-			if (argc >= 3)
-			{
-				int v = atoi(argv[2]);
-				if (v < 1) v = 1;
-				else if (v > 52) v = 1;
-				PlayResource(hInst, v);
-				ret = 1;
-			}
-			else if (argc >= 2)
-			{
-				PlayResource(hInst, 1);
-				ret = 1;
-			}
-		}
-		else if ((key == "installedae") || (key == "iae"))
-		{
-			std::string ss = InstalledAFXAS();
-			std::cout << ss;
-			std::cout << "\n";
-			ret = 1;
-		}
-		else if ((key == "isInstalledestk") || (key == "ieskt"))
-		{
-			bool ss = IsInstalledESTK();
-			std::cout << ss;
-			std::cout << "\n";
-			ret = 1;
-		}
-		else if ((key == "processlist") || (key == "ps"))
-		{
-			std::string ss = ProcessList(false,true);
-			std::cout << ss;
-			std::cout << "\n";
-			ret = 1;
-		}
-		else if ((key == "aeplaysound") || (key == "apsnd"))
-		{
-			if (argc >= 3)
-			{
-				int v = atoi(argv[2]);
-				if (v < 0) v = 0;
-				else if (v > 2) v = 2;
-				PlayAESound(v);
-				ret = 1;
-			}
-			else if (argc >= 2)
-			{
-				PlayAESound(0);
-				ret = 1;
-			}
-		}
-		else if ((key == "playsound") || (key == "psnd"))
-		{
-			if (argc >= 3)
-			{
-				SoundPlay(argv[2]);
-				ret = 1;
-			}
-		}
-		else if ((key == "callcommand") || (key == "callc"))
-		{
-			if (argc >= 3)
-			{
-				ret = CallCommand(argv[2]);
-			}
-		}
-		else if ((key == "callcommandwait") || (key == "callcw"))
-		{
-			if (argc >= 3)
-			{
-				ret = CallCommandWait(argv[2]);
-			}
-		}
-		else if ((key == "callcommandgetresult") || (key == "callcg"))
-		{
-			if (argc >= 3)
-			{
-				char buf[2048];
-				ZeroMemory(buf, 2048);
-				ret = CallCommandGetResult(argv[2],buf,2048);
-				if (ret != 0)
-				{
-					std::string rr(buf);
-					std::cout << rr << std::endl;
-				}
-			}
-			}
-		else if ((key == "lineedit") || (key == "le"))
-		{
-			if (argc >= 3)
-			{
-				ret = Edit(argv[2]);
-			}
-		}
-		else if ((key == "getframe") || (key == "gf"))
-		{
-			if (argc >= 2)
-			{
-				std::string  gf = GetFrame(std::string(argv[2]));
-				std::cout << gf << std::endl;
-				ret = 1;
-			}
-		}
-		else if ((key == "getnamewitoutframe") || (key == "gnwf"))
-		{
-			if (argc >= 2)
-			{
-				std::string  gf1 = GetNameWithoutFrame(std::string(argv[2]));
-				std::cout << gf1 << std::endl;
-				ret = 1;
-			}
 		}
 	}
 	return ret;
 }
 // *****************************************************************************************
+int GetClip(std::vector<std::string> op)
+{
+	int ret = 0;
+	std::string clip = GetTextClipboard(false);
+	if (clip.empty()==false)
+	{
+		std::cout << clip << std::endl;
+		ret = 1;
+	}
+	return ret;
+}
+int SplitPath(std::vector<std::string> op)
+{
+	int ret = 0;
+	if (op.size() > 0) 
+	{
+		std::cout << std::endl;
+		std::cout << "          parent : " << GetDir(op[0]) << std::endl;
+		std::cout << "            name : " << GetName(op[0]) << std::endl;
+		std::cout << "  nameWithoutExt : " << GetNameWithoutExt(op[0]) << std::endl;
+		std::cout << "           Frame : " << GetFrame(op[0]) << std::endl;
+		std::cout << "nameWithoutFrame : " << GetNameWithoutFrame(op[0]) << std::endl;
+		std::cout << "             ext : " << GetExt(op[0]) << std::endl;
+		ret = 1;
+	}
+	return ret;
+}
+int Beep(std::vector<std::string> op)
+{
+	int ret = 0;
+	if (op.size() > 0)
+	{
+		std::string dir = ExePath();
+		
 
+		HMODULE  hModule = GetModuleHandle("fuCmd.exe");
+		PlayBeep(dir,op[0]);
+		ret = 1;
+	}
+	return ret;
+}
 // *****************************************************************************************
 int main(int argc, char* argv[])
 {
@@ -356,20 +136,30 @@ int main(int argc, char* argv[])
 	wcx.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
 	wcx.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
 
-	int ret = Command(argc, argv);
-	if (ret == 0)
+	CmdArg arg(argc, argv);
+
+	CmdArgItem k({ "setclipboard","setclip","setc" }, 1, "クリップボードに文字列をセットします");
+	k.CmdExec = SetClip;
+	arg.AddOption(k);
+	CmdArgItem k2({ "getclipboard","getclip","getc" }, 0, "クリップボードから文字列を獲得します");
+	k2.CmdExec = GetClip;
+	arg.AddOption(k2);
+	CmdArgItem k3({ "splitpath","spath","sp" }, 1, "パスを分割します");
+	k3.CmdExec = SplitPath;
+	arg.AddOption(k3);
+	CmdArgItem k4({ "beep","wav" }, 1, "Beep音");
+	k4.CmdExec = Beep;
+	arg.AddOption(k4);
+
+
+
+	//PlayWave("135.wav");
+
+	if (arg.Exec() == 0)
 	{
-		Usage(argv[0]);
+		Usage(arg);
+		return 0;
 	}
-	//PlayResource(hInst, 52);
-	//PlayAESound(0);
-	//SoundPlay("C:\\Windows\\Media\\Windows Logon.wav");
-	//CallCommand("C:\\Users\\bryfu\\Source\\Repos\\FsUtils\\ChkForm\\bin\\Release\\net6.0-windows\\publish\\ChkForm.exe");
-	//CallCommandWait("ChkForm.exe");
-	//ret = CallCommand("ChkForm.exe");
-
-	std::vector<string> rr = GetDriveList();
-
-	std::cout << Join(rr,std::string(",")) << std::endl;
+	return 1;
 
 }

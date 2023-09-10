@@ -167,22 +167,14 @@ std::vector<std::string> CammaSplit(const std::string& s)
 std::string ToLowwer(std::string s)
 {
 	if (s.size() <= 0) return std::string("");
-	char* s2 = (char*)s.c_str();
-	while (*s2) {
-		*s2 = tolower(*s2);
-		s2++;
-	}
-	return std::string(s2);
+	transform(s.begin(), s.end(), s.begin(), tolower);
+	return s;
 }
 std::string ToUpper(std::string s)
 {
 	if (s.size() <= 0) return std::string("");
-	char* s2 = (char*)s.c_str();
-	while (*s2) {
-		*s2 = toupper(*s2);
-		s2++;
-	}
-	return std::string(s2);
+	transform(s.begin(), s.end(), s.begin(), toupper);
+	return s;
 }
 // ******************************************************************
 BOOL SetTextClipboard(LPCTSTR lpString,bool IsU)
@@ -466,77 +458,42 @@ void  BeepPlay(int v)
 	MessageBeep(ch);
 }
 
-BOOL PlayResource(HANDLE hInst, int id)
+BOOL PlayBeep(std::string dir, std::string num)
 {
+	std::string cmd = "\"" + CombinePath(dir, "beep.exe") + "\"";
+	std::string arg = "res " + num;
 
-	BOOL bRtn;
-	LPSTR lpRes;
-	HANDLE hResInfo, hRes;
+	CallCommand(cmd,arg);
+	return true;
 
-	// Find the WAVE resource. 
-
-	char NUM[20];
-	memset(NUM, '\0', 20);
-	 sprintf_s(NUM,20,"#%d", 100 + id);
-
-	hResInfo = FindResource((HMODULE)hInst, NUM, "WAVE");
-
-	if (hResInfo == NULL)
-		return FALSE;
-
-	// Load the WAVE resource. 
-
-	hRes = LoadResource((HMODULE)hInst, (HRSRC)hResInfo);
-	if (hRes == NULL)
-		return FALSE;
-
-	// Lock the WAVE resource and play it. 
-
-	lpRes = (LPSTR)LockResource(hRes);// 
-	if (lpRes != NULL) {
-		bRtn = sndPlaySound(lpRes, SND_MEMORY | SND_SYNC | SND_NODEFAULT);
-		//bRtn = PlaySound(lpRes, (HMODULE)hInst, SND_MEMORY | SND_ASYNC);
-
-		UnlockResource(hRes);
-	}
-	else
-		bRtn = 0;
-
-	// Free the WAVE resource and return success or failure. 
-
-	FreeResource(hRes);
-	return bRtn;
 }
-BOOL PlayWave(LPSTR lpName)
+BOOL PlayWave(std::string dir, std::string name)
 {
-	BOOL bRtn;
-
-
-	bRtn = PlaySound(TEXT(lpName),  NULL, (SND_SYNC | SND_FILENAME| SND_NODEFAULT));
-	return bRtn;
+	std::string cmd = "\"" + CombinePath(dir, "beep.exe") + "\"";
+	std::string arg = "file ";
+	arg += "\"" + name + "\"";
+	
+	CallCommand(cmd,arg);
+	return true;
 }
 
-void PlayAESound(int v)
+void PlayAESound(std::string dir, int v)
 {
 
 	switch (v)
 	{
 	case 1:
-		PlayWave((LPSTR)(getNewBuffer( ae_sound_okay())));
+		PlayWave(dir, ae_sound_okay());
 		break;
 	case 2:
-		PlayWave((LPSTR)(getNewBuffer(ae_sound_snap())));
+		PlayWave(dir, ae_sound_snap());
 		break;
 	case 0:
 	default:
-		PlayWave((LPSTR)(getNewBuffer(ae_sound_fail())));
+		PlayWave(dir, ae_sound_fail());
 		break;
 	}
 
-}
-void SoundPlay(char * s)
-{
-	PlayWave((LPSTR)s);
 }
 
 // **********************************************************************************

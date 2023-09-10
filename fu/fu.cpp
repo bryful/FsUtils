@@ -36,7 +36,6 @@ namespace {
         "playAESound_d,"
         "playSound_s,"
         "callCommand_s,"
-        "callCommandWait_s,"
         "popen_ss,"
         "isModifierKey_s,"
         "isShiftKey,"
@@ -68,6 +67,22 @@ namespace {
 
     constexpr long FSUTILS_VERSION = 1;
 } // namespace
+
+std::string ExePath()
+{
+    const size_t sz = 2048;
+    char szModulePath[sz];
+    HMODULE  hModule = GetModuleHandle("fu.dll");
+    char  szModuleFileName[sz] = { 0 };
+    ZeroMemory(szModuleFileName, sz);
+    GetModuleFileName(hModule, szModuleFileName, sz);
+    std::string ret = std::string(szModuleFileName);
+    int path_i = ret.find_last_of("\\") + 1;
+    std::string pathname = ret.substr(0, path_i);
+
+    return pathname;
+}
+
 
 ////////////////////////
 // 必須のエクスポート関数
@@ -404,8 +419,7 @@ extern "C" {
                 else if (v > 52)v = 52;
             }
         }
-        HINSTANCE hInst = GetModuleHandle("fu.dll");
-        PlayResource(hInst,v);
+        PlayBeep(ExePath(), std::to_string(v));
         return kESErrOK;
     }
     // *******************************************************************************
@@ -437,7 +451,7 @@ extern "C" {
                 else if (v > 2)v = 2;
             }
         }
-        PlayAESound(v);
+        PlayAESound(ExePath(),v);
         return kESErrOK;
     }
     // *******************************************************************************
@@ -447,12 +461,7 @@ extern "C" {
         {
             if (inputData[0].type == kTypeString)
             {
-                char* str = nullptr;
-                const char* message = inputData[0].data.string;
-                const auto length = strlen(message) + 1;
-                str = (char*)malloc(length);
-                lstrcpy(str, message);
-                SoundPlay(str);
+                PlayWave(ExePath(),std::string(inputData[0].data.string));
                 return kESErrOK;
             }
         }
@@ -467,27 +476,13 @@ extern "C" {
                 char* str = Utf8toShiftJis(inputData[0].data.string);
                 str = getNewBuffer(str);
                 outputData->type = kTypeInteger;
-                outputData->data.intval = CallCommand(str);
+                outputData->data.intval = CallCommand(str,"");
                 return kESErrOK;
             }
         }
         return kESErrBadArgumentList;
     }
-    EXPORT long callCommandWait(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
-
-        if (inputDataCount > 0)
-        {
-            if (inputData[0].type == kTypeString)
-            {
-                char* str = Utf8toShiftJis(inputData[0].data.string);
-                str = getNewBuffer(str);
-                outputData->type = kTypeInteger;
-                outputData->data.intval = CallCommandWait(str);
-                return kESErrOK;
-            }
-        }
-        return kESErrBadArgumentList;
-    }
+    
     EXPORT long popen(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
         std::string str0 = "";
@@ -573,9 +568,10 @@ extern "C" {
                 std::string parent = DllPath();
 
                 std::string cmd;
-                cmd = "\"" + parent + "\\MsgBox.exe\"" + " \"" + argv + "\"";
-                char* str = getNewBuffer(cmd.c_str());
-                CallCommand(str);
+                std::string arg;
+                cmd = "\"" + parent + "\\MsgBox.exe\"";
+                arg = "\"" + argv + "\"";
+                CallCommand(cmd ,arg);
                 //outputData->type = kTypeString;
                 //outputData->data.string = str;
                 return kESErrOK;
@@ -603,9 +599,10 @@ extern "C" {
                 std::string parent = DllPath();
 
                 std::string cmd;
-                cmd = "\"" + parent + "\\MsgBox.exe\"" + " \"" + argv + "\"";
-                char* str = getNewBuffer(cmd.c_str());
-                CallCommand(str);
+                cmd = "\"" + parent + "\\MsgBox.exe\"";
+                std::string arg;
+                arg = "\"" + argv + "\"";
+                CallCommand(cmd,arg);
                 //outputData->type = kTypeString;
                 //outputData->data.string = str;
                 return kESErrOK;
@@ -619,8 +616,7 @@ extern "C" {
 
         std::string cmd = "\"" + parent + "\\MsgBox.exe\" -cls";
 
-        char* str = getNewBuffer(cmd.c_str());
-        CallCommand(str);
+        CallCommand(cmd , "");
         //outputData->type = kTypeString;
         //outputData->data.string = str;
         return kESErrOK;
@@ -661,8 +657,7 @@ extern "C" {
                     }
                 }
 
-                char* str = (char*)cmd.c_str();
-                CallCommandWait(str);
+                Popen(cmd,"");
 
                 if (td.Load() == true)
                 {

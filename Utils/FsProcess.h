@@ -26,13 +26,6 @@
 #include "FsUtil.h"
 #include "FsFile.h"
 
-#ifndef AEFX_CLR_STRUCT
-#define AEFX_CLR_STRUCT(STRUCT) memset(&(STRUCT), 0, sizeof(STRUCT));
-#endif
 
-int CallCommand(char* cmd);
-int CallCommandWait(char* cmd);
-int CallCommandGetResult(const char* cmd, char* buf, DWORD size);
-//int CallCommandGetResult(std::string cmd, std::string& result);
-
+int CallCommand(std::string command, std::string arguments);
 std::string Popen(const std::string command, const std::string arguments);

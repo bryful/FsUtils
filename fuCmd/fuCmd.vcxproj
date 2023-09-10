@@ -163,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Utils\AEProcess.h" />
+    <ClInclude Include="..\Utils\CmdArg.h" />
     <ClInclude Include="..\Utils\FsFile.h" />
     <ClInclude Include="..\Utils\FsJson.h" />
     <ClInclude Include="..\Utils\FsProcess.h" />
@@ -171,66 +172,22 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="fuCmd.rc" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="..\Utils\res\sound\101.wav" />
-    <Media Include="..\Utils\res\sound\102.wav" />
-    <Media Include="..\Utils\res\sound\103.wav" />
-    <Media Include="..\Utils\res\sound\104.wav" />
-    <Media Include="..\Utils\res\sound\105.wav" />
-    <Media Include="..\Utils\res\sound\106.wav" />
-    <Media Include="..\Utils\res\sound\107.wav" />
-    <Media Include="..\Utils\res\sound\108.wav" />
-    <Media Include="..\Utils\res\sound\109.wav" />
-    <Media Include="..\Utils\res\sound\110.wav" />
-    <Media Include="..\Utils\res\sound\111.wav" />
-    <Media Include="..\Utils\res\sound\112.wav" />
-    <Media Include="..\Utils\res\sound\113.wav" />
-    <Media Include="..\Utils\res\sound\114.wav" />
-    <Media Include="..\Utils\res\sound\115.wav" />
-    <Media Include="..\Utils\res\sound\116.wav" />
-    <Media Include="..\Utils\res\sound\117.wav" />
-    <Media Include="..\Utils\res\sound\118.wav" />
-    <Media Include="..\Utils\res\sound\119.wav" />
-    <Media Include="..\Utils\res\sound\120.wav" />
-    <Media Include="..\Utils\res\sound\121.wav" />
-    <Media Include="..\Utils\res\sound\122.wav" />
-    <Media Include="..\Utils\res\sound\123.wav" />
-    <Media Include="..\Utils\res\sound\124.wav" />
-    <Media Include="..\Utils\res\sound\125.wav" />
-    <Media Include="..\Utils\res\sound\126.wav" />
-    <Media Include="..\Utils\res\sound\127.wav" />
-    <Media Include="..\Utils\res\sound\128.wav" />
-    <Media Include="..\Utils\res\sound\129.wav" />
-    <Media Include="..\Utils\res\sound\130.wav" />
-    <Media Include="..\Utils\res\sound\131.wav" />
-    <Media Include="..\Utils\res\sound\132.wav" />
-    <Media Include="..\Utils\res\sound\133.wav" />
-    <Media Include="..\Utils\res\sound\134.wav" />
-    <Media Include="..\Utils\res\sound\135.wav" />
-    <Media Include="..\Utils\res\sound\136.wav" />
-    <Media Include="..\Utils\res\sound\137.wav" />
-    <Media Include="..\Utils\res\sound\138.wav" />
-    <Media Include="..\Utils\res\sound\139.wav" />
-    <Media Include="..\Utils\res\sound\140.wav" />
-    <Media Include="..\Utils\res\sound\141.wav" />
-    <Media Include="..\Utils\res\sound\142.wav" />
-    <Media Include="..\Utils\res\sound\143.wav" />
-    <Media Include="..\Utils\res\sound\144.wav" />
-    <Media Include="..\Utils\res\sound\145.wav" />
-    <Media Include="..\Utils\res\sound\146.wav" />
-    <Media Include="..\Utils\res\sound\147.wav" />
-    <Media Include="..\Utils\res\sound\148.wav" />
-    <Media Include="..\Utils\res\sound\149.wav" />
-    <Media Include="..\Utils\res\sound\150.wav" />
-    <Media Include="..\Utils\res\sound\151.wav" />
-    <Media Include="..\Utils\res\sound\152.wav" />
+    <ResourceCompile Include="fuCmd.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="fuCmd.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets" Condition="Exists('..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets'))" />
+  </Target>
 </Project>

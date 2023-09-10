@@ -68,7 +68,7 @@ public:
 			std::ifstream ifs(m_filePath);
 			if (ifs.fail() == false) {
 				std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-				size_t idx = str.find_first_of(fuOK);
+				size_t idx = str.find(fuOK);
 				if ( idx == 0) {
 					Data = str.substr(fuOK.size());
 					ret = true;

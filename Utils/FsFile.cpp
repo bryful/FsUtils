@@ -300,7 +300,7 @@ std::string GetDir(std::string str)
 	std::string ret = "";
 	if (str.size() <= 0) return ret;
 	int idx = str.find_last_of("\\");
-	if (idx != std::string::npos)
+	if (idx == std::string::npos)
 	{
 		idx = str.find_last_of("/");
 	}

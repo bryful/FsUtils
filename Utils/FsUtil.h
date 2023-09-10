@@ -3,9 +3,6 @@
 #define WINDOWS_IGNORE_PACKING_MISMATCH
 
 
-#include "FsFile.h"
-#include "FsProcess.h"
-
 #include <windows.h>
 #include <winbase.h>
 #include <winuser.h>
@@ -25,6 +22,9 @@
 #include <algorithm>
 
 #pragma comment(lib, "winmm.lib")
+
+#include "FsFile.h"
+#include "FsProcess.h"
 
 // *********************************************************************************************
 char* getNewBuffer(char * s);
@@ -71,11 +71,9 @@ POINT GetMousePos();
 std::string GetMousePosString();
 void SetMousePos(int x, int y);
 // *********************************************************************************************
-void  BeepPlay(int v);
-BOOL PlayResource(HANDLE hInst, int id);
-BOOL PlayWave(LPSTR lpName);
-void PlayAESound(int v);
-void SoundPlay(char* s);
+BOOL PlayBeep(std::string dir, std::string num);
+BOOL PlayWave(std::string dir, std::string name);
+void PlayAESound(std::string dir, int v);
 
 // *********************************************************************************************
 bool IsModifierKey(char* key);
