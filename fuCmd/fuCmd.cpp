@@ -128,6 +128,26 @@ int Beep(std::vector<std::string> op)
 	}
 	return ret;
 }
+int Screens(std::vector<std::string> op)
+{
+	int ret = 0;
+	std::vector<MONITORINFOEX> rr = ScreenInfo();
+	if (rr.size() > 0)
+	{
+		for each (MONITORINFOEX r in rr)
+		{
+			std::string info = "-----------\n";
+			info = "M:"+RECTtoStr(r.rcMonitor) + "\n";
+			info += "W:"+RECTtoStr(r.rcWork) + "\n";
+			info += std::to_string(r.dwFlags == MONITORINFOF_PRIMARY) + "\n";
+			//info += std::string(r.szDevice, sizeof r.szDevice) + "\n";
+			std::cout << info;
+		}
+		ret = 1;
+	}
+
+	return ret;
+}
 // *****************************************************************************************
 int main(int argc, char* argv[])
 {
@@ -150,6 +170,9 @@ int main(int argc, char* argv[])
 	CmdArgItem k4({ "beep","wav" }, 1, "Beep音");
 	k4.CmdExec = Beep;
 	arg.AddOption(k4);
+	CmdArgItem k5({ "screensizes","scr"}, 0, "スクリーンサイズの獲得");
+	k5.CmdExec = Screens;
+	arg.AddOption(k5);
 
 
 

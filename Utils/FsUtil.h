@@ -25,6 +25,8 @@
 
 #include "FsFile.h"
 #include "FsProcess.h"
+#include "AEProcess.h"
+
 
 // *********************************************************************************************
 char* getNewBuffer(char * s);
@@ -88,3 +90,14 @@ std::string get_env(const char* environment_name);
 bool set_env(const char* environment_name, std::string v);
 std::string LoginUserName();
 std::string ComputerName();
+
+// *********************************************************************************************
+std::vector<MONITORINFOEX> ScreenInfo();
+
+std::vector<RECT> ScreenSizes();
+std::vector<RECT> ScreenWorkSizes();
+
+std::string RECTtoStr(RECT r);
+RECT GetAEWinodwRect(HWND hwnd);
+BOOL SetAEWindowRect(HWND hwnd, int x, int y, int x1, int y1);
+RECT InScreen(HWND hwnd);

@@ -728,3 +728,168 @@ std::string ComputerName()
 	}
 	return ret;
 }
+// *******************************************************************
+struct MONITORS {
+	std::vector<RECT> rct;
+	std::vector< MONITORINFOEX> minfo;
+};
+BOOL CALLBACK myinfoenumproc(HMONITOR hMon, HDC hdcMon, LPRECT lpMon, LPARAM dwDate) {
+	MONITORS* mon = (MONITORS*)dwDate;
+
+	MONITORINFOEX monitorInfo;
+
+	monitorInfo.cbSize = sizeof(monitorInfo);
+	GetMonitorInfo(hMon, &monitorInfo);
+
+	mon->minfo.push_back(monitorInfo);
+	RECT r = *lpMon;
+	mon->rct.push_back(r);
+	return TRUE;
+}
+
+std::vector<MONITORINFOEX> ScreenInfo()
+{
+	static MONITORS mon;	//	各モニターのサイズを格納
+	mon.minfo.clear();
+	EnumDisplayMonitors(NULL, NULL, (MONITORENUMPROC)myinfoenumproc, (LPARAM)&mon);
+	return mon.minfo;
+
+}
+std::vector<RECT> ScreenSizes()
+{
+	std::vector<MONITORINFOEX> mi = ScreenInfo();
+	std::vector <RECT> ret;
+	if (mi.size() == 0)
+	{
+	}
+	else if (mi.size() == 1)
+	{
+		ret.push_back(mi.at(0).rcMonitor);
+	}
+	else {
+		int idx = -1;
+		for (int i = 0; i < mi.size(); i++)
+		{
+			if (mi.at(i).dwFlags == MONITORINFOF_PRIMARY)
+			{
+				idx = i;
+				ret.push_back(mi.at(i).rcMonitor);
+				break;
+			}
+		}
+		for (int i = 0; i < mi.size(); i++)
+		{
+			if (i == idx) continue;
+			ret.push_back(mi.at(i).rcMonitor);
+		}
+	}
+	return ret;
+}
+std::vector<RECT> ScreenWorkSizes()
+{
+	std::vector<MONITORINFOEX> mi = ScreenInfo();
+	std::vector <RECT> ret;
+	if (mi.size() == 0)
+	{
+	}
+	else if (mi.size() == 1)
+	{
+		ret.push_back(mi.at(0).rcWork);
+	}
+	else {
+		int idx = -1;
+		for (int i = 0; i < mi.size(); i++)
+		{
+			if (mi.at(i).dwFlags == MONITORINFOF_PRIMARY)
+			{
+				idx = i;
+				ret.push_back(mi.at(i).rcWork);
+				break;
+			}
+		}
+		for (int i = 0; i < mi.size(); i++)
+		{
+			if (i == idx) continue;
+			ret.push_back(mi.at(i).rcWork);
+		}
+	}
+	return ret;
+}
+
+
+SIZE MainScreenSize()
+{
+	SIZE sz;
+	sz.cx = GetSystemMetrics(SM_CXSCREEN);
+	sz.cy = GetSystemMetrics(SM_CYSCREEN);
+	return sz;
+}
+std::string RECTtoStr(RECT r)
+{
+	std::string ret = "left:" + std::to_string(r.left);
+	ret += ",top:" + std::to_string(r.top);
+	ret += ",width:" + std::to_string(r.right - r.left);
+	ret += ",height:" + std::to_string(r.bottom - r.top);
+	return ret;
+
+}
+BOOL SetAEWindowRect(HWND hwnd,int x, int y, int x1, int y1)
+{
+	if (hwnd == nullptr)
+	{
+		hwnd = MyWindowHandle();
+	}
+	return MoveWindow(hwnd, x, y, abs(x1-x), abs(y1-y), true);
+}
+RECT GetAEWinodwRect(HWND hwnd)
+{
+	if (hwnd == nullptr)
+	{
+		hwnd = MyWindowHandle();
+	}
+	RECT r;
+	if (GetWindowRect(hwnd, &r) == false)
+	{
+		r.left = -1;
+		r.right = -1;
+		r.top = -1;
+		r.bottom = -1;
+	}
+	return r;
+}
+RECT InScreen(HWND hwnd)
+{
+	if (hwnd == nullptr) {
+		hwnd = MyWindowHandle();
+	}
+	std::vector<MONITORINFOEX> scrs = ScreenInfo();
+	RECT rct = GetAEWinodwRect(hwnd);
+	RECT ret;
+	ret.left = -1;
+	ret.right = -1;
+	ret.top = -1;
+	ret.bottom = -1;
+
+	if (scrs.size() > 0) {
+		for (int i = 0; i < scrs.size(); i++)
+		{
+			RECT tar = scrs.at(i).rcMonitor;
+			if (scrs.at(i).dwFlags == MONITORINFOF_PRIMARY)
+			{
+				ret = scrs.at(i).rcWork;
+			}
+			if
+			(
+				(((rct.left >= tar.left) && (rct.left <= tar.right))
+				&& ((rct.top >= tar.top) && (rct.top <= tar.bottom)))
+				||
+				(((rct.right >= tar.left) && (rct.right <= tar.right))
+				&&((rct.bottom >= tar.top) && (rct.bottom <= tar.bottom)))
+			)
+			{
+				return scrs.at(i).rcWork;
+			}
+		}
+	}
+	return ret;
+}

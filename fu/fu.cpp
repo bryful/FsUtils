@@ -62,7 +62,13 @@ namespace {
         "getEnv_s,"
         "setEnv_ss,"
         "getDriveList,"
+        "screenWorkSizes,"
+        "getAEWinodwRect,"
+        "setAEWinodwRect_addd,"
+        "setAEWinodwMax,"
+        "inScreen,"
         "test_ssss,"
+        //
     };
 
     constexpr long FSUTILS_VERSION = 1;
@@ -972,7 +978,159 @@ extern "C" {
 
         return kESErrOK;
     }
+    EXPORT long screenWorkSizes(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
 
+        std::vector<RECT> rcts = ScreenWorkSizes();
+        std::string ret = "";
+        if (rcts.size() > 0)
+        {
+            for each (RECT r in rcts)
+            {
+                if (ret.empty() == false) ret += ",";
+                std::string s = "[";
+                s += std::to_string(r.left) + ",";
+                s += std::to_string(r.top) + ",";
+                s += std::to_string(r.right) + ",";
+                s += std::to_string(r.bottom);
+                s += "]";
+                ret += s;
+            }
+        }
+
+        ret = "([" + ret + "])";
+        //outputData->type = kTypeString;
+        outputData->type = kTypeScript;
+        outputData->data.string = getNewBuffer(ret);
+
+        return kESErrOK;
+    }
+    EXPORT long getAEWinodwRect(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        RECT r  = GetAEWinodwRect(nullptr);
+        std::string ret = "[";
+        ret += std::to_string(r.left) + ",";
+        ret += std::to_string(r.top) + ",";
+        ret += std::to_string(r.right) + ",";
+        ret += std::to_string(r.bottom);
+        ret += "]";
+
+        ret = "(" + ret + ")";
+        //outputData->type = kTypeString;
+        outputData->type = kTypeScript;
+        outputData->data.string = getNewBuffer(ret);
+
+        return kESErrOK;
+    }
+    EXPORT long setAEWinodwRect(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        BOOL ok = false;
+        int x0 = -1;
+        int x1 = -1;
+        int y0 = -1;
+        int y1 = -1;
+        if (inputDataCount == 1)
+        {
+            if (inputData[0].type == kTypeString)
+            {
+                std::string a = std::string(inputData[0].data.string);
+                std::vector<std::string> aa = Split(a, ",");
+                if (aa.size() >= 4)
+                {
+                    try {
+                        x0 = std::stoi(aa.at(0));
+                        y0 = std::stoi(aa.at(1));
+                        x1 = std::stoi(aa.at(2));
+                        y1 = std::stoi(aa.at(3));
+                        ok = true;
+                    }
+                    catch (...)
+                    {
+                        ok = false;
+                    }
+                }
+            }
+        }else if (inputDataCount >= 4)
+        {
+            switch (inputData[0].type)
+            {
+            case kTypeInteger:
+                x0 = inputData[0].data.intval;
+                break;
+                break;
+            case kTypeString:
+                try {
+                    x0 = std::stoi(inputData[0].data.string);
+                }
+                catch (...)
+                {
+                    x0 = 0;
+                }
+                break;
+            default:
+                x0 = 0;
+                break;
+            }
+            ok = true;
+            if (ok) {
+                if ((inputData[1].type == kTypeInteger)
+                    && (inputData[2].type == kTypeInteger)
+                    && (inputData[3].type == kTypeInteger))
+                {
+                    y0 = inputData[1].data.intval;
+                    x1 = inputData[2].data.intval;
+                    y1 = inputData[3].data.intval;
+                    ok = true;
+                }
+                else {
+                    ok = false;
+                }
+            }
+        }
+        if (ok) {
+            BOOL b = SetAEWindowRect(NULL, x0, y0, x1, y1);
+            outputData->type = kTypeBool;
+            outputData->data.intval = (int)b;
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long setAEWinodwMax(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        HWND hwnd = MyWindowHandle();
+        RECT r = InScreen(hwnd);
+        if ((r.left == -1) && (r.right == -1))
+        {
+
+        }
+        else {
+            BOOL b = SetAEWindowRect(hwnd, r.left, r.top, r.right, r.bottom);
+            outputData->type = kTypeBool;
+            outputData->data.intval = (int)b;
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
+    EXPORT long inScreen(TaggedData* inputData, long inputDataCount, TaggedData* outputData) {
+
+        HWND hwnd = MyWindowHandle();
+        RECT r = InScreen(hwnd);
+        if ((r.left == -1) && (r.right == -1))
+        {
+
+        }
+        else {
+            std::string rr = "(["
+                + std::to_string(r.left) + ","
+                + std::to_string(r.top) + ","
+                + std::to_string(r.right) + ","
+                + std::to_string(r.bottom) + "])";
+
+            outputData->type = kTypeScript;
+            outputData->data.string = getNewBuffer( rr);
+            return kESErrOK;
+        }
+        return kESErrBadArgumentList;
+    }
     //objStrTojson_s
 } // この拡張機能固有のエクスポート関数
 

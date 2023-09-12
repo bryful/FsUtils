@@ -30,9 +30,5 @@ var b = $.getenv("CCC");
 alert(b);
 alert(a);
 */
-var obj ={};
-obj.bbb = 12
-obj.ccc = "aaa";
-var fld = new File("C:\\bin\\7z\\7za.exe");
-var s = fu.test(fld);
+var s = fu.test([0,0,500,500]);
 alert(s);
