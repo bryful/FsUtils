@@ -65,6 +65,8 @@ static int Edit(char* src)
 }
 
 
+
+
 // *****************************************************************************************
 static void Usage(CmdArg arg)
 {
@@ -177,6 +179,30 @@ int main(int argc, char* argv[])
 
 
 	//PlayWave("135.wav");
+
+
+	
+
+	FsJson fj;
+	double v = 10;
+	fj.SetValue("Int", v);
+	double v2 = 0;
+	if (fj.Value("Int", v2))
+	{
+		std::cout << v2 << std::endl;
+	}
+	//std::vector<std::string> sa = {string( ShiftJistoUtf8("ああ")),string(ShiftJistoUtf8("bbb"))};
+	std::vector<std::string> sa = { string("ああ"),string("bbb") };
+	fj.SetValue("vs", sa);
+	std::vector<std::string> sa2;
+	if (fj.Value("vs", sa2))
+	{
+		std::cout << Join(sa2,",") << std::endl;
+	}
+	std::cout << Join(fj.Keys(), ",") << std::endl;
+	std::cout << fj.ToJson() << std::endl;
+
+	fj.Save("json.txt");
 
 	if (arg.Exec() == 0)
 	{
