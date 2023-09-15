@@ -742,44 +742,42 @@ extern "C" {
 
         if (inputDataCount > 0)
         {
-            char s [256];
-            ZeroMemory(s, 256);
+            std::string r;
             switch (inputData[0].type )
             {
             case kTypeString:
-                lstrcpy(s, inputData[0].data.string);
-
+                r = "string:" + std::string(inputData[0].data.string);
                 break;
             case kTypeBool:
-                lstrcpy(s, "bool");
+                r = "bool:" + std::to_string(inputData[0].data.intval);
                 break;
             case kTypeDouble:
-                lstrcpy(s, "double");
+                r = "doble:" + std::to_string(inputData[0].data.fltval);
                 break;
             case kTypeInteger:
-                lstrcpy(s, "integer");
+                r = "integer:" + std::to_string(inputData[0].data.intval);
                 break;
             case kTypeUInteger:
-                lstrcpy(s, "uinteger");
+                r = "uinteger:" + std::to_string(inputData[0].data.intval);
                 break;
             case kTypeScript:
-                lstrcpy(s, "script");
+                r = "script:" + std::string(inputData[0].data.string);
                 break;
             case kTypeLiveObjectRelease:
-                lstrcpy(s, "LiveObjectRelease");
+                r = "LiveObjectRelease:";
                 break;
             case kTypeUndefined:
-                lstrcpy(s, "undefined");
+                r = "undefined:";
                 break;
             case kTypeLiveObject:
-                lstrcpy(s, "liveobject");
+                r = "liveobject:";
                 break;
             default:
-                lstrcpy(s, "none");
+                r = "none:";
                 break;
             }
             outputData->type = kTypeString;
-            outputData->data.string = getNewBuffer(s);
+            outputData->data.string = getNewBuffer(r);
             return kESErrOK;
         }
         return kESErrBadArgumentList;

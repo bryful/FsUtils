@@ -26,4 +26,4 @@ var list = fu.aeInfo();
 fu.windowMax();
 
 alert(fu.loginUserName() + "/" + fu.computerName() + "\r\n"+
-    list.processID +"\r\n" +File.decode(list.path) +"\r\n" + File.decode(list.title));
+    list.processID +"\r\n" +list.path +"\r\n" + list.title);

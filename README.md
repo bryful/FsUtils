@@ -8,9 +8,9 @@ P { text-indent: 1.5em; }
 ExternalObjectを使ったAfter Effectsスクリプトの機能拡張するものになります。<br>
 dllの名前をFsUtils.dllからfu.dllに変更しました。fsutilコマンドと間違えやすかったので(実害はないと思います)<br>
 <br>
-editとMsgBoxダイアログが表示できるようになりました。<br>
+Visual studioをバージョンアップしたら返り値に2Byteコードが使えるようになったので、URLエンコード処理を排除しました。
 <br>
-動作確認用のコマンドライン版(fuCmd.exe)も入れてあります。<br>
+動作確認用のコマンドライン版(fuCmd.exe)も入れてありますが、全ての関数には対応していません。<br>
 
 ## 使い方
 
@@ -21,6 +21,8 @@ C:\Program Files\bry-ful\FsUtils\fu.dll
 ```
 
 へコピーされます。<br>
+fu.dllから他のコマンドを呼び出すようにしました。
+<br>
 
 機能を増やしたら、必至dllが増えてしまいました。<br>
 今のところ以下のDLLが必要ですが、大体既にインストールされているはずなのでインストールは不要のはずです。
@@ -153,7 +155,7 @@ processAEList()の返り値は配列です。toSource()すると以下の感じ�
 | hWND        | ウインドウハンドルの値                                                                     |
 | processID   | プロセスID                                                                                 |
 | processName | プロセス名                                                                                 |
-| title       | タイトルバーに表示されてる文字。urlエンコードされてます。File.decode()で復元してください。 |
+| title       | タイトルバーに表示されてる文字。 |
 | path        | 実行ファイルのフルパス。                                                                   |
 | isWindow    | ウィンドウが表示されていたらtrue                                                           |
 | isZoomed    | 最大化してたらtrue                                                                         |

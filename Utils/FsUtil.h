@@ -65,8 +65,11 @@ BOOL IsUTF8(std::string s);
 
 char* ShiftJistoUtf8(char* src);
 char* Utf8toShiftJis(char* src);
-std::string multi_to_utf8_winapi(std::string const& src);
-std::string utf8_to_multi_winapi(std::string const& src);
+std::string SJ2U8(std::string src);
+std::string U82SJ(std::string src);
+
+//std::string multi_to_utf8_winapi(std::string const& src);
+//std::string utf8_to_multi_winapi(std::string const& src);
 
 // *********************************************************************************************
 POINT GetMousePos();

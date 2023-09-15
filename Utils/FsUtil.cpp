@@ -342,6 +342,9 @@ char* ShiftJistoUtf8(char* src)
 	ConvSJistoUtf8(src, dst, &nSize);
 	return dst;
 }
+std::string SJ2U8(std::string src) { return std::string(ShiftJistoUtf8((char*)src.c_str())); }
+std::string U82SJ(std::string src) { return std::string(Utf8toShiftJis((char*)src.c_str())); }
+
 // ******************************************************************
 /*
 http://www.lab.its55.com/?p=33

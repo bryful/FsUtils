@@ -286,18 +286,18 @@ std::string BoolToString(BOOL b)
 std::string ToPathString(std::string s)
 {
 	std::string ss = s;
-	//ReplaceAll(ss, std::string("\\"), std::string("\\\\"));
+	ss = ReplaceAll(ss, std::string("\\"), std::string("\\\\"));
 	
 	if (m_IsUtf8 == false)
 	{
 		return ss;
 	}
 	else {
-		std::string ss2 = multi_to_utf8_winapi(ss);
-		char* src = (char*)(ss2.c_str());
-		char* dst = NULL;
-		encode_uri(src, &dst);
-		return std::string(dst);
+		std::string ss2 = SJ2U8(ss);
+		//char* src = (char*)(ss2.c_str());
+		//char* dst = NULL;
+		//encode_uri(src, &dst);
+		return ss2;
 	}
 }
 std::string PCellToString(PCell p)

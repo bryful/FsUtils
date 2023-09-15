@@ -55,13 +55,13 @@ public:
 
 		if (PathFileExists((LPCSTR)(p.c_str())) == false) return ret;
 
-        //ファイル名からバイナリファイルで読み込む
-        std::ifstream ifs(p, std::ios::binary);
+		//ファイル名からバイナリファイルで読み込む
+		std::ifstream ifs(p, std::ios::binary);
 
-        //読込サイズを調べる。
-        ifs.seekg(0, std::ios::end);
-        long long int size = ifs.tellg();
-        ifs.seekg(0);
+		//読込サイズを調べる。
+		ifs.seekg(0, std::ios::end);
+		long long int size = ifs.tellg();
+		ifs.seekg(0);
 
 		BufFree();
 		if (size > 0) 

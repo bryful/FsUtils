@@ -30,5 +30,7 @@ var b = $.getenv("CCC");
 alert(b);
 alert(a);
 */
-var s = fu.test([0,0,500,500]);
-alert(s);
+var obj={}
+obj.col  = ["0","0",100,"0"];
+var t = fu.test(obj.col);
+alert(t);
