@@ -210,8 +210,8 @@ BOOL SetTextClipboard(std::string str, bool IsU)
 LPCTSTR GetTextClipboard(bool IsU)
 {
     HGLOBAL hg;
-    LPTSTR strText = '\0';
-    LPTSTR strClip = '\0';
+    LPTSTR strText = (LPTSTR)"";
+    LPTSTR strClip = (LPTSTR)"";
     if (OpenClipboard(NULL) && (hg = GetClipboardData(CF_TEXT))) {
         strText = (PTSTR)malloc(GlobalSize(hg));
         strClip = (PTSTR)GlobalLock(hg);
@@ -398,7 +398,7 @@ char* Utf8toShiftJis(char* src)
 char* GetParent(char* str)
 {
 	char* moto = str;
-	char* ret = "\0";
+	char* ret = (char*)"";
 	const char* par = strrchr(moto, '\\');
 	if (par == NULL)
 	{

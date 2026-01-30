@@ -912,7 +912,7 @@ extern "C" {
             }
             else {
                 outputData->type = kTypeScript;
-                outputData->data.string ="(null)";
+                outputData->data.string = getNewBuffer("(null)");
             }
             return kESErrOK;
         }
@@ -982,7 +982,7 @@ extern "C" {
         std::string ret = "";
         if (rcts.size() > 0)
         {
-            for each (RECT r in rcts)
+            for (const RECT& r : rcts)
             {
                 if (ret.empty() == false) ret += ",";
                 std::string s = "[";

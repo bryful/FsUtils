@@ -468,7 +468,7 @@ std::string GetNameWithoutFrame(std::string src)
 }
 char* GetExt(char* str)
 {
-	char* ret = "\0";
+	char* ret = (char*)"";
 	if (lstrlen(str) <= 0)
 	{
 		return ret;
@@ -485,7 +485,7 @@ char* GetExt(char* str)
 }
 LPTSTR  GetName(LPTSTR  str)
 {
-	LPTSTR  ret = "\0";
+	LPTSTR  ret = (LPTSTR)"";
 	if (lstrlen(str) <= 0)
 	{
 		return ret;
@@ -509,7 +509,7 @@ LPTSTR  GetName(LPTSTR  str)
 }
 char* GetNameWithoutExt(char* str)
 {
-	char* ret = "\0";
+	char* ret = (char*)"";
 	if (lstrlen(str) <= 0)
 	{
 		return ret;

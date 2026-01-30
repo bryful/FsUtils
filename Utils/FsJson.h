@@ -53,6 +53,7 @@ public:
 	BOOL Value(string key, int& v)
 	{
 		BOOL ret = false;
+		v = 0; // ’Ç‰Á: ‰Šú‰»
 		if (Obj.find(key) != Obj.end())
 		{
 			if (Obj[key].is_number())
@@ -69,7 +70,7 @@ public:
 		json ja = json::array();
 		if (v.size() > 0)
 		{
-			for each (int vv in v)
+			for (int vv : v) // C³
 			{
 				ja.push_back((double)vv);
 			}
@@ -87,7 +88,7 @@ public:
 				json ja = Obj[key];
 				if (ja.size() > 0)
 				{
-					for each (auto j in ja)
+					for (auto& j : ja)
 					{
 						if (j.is_number())
 						{
@@ -108,6 +109,7 @@ public:
 	BOOL Value(string key, double& v)
 	{
 		BOOL ret = false;
+		v = 0.0; // ’Ç‰Á: ‰Šú‰»
 		if (Obj.find(key) != Obj.end())
 		{
 			if (Obj[key].is_number())
@@ -124,7 +126,7 @@ public:
 		json ja = json::array();
 		if (v.size() > 0)
 		{
-			for each (double vv in v)
+			for (double vv : v) // C³
 			{
 				ja.push_back(vv);
 			}
@@ -142,7 +144,7 @@ public:
 				json ja = Obj[key];
 				if (ja.size() > 0)
 				{
-					for each (auto j in ja)
+					for (auto& j : ja)
 					{
 						if (j.is_number())
 						{
@@ -163,6 +165,7 @@ public:
 	BOOL Value(string key, bool& v)
 	{
 		BOOL ret = false;
+		v = false; // ’Ç‰Á: ‰Šú‰»
 		if (Obj.find(key) != Obj.end())
 		{
 			if (Obj[key].is_boolean())
@@ -179,7 +182,7 @@ public:
 		json ja = json::array();
 		if (v.size() > 0)
 		{
-			for each (bool vv in v)
+			for (bool vv : v) // C³
 			{
 				ja.push_back(vv);
 			}
@@ -197,7 +200,7 @@ public:
 				json ja = Obj[key];
 				if (ja.size() > 0)
 				{
-					for each (auto j in ja)
+					for (auto& j : ja)
 					{
 						if (j.is_boolean())
 						{
@@ -222,6 +225,7 @@ public:
 	BOOL Value(string key, string& v)
 	{
 		BOOL ret = false;
+		v = ""; // ’Ç‰Á: ‰Šú‰»
 		if (Obj.find(key) != Obj.end())
 		{
 			if (Obj[key].is_string())
@@ -242,7 +246,7 @@ public:
 		json ja = json::array();
 		if (v.size() > 0)
 		{
-			for each (string vv in v)
+			for (string vv : v) // C³
 			{
 				if (IsShiftJis)
 				{
@@ -265,7 +269,7 @@ public:
 				json ja = Obj[key];
 				if (ja.size() > 0)
 				{
-					for each (auto j in ja)
+					for (auto& j : ja)
 					{
 						if (j.is_string())
 						{
